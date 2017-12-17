@@ -1,2 +1,5 @@
-# money-ts
-TypeScript library for type-safe and lossless encoding and manipulation of world currencies and precious metals
+# Work in progress
+
+A porting of Haskell's [safe-money](https://github.com/k0001/safe-money)
+
+Blog post: https://ren.zone/articles/safe-money
