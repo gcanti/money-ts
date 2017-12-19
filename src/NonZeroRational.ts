@@ -7,22 +7,16 @@ import { Rational } from './Rational'
 import * as rational from './Rational'
 import { Integer } from './Integer'
 
-export interface NonZeroRational extends Newtype<'NonZeroRational', [number, number]> {}
+export interface NonZeroRational extends Newtype<'NonZeroRational', Rational> {}
 
-export const prism: Prism<[number, number], NonZeroRational> = new Prism(
-  t => (t[0] !== 0 ? some(t as any) : none),
+export const prism: Prism<Rational, NonZeroRational> = new Prism(
+  t => ((t as any)[0] === 0 ? none : some(t as any)),
   nzr => nzr as any
 )
 
 export function fromInteger(i: Integer): Rational {
   return [i, 1 as any]
 }
-export const fromRational: (r: Rational) => Option<NonZeroRational> = prism.getOption as any
-
-export function toRational(nzr: NonZeroRational): Rational {
-  return nzr as any
-}
-
 export const simplify: (nzr: NonZeroRational) => NonZeroRational = rational.simplify as any
 
 export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = rational.add as any

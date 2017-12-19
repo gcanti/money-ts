@@ -1,6 +1,7 @@
 import * as assert from 'assert'
 import * as rational from '../src/Rational'
 import { NonZeroRational } from '../src/NonZeroRational'
+import { some, none } from 'fp-ts/lib/Option'
 
 const unsafeFromTuple = (t: [number, number]): rational.Rational => t as any
 const r1_3 = unsafeFromTuple([1, 3])
@@ -8,6 +9,13 @@ const r2_3 = unsafeFromTuple([2, 3])
 const nzr2_3: NonZeroRational = [2, 3] as any
 
 describe('Rational', () => {
+  it('prism', () => {
+    assert.deepEqual(rational.prism.getOption([2, 1]), some([2, 1]))
+    assert.deepEqual(rational.prism.getOption([0, 1]), some([0, 1]))
+    assert.deepEqual(rational.prism.getOption([2.1, 1]), none)
+    assert.deepEqual(rational.prism.getOption([2, 0]), none)
+  })
+
   it('simplify', () => {
     assert.deepEqual(rational.simplify(unsafeFromTuple([4, 2])), [2, 1])
     assert.deepEqual(rational.simplify(unsafeFromTuple([-4, 2])), [-2, 1])

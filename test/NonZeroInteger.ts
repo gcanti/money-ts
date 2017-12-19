@@ -7,6 +7,12 @@ const nzi2: nonZeroInteger.NonZeroInteger = 2 as any
 const nzi3: nonZeroInteger.NonZeroInteger = 3 as any
 
 describe('NonZeroInteger', () => {
+  it('prism', () => {
+    assert.deepEqual(nonZeroInteger.prism.getOption(1), some(1))
+    assert.deepEqual(nonZeroInteger.prism.getOption(0), none)
+    assert.deepEqual(nonZeroInteger.prism.getOption(2.1), none)
+  })
+
   it('fromInteger', () => {
     assert.deepEqual(nonZeroInteger.fromInteger(integer.one), some(1))
     assert.deepEqual(nonZeroInteger.fromInteger(integer.zero), none)

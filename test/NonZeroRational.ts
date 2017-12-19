@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-import * as rational from '../src/Rational'
 import * as nonZeroRational from '../src/NonZeroRational'
 import { some, none } from 'fp-ts/lib/Option'
 
@@ -7,9 +6,9 @@ const nzr2: nonZeroRational.NonZeroRational = [2, 1] as any
 const nzr3: nonZeroRational.NonZeroRational = [3, 1] as any
 
 describe('NonZeroRational', () => {
-  it('fromRational', () => {
-    assert.deepEqual(nonZeroRational.fromRational(rational.one), some([1, 1]))
-    assert.deepEqual(nonZeroRational.fromRational(rational.zero), none)
+  it('prism', () => {
+    assert.deepEqual(nonZeroRational.prism.getOption([2, 1] as any), some([2, 1]))
+    assert.deepEqual(nonZeroRational.prism.getOption([0, 1] as any), none)
   })
 
   it('add', () => {
