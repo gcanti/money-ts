@@ -8,7 +8,7 @@ import { NonZeroRational } from './NonZeroRational'
 
 export type Rational = [Integer, NonZeroInteger]
 
-export const prismRational: Prism<[number, number], Rational> = new Prism(t => {
+export const prism: Prism<[number, number], Rational> = new Prism(t => {
   const [n, d] = t
   if (n % 1 !== 0 || d === 0) {
     return none
@@ -30,7 +30,7 @@ const gcd = (a: number, b: number): number => {
 }
 
 export function simplify(r: Rational): Rational {
-  const [n, d] = prismRational.reverseGet(r)
+  const [n, d] = prism.reverseGet(r)
   const gc = gcd(n, d)
   if (Math.abs(gc) === 1) {
     return r
@@ -40,40 +40,40 @@ export function simplify(r: Rational): Rational {
 }
 
 export function isZero(r: Rational): boolean {
-  return prismRational.reverseGet(r)[0] === 0
+  return prism.reverseGet(r)[0] === 0
 }
 
 export function add(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prismRational.reverseGet(x)
-  const [ny, dy] = prismRational.reverseGet(y)
+  const [nx, dx] = prism.reverseGet(x)
+  const [ny, dy] = prism.reverseGet(y)
   return [nx * dy + ny * dx, dx * dy] as any
 }
 
 export const zero: Rational = [0, 1] as any
 
 export function mul(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prismRational.reverseGet(x)
-  const [ny, dy] = prismRational.reverseGet(y)
+  const [nx, dx] = prism.reverseGet(x)
+  const [ny, dy] = prism.reverseGet(y)
   return [nx * ny, dx * dy] as any
 }
 
 export const one: Rational = [1, 1] as any
 
 export function sub(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prismRational.reverseGet(x)
-  const [ny, dy] = prismRational.reverseGet(y)
+  const [nx, dx] = prism.reverseGet(x)
+  const [ny, dy] = prism.reverseGet(y)
   return [nx * dy - ny * dx, dx * dy] as any
 }
 
 export function div(x: Rational, y: NonZeroRational): Rational {
-  const [nx, dx] = prismRational.reverseGet(x)
-  const [ny, dy] = prismRational.reverseGet(y as any)
+  const [nx, dx] = prism.reverseGet(x)
+  const [ny, dy] = prism.reverseGet(y as any)
   return [nx * dy, ny * dx] as any
 }
 
 export function mod(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prismRational.reverseGet(x)
-  const [ny, dy] = prismRational.reverseGet(y)
+  const [nx, dx] = prism.reverseGet(x)
+  const [ny, dy] = prism.reverseGet(y)
   const d = nx * dy / (ny * dx)
   const n = Math.sign(d) * Math.floor(Math.abs(d))
   return sub(x, mul([n, 1] as any, y))

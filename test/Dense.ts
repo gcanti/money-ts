@@ -2,26 +2,14 @@ import * as assert from 'assert'
 import * as dense from '../src/Dense'
 import { Integer } from '../src/Integer'
 import { Rational } from '../src/Rational'
-import { scale } from '../src/Discrete'
+import { Discrete } from '../src/Discrete'
+import '../src/scale/EUR'
+import '../src/scale/XAU'
 
 const unsafeUSDFromInteger = (n: number): dense.Dense<'USD'> => [n, 1] as any
 
 const i2: Integer = 2 as any
 const r3: Rational = [3, 1] as any
-
-declare module '../src/Discrete' {
-  interface Scale {
-    XAU: {
-      'troy-ounce': [1, 1]
-      gram: [31103477, 1000000]
-    }
-  }
-}
-
-scale['XAU'] = {
-  'troy-ounce': [1, 1],
-  gram: [31103477, 1000000]
-}
 
 describe('Dense', () => {
   it('fromInteger', () => {
@@ -30,9 +18,12 @@ describe('Dense', () => {
   })
 
   it('fromDiscrete', () => {
-    assert.deepEqual(dense.fromDiscrete(1 as any, 'EUR', 'cent'), [1, 100])
-    assert.deepEqual(dense.fromDiscrete(1 as any, 'EUR', 'euro'), [1, 1])
-    assert.deepEqual(dense.fromDiscrete(1 as any, 'XAU', 'gram'), [1000000, 31103477])
+    const d1: Discrete<'EUR', 'cent'> = 1 as any
+    assert.deepEqual(dense.fromDiscrete(d1, 'EUR', 'cent'), [1, 100])
+    const d2: Discrete<'EUR', 'euro'> = 1 as any
+    assert.deepEqual(dense.fromDiscrete(d2, 'EUR', 'euro'), [1, 1])
+    const d3: Discrete<'XAU', 'gram'> = 1 as any
+    assert.deepEqual(dense.fromDiscrete(d3, 'XAU', 'gram'), [1000000, 31103477])
   })
 
   it('getRing', () => {

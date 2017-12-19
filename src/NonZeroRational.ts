@@ -8,12 +8,12 @@ import * as rational from './Rational'
 
 export interface NonZeroRational extends Newtype<'NonZeroRational', [number, number]> {}
 
-export const prismNonZeroRational: Prism<[number, number], NonZeroRational> = new Prism(
+export const prism: Prism<[number, number], NonZeroRational> = new Prism(
   t => (t[0] !== 0 ? some(t as any) : none),
   nzr => nzr as any
 )
 
-export const fromRational: (r: Rational) => Option<NonZeroRational> = prismNonZeroRational.getOption as any
+export const fromRational: (r: Rational) => Option<NonZeroRational> = prism.getOption as any
 
 export function toRational(nzr: NonZeroRational): Rational {
   return nzr as any

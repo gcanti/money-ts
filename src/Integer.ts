@@ -7,17 +7,17 @@ import { NonZeroInteger } from './NonZeroInteger'
 
 export interface Integer extends Newtype<'Integer', number> {}
 
-export const prismInteger = new Prism<number, Integer>(n => (n % 1 === 0 ? some(n as any) : none), i => i as any)
+export const prism = new Prism<number, Integer>(n => (n % 1 === 0 ? some(n as any) : none), i => i as any)
 
 export const fromNonZeroInteger = (nzi: NonZeroInteger): Integer => nzi as any
 
-export const add = (x: Integer, y: Integer): Integer => (prismInteger.reverseGet(x) + prismInteger.reverseGet(y)) as any
+export const add = (x: Integer, y: Integer): Integer => (prism.reverseGet(x) + prism.reverseGet(y)) as any
 
-export const mul = (x: Integer, y: Integer): Integer => (prismInteger.reverseGet(x) * prismInteger.reverseGet(y)) as any
+export const mul = (x: Integer, y: Integer): Integer => (prism.reverseGet(x) * prism.reverseGet(y)) as any
 
 export const one: Integer = 1 as any
 
-export const sub = (x: Integer, y: Integer): Integer => (prismInteger.reverseGet(x) - prismInteger.reverseGet(y)) as any
+export const sub = (x: Integer, y: Integer): Integer => (prism.reverseGet(x) - prism.reverseGet(y)) as any
 
 export const zero: Integer = 0 as any
 

@@ -4,7 +4,8 @@ import * as rational from './Rational'
 import { Integer } from './Integer'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
-import { Discrete, Currencies, Units, scale } from './Discrete'
+import { Discrete } from './Discrete'
+import { Currencies, Units, scale } from './Scale'
 
 export interface Dense<Currency> extends Newtype<['Dense', Currency], Rational> {}
 
@@ -27,7 +28,8 @@ export function fromDiscrete<Currency extends Currencies, Unit extends Units<Cur
   currency: Currency,
   unit: Unit
 ): Dense<Currency> {
-  return div([d, 1] as any, scale[currency][unit])
+  const [sn, sd] = scale[currency][unit]
+  return [(d as any) * sd, sn] as any
 }
 
 export const add: <Currency>(x: Dense<Currency>, y: Dense<Currency>) => Dense<Currency> = rational.add as any
