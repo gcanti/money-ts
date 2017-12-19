@@ -6,6 +6,7 @@ import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Discrete } from './Discrete'
 import { Currencies, Units, scale } from './Scale'
+import { NonZeroRational } from './NonZeroRational'
 
 export interface Dense<Currency> extends Newtype<['Dense', Currency], Rational> {}
 
@@ -23,13 +24,65 @@ export function toRational<Currency>(d: Dense<Currency>): Rational {
 
 export const simplify: <Currency>(d: Dense<Currency>) => Dense<Currency> = rational.simplify as any
 
-export function fromDiscrete<Currency extends Currencies, Unit extends Units<Currency>>(
-  d: Discrete<Currency, Unit>,
-  currency: Currency,
+export function getScale<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>
+): NonZeroRational {
+  return scale[format.currency][format.unit]
+}
+
+export interface Format<Currency extends Currencies, Unit extends Units<Currency>> {
+  currency: Currency
   unit: Unit
+}
+
+export function fromDiscrete<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>,
+  d: Discrete<Currency, Unit>
 ): Dense<Currency> {
-  const [sn, sd] = scale[currency][unit]
-  return [(d as any) * sd, sn] as any
+  const [sn, sd] = getScale(format) as any
+  return [(d as any) * (sd as any), sn] as any
+}
+
+/** Internal. Used to implement `round`, `ceiling`, `floor` and `truncate` */
+function roundf<Currency extends Currencies, Unit extends Units<Currency>>(
+  f: (n: number) => number,
+  format: Format<Currency, Unit>,
+  c0: Dense<Currency>
+): [Discrete<Currency, Unit>, Dense<Currency>] {
+  const r0: Rational = c0 as any
+  const r1: [number, number] = getScale(format) as any
+  const r2: [number, number] = rational.mul(r0, r1 as any) as any
+  const i2 = f(r2[0] / r2[1])
+  const r3 = [i2 * r1[1], r1[0]] as any
+  return [i2, rational.sub(r0, r3)] as any
+}
+
+export function floor<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>,
+  d: Dense<Currency>
+): [Discrete<Currency, Unit>, Dense<Currency>] {
+  return roundf(Math.floor, format, d)
+}
+
+export function round<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>,
+  d: Dense<Currency>
+): [Discrete<Currency, Unit>, Dense<Currency>] {
+  return roundf(Math.round, format, d)
+}
+
+export function ceil<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>,
+  d: Dense<Currency>
+): [Discrete<Currency, Unit>, Dense<Currency>] {
+  return roundf(Math.ceil, format, d)
+}
+
+export function trunc<Currency extends Currencies, Unit extends Units<Currency>>(
+  format: Format<Currency, Unit>,
+  d: Dense<Currency>
+): [Discrete<Currency, Unit>, Dense<Currency>] {
+  return roundf(Math.trunc, format, d)
 }
 
 export const add: <Currency>(x: Dense<Currency>, y: Dense<Currency>) => Dense<Currency> = rational.add as any

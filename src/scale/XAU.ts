@@ -2,6 +2,7 @@ import { scale } from '../Scale'
 
 declare module '../Scale' {
   interface Scale {
+    /** Gold. No canonical smallest unit */
     XAU: {
       'troy-ounce': [1, 1]
       grain: [480, 1]

@@ -12,3 +12,5 @@ import * as nonZeroRational from './NonZeroRational'
 export { nonZeroRational }
 import * as rational from './Rational'
 export { rational }
+import * as scale from './Scale'
+export { scale }
