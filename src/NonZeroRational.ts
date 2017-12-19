@@ -5,6 +5,7 @@ import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Rational } from './Rational'
 import * as rational from './Rational'
+import { Integer } from './Integer'
 
 export interface NonZeroRational extends Newtype<'NonZeroRational', [number, number]> {}
 
@@ -13,6 +14,9 @@ export const prism: Prism<[number, number], NonZeroRational> = new Prism(
   nzr => nzr as any
 )
 
+export function fromInteger(i: Integer): Rational {
+  return [i, 1 as any]
+}
 export const fromRational: (r: Rational) => Option<NonZeroRational> = prism.getOption as any
 
 export function toRational(nzr: NonZeroRational): Rational {
@@ -33,6 +37,11 @@ export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRatio
 }
 
 export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = rational.div as any
+
+export function inverse(nzr: NonZeroRational): Rational {
+  const [n, d] = prism.reverseGet(nzr)
+  return [d, n] as any
+}
 
 export const setoidNonZeroRational: Setoid<NonZeroRational> = rational.setoidRational as any
 

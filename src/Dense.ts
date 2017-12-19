@@ -49,12 +49,11 @@ function roundf<Currency extends Currencies, Unit extends Units<Currency>>(
   format: Format<Currency, Unit>,
   c0: Dense<Currency>
 ): [Discrete<Currency, Unit>, Dense<Currency>] {
-  const r0: Rational = c0 as any
   const r1: [number, number] = getScale(format) as any
-  const r2: [number, number] = rational.mul(r0, r1 as any) as any
+  const r2: [number, number] = rational.mul(c0 as any, r1 as any) as any
   const i2 = f(r2[0] / r2[1])
-  const r3 = [i2 * r1[1], r1[0]] as any
-  return [i2, rational.sub(r0, r3)] as any
+  const r3 = [i2 * r1[1], r1[0]]
+  return [i2, rational.sub(c0 as any, r3 as any)] as any
 }
 
 export function floor<Currency extends Currencies, Unit extends Units<Currency>>(
