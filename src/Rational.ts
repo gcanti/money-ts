@@ -8,14 +8,10 @@ import { NonZeroRational } from './NonZeroRational'
 
 export type Rational = [Integer, NonZeroInteger]
 
-export const prism: Prism<[number, number], Rational> = new Prism(t => {
-  const [n, d] = t
-  if (n % 1 !== 0 || d === 0) {
-    return none
-  } else {
-    return some(t as any)
-  }
-}, r => r as any)
+export const prism: Prism<[number, number], Rational> = new Prism(
+  t => (t[0] % 1 !== 0 || t[1] === 0 ? none : some(t as any)),
+  r => r as any
+)
 
 export function fromInteger(i: Integer): Rational {
   return [i, 1 as any]
