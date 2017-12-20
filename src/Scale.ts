@@ -2,6 +2,6 @@ export interface Scale {}
 
 export const scale: Scale = {} as any
 
-export type Currencies = keyof Scale
+export type Dimensions = keyof Scale
 
-export type Units<Currency extends Currencies> = keyof Scale[Currency]
+export type Units<Dimension extends Dimensions> = keyof Scale[Dimension]

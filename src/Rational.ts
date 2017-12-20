@@ -3,19 +3,28 @@ import { Integer } from './Integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
-import { none, some } from 'fp-ts/lib/Option'
+import { Option, none, some } from 'fp-ts/lib/Option'
 import { NonZeroRational } from './NonZeroRational'
+import * as integer from './Integer'
+import * as nonZeroInteger from './NonZeroInteger'
 
 export type Rational = [Integer, NonZeroInteger]
 
+const isRationalTuple = (t: [number, number]): boolean =>
+  t[1] !== 0 && integer.isInteger(t[0]) && integer.isInteger(t[1])
+
 export const prism: Prism<[number, number], Rational> = new Prism(
-  t => (t[0] % 1 !== 0 || t[1] === 0 ? none : some(t as any)),
+  t => (isRationalTuple(t) ? some(t as any) : none),
   r => r as any
 )
 
 export function fromInteger(i: Integer): Rational {
-  return [i, 1 as any]
+  return [i, nonZeroInteger.one]
 }
+
+export const fromNonZeroRational = (nzr: NonZeroRational): Rational => nzr as any
+
+export const toNonZeroRational = (r: Rational): Option<NonZeroRational> => (isZero(r) ? none : some(r as any))
 
 const gcd = (a: number, b: number): number => {
   if (b === 0) {
@@ -31,63 +40,67 @@ export function simplify(r: Rational): Rational {
   if (Math.abs(gc) === 1) {
     return r
   } else {
-    return [n / gc, d / gc] as any
+    return [integer.unsafeFromNumber(n / gc), nonZeroInteger.unsafeFromNumber(d / gc)]
   }
 }
 
+export function numerator(r: Rational): number {
+  return prism.reverseGet(r)[0]
+}
+
+export function denominator(r: Rational): number {
+  return prism.reverseGet(r)[1]
+}
+
 export function isZero(r: Rational): boolean {
-  return prism.reverseGet(r)[0] === 0
+  return numerator(r) === 0
 }
 
 export function add(x: Rational, y: Rational): Rational {
   const [nx, dx] = prism.reverseGet(x)
   const [ny, dy] = prism.reverseGet(y)
-  return [nx * dy + ny * dx, dx * dy] as any
+  return [integer.unsafeFromNumber(nx * dy + ny * dx), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
-export const zero: Rational = [0, 1] as any
+export const zero: Rational = [integer.zero, nonZeroInteger.one]
 
 export function mul(x: Rational, y: Rational): Rational {
   const [nx, dx] = prism.reverseGet(x)
   const [ny, dy] = prism.reverseGet(y)
-  return [nx * ny, dx * dy] as any
+  return [integer.unsafeFromNumber(nx * ny), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
-export const one: Rational = [1, 1] as any
+export const one: Rational = [integer.one, nonZeroInteger.one]
 
 export function sub(x: Rational, y: Rational): Rational {
   const [nx, dx] = prism.reverseGet(x)
   const [ny, dy] = prism.reverseGet(y)
-  return [nx * dy - ny * dx, dx * dy] as any
+  return [integer.unsafeFromNumber(nx * dy - ny * dx), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
 export function div(x: Rational, y: NonZeroRational): Rational {
   const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(y as any)
-  return [nx * dy, ny * dx] as any
+  const [ny, dy] = prism.reverseGet(fromNonZeroRational(y))
+  return [integer.unsafeFromNumber(nx * dy), nonZeroInteger.unsafeFromNumber(ny * dx)]
 }
 
-export function mod(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(y)
-  const d = nx * dy / (ny * dx)
-  const n = Math.sign(d) * Math.floor(Math.abs(d))
-  return sub(x, mul([n, 1] as any, y))
+export function div_(x: Rational, y: Rational): Option<Rational> {
+  return toNonZeroRational(y).map(y => div(x, y))
 }
 
 export const setoidRational: Setoid<Rational> = {
   equals: x => y => {
-    const [xa, xb] = simplify(x)
-    const [ya, yb] = simplify(y)
-    return xa === ya && xb === yb
+    const [nx, dx] = simplify(x)
+    const [ny, dy] = simplify(y)
+    return nx === ny && dx === dy
   }
 }
 
 export const ordRational: Ord<Rational> = {
   ...setoidRational,
   compare: x => y => {
-    const [xa, xb] = simplify(x)
-    const [ya, yb] = simplify(y)
-    return xa < ya ? 'LT' : xa > ya ? 'GT' : xb < yb ? 'LT' : xb > yb ? 'GT' : 'EQ'
+    const [nx, dx] = simplify(x)
+    const [ny, dy] = simplify(y)
+    return nx < ny ? 'LT' : nx > ny ? 'GT' : dx < dy ? 'LT' : dx > dy ? 'GT' : 'EQ'
   }
 }
