@@ -14,11 +14,11 @@ const nzr2_3: NonZeroRational = [2, 3] as any
 
 describe('Rational', () => {
   it('prism', () => {
-    assert.deepEqual(rational.prism.getOption([2, 1]), some([2, 1]))
-    assert.deepEqual(rational.prism.getOption([0, 1]), some([0, 1]))
-    assert.deepEqual(rational.prism.getOption([2.1, 1]), none)
-    assert.deepEqual(rational.prism.getOption([2, 1.1]), none)
-    assert.deepEqual(rational.prism.getOption([2, 0]), none)
+    assert.deepEqual(rational.fromTuple([2, 1]), some([2, 1]))
+    assert.deepEqual(rational.fromTuple([0, 1]), some([0, 1]))
+    assert.deepEqual(rational.fromTuple([2.1, 1]), none)
+    assert.deepEqual(rational.fromTuple([2, 1.1]), none)
+    assert.deepEqual(rational.fromTuple([2, 0]), none)
   })
 
   it('simplify', () => {

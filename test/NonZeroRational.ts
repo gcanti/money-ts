@@ -7,8 +7,8 @@ const nzr3: nonZeroRational.NonZeroRational = [3, 1] as any
 
 describe('NonZeroRational', () => {
   it('prism', () => {
-    assert.deepEqual(nonZeroRational.prism.getOption([2, 1] as any), some([2, 1]))
-    assert.deepEqual(nonZeroRational.prism.getOption([0, 1] as any), none)
+    assert.deepEqual(nonZeroRational.fromRational([2, 1] as any), some([2, 1]))
+    assert.deepEqual(nonZeroRational.fromRational([0, 1] as any), none)
   })
 
   it('add', () => {

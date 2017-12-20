@@ -8,8 +8,8 @@ const nzi3 = nonZeroInteger.unsafeFromNumber(3)
 
 describe('NonZeroInteger', () => {
   it('prism', () => {
-    assert.deepEqual(nonZeroInteger.prism.getOption(integer.one), some(1))
-    assert.deepEqual(nonZeroInteger.prism.getOption(integer.zero), none)
+    assert.deepEqual(nonZeroInteger.fromInteger(integer.one), some(1))
+    assert.deepEqual(nonZeroInteger.fromInteger(integer.zero), none)
   })
 
   it('add', () => {

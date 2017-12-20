@@ -1,4 +1,3 @@
-import { Prism } from 'monocle-ts'
 import { Integer } from './Integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import { Setoid } from 'fp-ts/lib/Setoid'
@@ -13,10 +12,9 @@ export type Rational = [Integer, NonZeroInteger]
 const isRationalTuple = (t: [number, number]): boolean =>
   t[1] !== 0 && integer.isInteger(t[0]) && integer.isInteger(t[1])
 
-export const prism: Prism<[number, number], Rational> = new Prism(
-  t => (isRationalTuple(t) ? some(t as any) : none),
-  r => r as any
-)
+export const fromTuple = (t: [number, number]): Option<Rational> => (isRationalTuple(t) ? some(t as any) : none)
+
+export const toTuple = (r: Rational): [number, number] => r as any
 
 export function fromInteger(i: Integer): Rational {
   return [i, nonZeroInteger.one]
@@ -35,7 +33,7 @@ const gcd = (a: number, b: number): number => {
 }
 
 export function simplify(r: Rational): Rational {
-  const [n, d] = prism.reverseGet(r)
+  const [n, d] = toTuple(r)
   const gc = gcd(n, d)
   if (Math.abs(gc) === 1) {
     return r
@@ -45,11 +43,11 @@ export function simplify(r: Rational): Rational {
 }
 
 export function numerator(r: Rational): number {
-  return prism.reverseGet(r)[0]
+  return toTuple(r)[0]
 }
 
 export function denominator(r: Rational): number {
-  return prism.reverseGet(r)[1]
+  return toTuple(r)[1]
 }
 
 export function isZero(r: Rational): boolean {
@@ -57,30 +55,30 @@ export function isZero(r: Rational): boolean {
 }
 
 export function add(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(y)
+  const [nx, dx] = toTuple(x)
+  const [ny, dy] = toTuple(y)
   return [integer.unsafeFromNumber(nx * dy + ny * dx), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
 export const zero: Rational = [integer.zero, nonZeroInteger.one]
 
 export function mul(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(y)
+  const [nx, dx] = toTuple(x)
+  const [ny, dy] = toTuple(y)
   return [integer.unsafeFromNumber(nx * ny), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
 export const one: Rational = [integer.one, nonZeroInteger.one]
 
 export function sub(x: Rational, y: Rational): Rational {
-  const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(y)
+  const [nx, dx] = toTuple(x)
+  const [ny, dy] = toTuple(y)
   return [integer.unsafeFromNumber(nx * dy - ny * dx), nonZeroInteger.unsafeFromNumber(dx * dy)]
 }
 
 export function div(x: Rational, y: NonZeroRational): Rational {
-  const [nx, dx] = prism.reverseGet(x)
-  const [ny, dy] = prism.reverseGet(fromNonZeroRational(y))
+  const [nx, dx] = toTuple(x)
+  const [ny, dy] = toTuple(fromNonZeroRational(y))
   return [integer.unsafeFromNumber(nx * dy), nonZeroInteger.unsafeFromNumber(ny * dx)]
 }
 
