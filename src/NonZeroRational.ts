@@ -1,6 +1,5 @@
 import { NonZeroInteger } from './NonZeroInteger'
 import { Option, none, some } from 'fp-ts/lib/Option'
-import { Prism } from 'monocle-ts'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Rational } from './Rational'
@@ -8,7 +7,15 @@ import * as rational from './Rational'
 
 export type NonZeroRational = [NonZeroInteger, NonZeroInteger]
 
-export const prism: Prism<Rational, NonZeroRational> = new Prism(rational.toNonZeroRational, nzr => nzr as any)
+export const fromRational: (r: Rational) => Option<NonZeroRational> = rational.toNonZeroRational
+
+export function toRational(nzr: NonZeroRational): Rational {
+  return nzr as any
+}
+
+export const fromTuple = (t: [number, number]): Option<NonZeroRational> => rational.fromTuple(t).chain(fromRational)
+
+export const toTuple = (r: NonZeroRational): [number, number] => r as any
 
 export const simplify: (nzr: NonZeroRational) => NonZeroRational = rational.simplify as any
 

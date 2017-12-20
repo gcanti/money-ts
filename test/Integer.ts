@@ -8,9 +8,9 @@ const i3: integer.Integer = 3 as any
 
 describe('Integer', () => {
   it('prism', () => {
-    assert.deepEqual(integer.prism.getOption(1), some(1))
-    assert.deepEqual(integer.prism.getOption(0), some(0))
-    assert.deepEqual(integer.prism.getOption(2.1), none)
+    assert.deepEqual(integer.fromNumber(1), some(1))
+    assert.deepEqual(integer.fromNumber(0), some(0))
+    assert.deepEqual(integer.fromNumber(2.1), none)
   })
 
   it('fromNonZeroInteger', () => {
