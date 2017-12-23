@@ -1,4 +1,4 @@
-import { Newtype } from 'newtype-ts'
+import { Newtype, unsafeCoerce } from 'newtype-ts'
 import { Rational } from './Rational'
 import { Integer } from './Integer'
 import { Setoid } from 'fp-ts/lib/Setoid'
@@ -12,35 +12,31 @@ import * as discrete from './Discrete'
 
 export interface Dense<D> extends Newtype<['Dense', D], Rational> {}
 
-export function wrap<D>(r: Rational): Dense<D> {
-  return r as any
-}
+export const wrap: <D>(r: Rational) => Dense<D> = unsafeCoerce
 
-export function unwrap<D>(d: Dense<D>): Rational {
-  return d as any
-}
+export const unwrap: <D>(d: Dense<D>) => Rational = unsafeCoerce
 
-export const fromInteger: <D>(n: Integer) => Dense<D> = rational.fromInteger as any
+export const fromInteger: <D>(n: Integer) => Dense<D> = unsafeCoerce(rational.fromInteger)
 
-export const isZero: <D>(n: Dense<D>) => boolean = rational.isZero as any
+export const isZero: <D>(n: Dense<D>) => boolean = unsafeCoerce(rational.isZero)
 
-export const add: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = rational.add as any
+export const add: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = unsafeCoerce(rational.add)
 
-export const zero: Dense<never> = rational.zero as any
+export const zero: Dense<never> = unsafeCoerce(rational.zero)
 
-export const mul: <D>(x: Dense<D>, y: Rational) => Dense<D> = rational.mul as any
+export const mul: <D>(x: Dense<D>, y: Rational) => Dense<D> = unsafeCoerce(rational.mul)
 
-export const one: Dense<never> = rational.one as any
+export const one: Dense<never> = unsafeCoerce(rational.one)
 
-export const negate: <D>(x: Dense<D>) => Dense<D> = rational.negate as any
+export const negate: <D>(x: Dense<D>) => Dense<D> = unsafeCoerce(rational.negate)
 
-export const sub: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = rational.sub as any
+export const sub: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = unsafeCoerce(rational.sub)
 
-export const div: <D>(x: Dense<D>, y: NonZeroRational) => Dense<D> = rational.div as any
+export const div: <D>(x: Dense<D>, y: NonZeroRational) => Dense<D> = unsafeCoerce(rational.div)
 
-export const getSetoid = <D>(): Setoid<Dense<D>> => rational.setoid as any
+export const getSetoid = <D>(): Setoid<Dense<D>> => unsafeCoerce(rational.setoid)
 
-export const getOrd = <D>(): Ord<Dense<D>> => rational.ord as any
+export const getOrd = <D>(): Ord<Dense<D>> => unsafeCoerce(rational.ord)
 
 export interface Format<D extends Dimensions, U extends Units<D>> {
   dimension: D
@@ -98,4 +94,4 @@ export function trunc<D extends Dimensions, Unit extends Units<D>>(
   return d => roundf(rational.trunc, format, d)
 }
 
-export const show: <D>(x: Dense<D>) => string = rational.show as any
+export const show: <D>(x: Dense<D>) => string = unsafeCoerce(rational.show)

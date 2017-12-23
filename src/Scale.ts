@@ -1,6 +1,8 @@
+import { unsafeCoerce } from 'newtype-ts'
+
 export interface Scale {}
 
-export const scale: Scale = {} as any
+export const scale: Scale = unsafeCoerce({})
 
 export type Dimensions = keyof Scale
 

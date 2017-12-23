@@ -7,6 +7,7 @@ import * as integer from './Integer'
 import * as nonZeroInteger from './NonZeroInteger'
 import { Option } from 'fp-ts/lib/Option'
 import { fromSome } from './scale/fromSome'
+import { unsafeCoerce } from 'newtype-ts'
 
 export type Rational = [Integer, NonZeroInteger]
 
@@ -60,7 +61,7 @@ export function div(x: Rational, y: NonZeroRational): Rational {
   return reduce(integer.mul(x[0], y[1]), nonZeroInteger.mul(x[1], y[0]))
 }
 
-export const sign = ([n, d]: Rational): -1 | 0 | 1 => (integer.sign(n) * nonZeroInteger.sign(d)) as any
+export const sign = ([n, d]: Rational): -1 | 0 | 1 => unsafeCoerce(integer.sign(n) * nonZeroInteger.sign(d))
 
 export function floor(x: Rational): Integer {
   const n = integer.unwrap(x[0])

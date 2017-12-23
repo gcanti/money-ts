@@ -1,4 +1,4 @@
-import { Newtype } from 'newtype-ts'
+import { Newtype, unsafeCoerce } from 'newtype-ts'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { BigInteger } from 'big-integer'
@@ -11,9 +11,9 @@ export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
 
 export const fromInput = (x: number | string): Option<Integer> => bigInteger.wrap(x).map(wrap)
 
-export const wrap = (bi: BigInteger): Integer => bi as any
+export const wrap: (bi: BigInteger) => Integer = unsafeCoerce
 
-export const unwrap = (i: Integer): BigInteger => i as any
+export const unwrap: (i: Integer) => BigInteger = unsafeCoerce
 
 export const add = (x: Integer, y: Integer): Integer => wrap(unwrap(x).add(unwrap(y)))
 
@@ -35,7 +35,7 @@ export const setoid: Setoid<Integer> = {
 
 export const isZero: (i: Integer) => boolean = setoid.equals(zero)
 
-export const sign = (i: Integer): -1 | 0 | 1 => unwrap(i).compare(bigInteger.zero) as any
+export const sign = (i: Integer): -1 | 0 | 1 => unsafeCoerce(unwrap(i).compare(bigInteger.zero))
 
 const fromNumber = (n: number): Ordering => (n <= -1 ? 'LT' : n >= 1 ? 'GT' : 'EQ')
 

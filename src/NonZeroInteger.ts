@@ -1,4 +1,4 @@
-import { Newtype } from 'newtype-ts'
+import { Newtype, unsafeCoerce } from 'newtype-ts'
 import { Option, none, some } from 'fp-ts/lib/Option'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
@@ -13,27 +13,27 @@ export const fromInput = (x: number | string): Option<NonZeroInteger> => bigInte
 
 export const wrap = (bi: BigInteger): Option<NonZeroInteger> => fromInteger(integer.wrap(bi))
 
-export const unwrap: (i: NonZeroInteger) => BigInteger = integer.unwrap as any
+export const unwrap: (i: NonZeroInteger) => BigInteger = unsafeCoerce
 
-export const fromInteger = (i: Integer): Option<NonZeroInteger> => (integer.isZero(i) ? none : some(i as any))
+export const fromInteger = (i: Integer): Option<NonZeroInteger> => (integer.isZero(i) ? none : some(unsafeCoerce(i)))
 
-export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = integer.add as any
+export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.add)
 
-export const mul: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = integer.mul as any
+export const mul: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.mul)
 
-export const one: NonZeroInteger = integer.one as any
+export const one: NonZeroInteger = unsafeCoerce(integer.one)
 
-export const negate: (x: NonZeroInteger) => NonZeroInteger = integer.negate as any
+export const negate: (x: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.negate)
 
 export const sub = (x: NonZeroInteger, y: NonZeroInteger): Option<NonZeroInteger> => {
   return fromInteger(integer.sub(x, y))
 }
 
-export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = integer.div as any
+export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.div)
 
-export const sign: (i: NonZeroInteger) => -1 | 1 = integer.sign as any
+export const sign: (i: NonZeroInteger) => -1 | 1 = unsafeCoerce(integer.sign)
 
-const unsafeWrap: (bi: BigInteger) => NonZeroInteger = integer.wrap as any
+const unsafeWrap: (bi: BigInteger) => NonZeroInteger = unsafeCoerce(integer.wrap)
 
 export const gcd = (x: Integer, y: NonZeroInteger): NonZeroInteger =>
   unsafeWrap(bigInteger.gcd(integer.unwrap(x), unwrap(y)))
@@ -41,8 +41,8 @@ export const gcd = (x: Integer, y: NonZeroInteger): NonZeroInteger =>
 export const lcm = (x: NonZeroInteger, y: NonZeroInteger): NonZeroInteger =>
   unsafeWrap(bigInteger.lcm(unwrap(x), unwrap(y)))
 
-export const setoid: Setoid<NonZeroInteger> = integer.setoid as any
+export const setoid: Setoid<NonZeroInteger> = unsafeCoerce(integer.setoid)
 
-export const ord: Ord<NonZeroInteger> = integer.ord as any
+export const ord: Ord<NonZeroInteger> = unsafeCoerce(integer.ord)
 
-export const show: (x: NonZeroInteger) => string = integer.show as any
+export const show: (x: NonZeroInteger) => string = unsafeCoerce(integer.show)

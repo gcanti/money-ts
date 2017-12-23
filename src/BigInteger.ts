@@ -1,9 +1,10 @@
+import { unsafeCoerce } from 'newtype-ts'
 import { Option, some, none } from 'fp-ts/lib/Option'
 import * as BigInteger from 'big-integer'
 
 export const wrap = (x: number | string): Option<BigInteger.BigInteger> => {
   try {
-    return some(BigInteger(x as any))
+    return some(BigInteger(unsafeCoerce(x)))
   } catch (e) {
     return none
   }
