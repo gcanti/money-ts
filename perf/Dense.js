@@ -1,10 +1,11 @@
 const Benchmark = require('benchmark')
+const BigInteger = require('big-integer')
 const dense = require('../lib/Dense')
 
 const suite = new Benchmark.Suite()
 
-const x = [1, 3]
-const y = [1, 4]
+const x = [BigInteger(1), BigInteger(3)]
+const y = [BigInteger(1), BigInteger(4)]
 
 class BoxedDense {
   constructor(currency, value) {
@@ -19,20 +20,11 @@ class BoxedDense {
 const bx = new BoxedDense('EUR', x)
 const by = new BoxedDense('EUR', y)
 
-const ox = { n: 1, d: 3 }
-const oy = { n: 1, d: 4 }
-
 suite
-  .add('native with arrays', function() {
-    ;[x[0] * y[1] + y[0] * x[1], x[1] * y[1]]
-  })
-  .add('native with objects', function() {
-    ;[ox.n * oy.d + oy.n * ox.d, ox.d * oy.d]
-  })
-  .add('Dense.add', function() {
+  .add('dense.add', function() {
     dense.add(x, y)
   })
-  .add('dense.div', function() {
+  .add('BoxedDense', function() {
     bx.add(by)
   })
   .on('cycle', function(event) {

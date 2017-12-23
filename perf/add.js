@@ -13,9 +13,9 @@ const bx = BigInteger(4)
 const by = BigInteger(2)
 
 suite
-  // .add('native', function() {
-  //   add(x, y)
-  // })
+  .add('native', function() {
+    add(x, y)
+  })
   .add('big-integer', function() {
     integer.add(bx, by)
   })
