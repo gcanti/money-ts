@@ -28,6 +28,12 @@ export class Dense<D extends string> {
   div(y: NonZeroRational): Dense<D> {
     return new Dense(this.dimension, rational.div(this.value, y))
   }
+  inspect(): string {
+    return this.toString()
+  }
+  toString(): string {
+    return `${this.dimension} ${rational.show(this.value)}`
+  }
 }
 
 export const fromInteger = <D extends string>(d: D, i: Integer): Dense<D> => new Dense(d, rational.fromInteger(i))
@@ -84,5 +90,3 @@ export function ceil<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense
 export function trunc<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense<D>): [Discrete<D, U>, Dense<D>] {
   return roundf(rational.trunc, unit, d)
 }
-
-export const show = <D extends string>(x: Dense<D>): string => `${x.dimension} ${rational.show(x.value)}`

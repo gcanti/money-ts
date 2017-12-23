@@ -74,6 +74,10 @@ describe('Discrete', () => {
     assert.strictEqual(O.compare(dn2)(dn2), 'EQ')
   })
 
+  it('toString', () => {
+    assert.strictEqual(dn2.toString(), 'EUR cent 2')
+  })
+
   it('should handle big numbers', () => {
     assertEqual(
       new Discrete(format, integer.wrap(BigInteger(9007199254740992))).add(dn1),
