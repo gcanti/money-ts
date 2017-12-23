@@ -9,15 +9,30 @@ const add = (x, y) => x + y
 const x = 4
 const y = 2
 
-const bx = BigInteger(4)
-const by = BigInteger(2)
+const bix = BigInteger(4)
+const biy = BigInteger(2)
+
+class BoxedInteger {
+  constructor(value) {
+    this.value = value
+  }
+  add(y) {
+    return new BoxedInteger(this.value.add(y.value))
+  }
+}
+
+const bx = new BoxedInteger(BigInteger(4))
+const by = new BoxedInteger(BigInteger(2))
 
 suite
   .add('native', function() {
     add(x, y)
   })
-  .add('big-integer', function() {
-    integer.add(bx, by)
+  .add('integer.add', function() {
+    integer.add(bix, biy)
+  })
+  .add('BoxedInteger', function() {
+    bx.add(by)
   })
   .on('cycle', function(event) {
     console.log(String(event.target))

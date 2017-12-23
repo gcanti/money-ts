@@ -5,7 +5,6 @@ import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Dense } from './Dense'
 import * as nonZeroRational from './NonZeroRational'
-import * as dense from './Dense'
 
 export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], NonZeroRational> {}
 
@@ -17,8 +16,8 @@ export function toRational<S, D>(er: ExchangeRate<S, D>): Rational {
   return unsafeCoerce(er)
 }
 
-export const exchange = <S, D>(er: ExchangeRate<S, D>) => (d: Dense<S>): Dense<D> => {
-  return unsafeCoerce(dense.mul(d, toRational(er)))
+export const exchange = <S extends string, D extends string>(er: ExchangeRate<S, D>) => (d: Dense<S>): Dense<D> => {
+  return unsafeCoerce(d.mul(toRational(er)))
 }
 
 export const compose = <A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>): ExchangeRate<A, C> => {
