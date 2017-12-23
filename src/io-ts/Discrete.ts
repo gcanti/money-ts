@@ -1,6 +1,13 @@
-import { fromNewtype } from 'io-ts-types/lib/newtype-ts/fromNewtype'
 import * as t from 'io-ts'
-import { Discrete as DiscreteNewtype } from '../Discrete'
+import { Discrete } from '../Discrete'
 import { Integer } from './Integer'
 
-export const Discrete = <D, U>(): t.Type<any, DiscreteNewtype<D, U>> => fromNewtype<DiscreteNewtype<D, U>>(Integer)
+export const getDiscrete = <D extends string, U extends string>(dimension: D, unit: U): t.Type<any, Discrete<D, U>> => {
+  const format = { dimension, unit }
+  return new t.Type(
+    'Discrete',
+    (v): v is Discrete<D, U> => v instanceof Discrete,
+    (v, c) => Integer.validate(v, c).map(r => new Discrete(format, r)),
+    v => Integer.serialize(v.value)
+  )
+}

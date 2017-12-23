@@ -21,10 +21,10 @@ export function assertEqual<S, D>(x: ExchangeRate<S, D>): (y: ExchangeRate<S, D>
 describe('ExchangeRate', () => {
   it('exchange', () => {
     const jpybtc = exchangeRate.wrap<'JPY', 'BTC'>(fromSome(nonZeroRational.fromInput([3, 1000000])))
-    const btc = dense.fromInteger<'BTC'>(integer.one)
-    const jpy = dense.fromInteger<'JPY'>(n2)
-    const result = dense.add(btc, exchangeRate.exchange(jpybtc)(jpy))
-    assertEqualDense(result)(dense.wrap(fromSome(nonZeroRational.fromInput([500003, 500000]))))
+    const btc = dense.fromInteger('BTC', integer.one)
+    const jpy = dense.fromInteger('JPY', n2)
+    const result = btc.add(exchangeRate.exchange(jpybtc)(jpy))
+    assertEqualDense(result)(new dense.Dense('BTC', fromSome(nonZeroRational.fromInput([500003, 500000]))))
   })
 
   it('compose', () => {
