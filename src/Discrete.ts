@@ -29,6 +29,12 @@ export class Discrete<D extends string, U extends string> {
   isZero(): boolean {
     return integer.isZero(this.value)
   }
+  inspect(): string {
+    return this.toString()
+  }
+  toString(): string {
+    return `${this.format.dimension} ${this.format.unit} ${integer.show(this.value)}`
+  }
 }
 
 export const getOne = <D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> =>

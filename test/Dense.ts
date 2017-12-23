@@ -46,6 +46,10 @@ describe('Dense', () => {
     assertEqual(new Dense('EUR', fromSome(rational.fromInput([4, 1]))).div(nzr4))(new Dense('EUR', rational.one))
   })
 
+  it('toString', () => {
+    assert.strictEqual(new Dense('EUR', fromSome(rational.fromInput([4, 1]))).toString(), 'EUR 4 / 1')
+  })
+
   it('floor', () => {
     const [f1, rest1] = dense.floor('cent', new Dense('EUR', fromSome(rational.fromInput([124, 100]))))
     assert.strictEqual(
