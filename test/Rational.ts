@@ -1,34 +1,29 @@
 import * as assert from 'assert'
-import { NonZeroRational } from '../src/NonZeroRational'
-import { some, none } from 'fp-ts/lib/Option'
 import { Rational } from '../src/Rational'
+import { NonZeroRational } from '../src/NonZeroRational'
 import * as rational from '../src/Rational'
+import * as nonZeroRational from '../src/NonZeroRational'
 import * as integer from '../src/Integer'
-import * as nonZeroInteger from '../src/NonZeroInteger'
+import { fromSome } from '../src/scale/fromSome'
+import { assertEqual as assertEqualInteger, n2, z1, z2 } from './Integer'
 
-const unsafe = ([n, d]: [number, number]): Rational => [integer.unsafeFromNumber(n), nonZeroInteger.unsafeFromNumber(d)]
+export function unsafeR(t: [number | string, number | string]): Rational {
+  return fromSome(rational.fromInput(t))
+}
 
-const r1_3 = unsafe([1, 3])
-const r2_3 = unsafe([2, 3])
-const nzr2_3: NonZeroRational = [2, 3] as any
+export function unsafeNZR(t: [number | string, number | string]): NonZeroRational {
+  return fromSome(nonZeroRational.fromInput(t))
+}
+
+function assertEqual(x: Rational, y: Rational): void {
+  if (!rational.setoid.equals(x)(y)) {
+    assert.fail(`${x} !== ${y}`)
+  }
+}
 
 describe('Rational', () => {
-  it('prism', () => {
-    assert.deepEqual(rational.fromTuple([2, 1]), some([2, 1]))
-    assert.deepEqual(rational.fromTuple([0, 1]), some([0, 1]))
-    assert.deepEqual(rational.fromTuple([2.1, 1]), none)
-    assert.deepEqual(rational.fromTuple([2, 1.1]), none)
-    assert.deepEqual(rational.fromTuple([2, 0]), none)
-  })
-
-  it('simplify', () => {
-    assert.deepEqual(rational.simplify(unsafe([4, 2])), [2, 1])
-    assert.deepEqual(rational.simplify(unsafe([-4, 2])), [-2, 1])
-    assert.deepEqual(rational.simplify(unsafe([2, 1])), [2, 1])
-    assert.deepEqual(rational.simplify(unsafe([2, -1])), [2, -1])
-    assert.deepEqual(rational.simplify(unsafe([0, 1])), [0, 1])
-    assert.deepEqual(rational.simplify(unsafe([0, 0])), [0, 0])
-    assert.deepEqual(rational.simplify(unsafe([1, 0])), [1, 0])
+  it('fromInteger', () => {
+    assertEqual(rational.fromInteger(integer.one), unsafeR([1, 1]))
   })
 
   it('isZero', () => {
@@ -36,32 +31,93 @@ describe('Rational', () => {
     assert.deepEqual(rational.isZero(rational.one), false)
   })
 
-  it('numerator', () => {
-    assert.strictEqual(rational.numerator(rational.zero), 0)
-  })
-
-  it('denominator', () => {
-    assert.strictEqual(rational.denominator(rational.zero), 1)
+  it('reduce', () => {
+    const reduce = (input: [number | string, number | string]): Rational => {
+      return fromSome(rational.fromInput(input))
+    }
+    assertEqual(reduce([4, 2]), unsafeR([2, 1]))
+    assertEqual(reduce([-4, 2]), unsafeR([-2, 1]))
+    assertEqual(reduce([2, 1]), unsafeR([2, 1]))
+    assertEqual(reduce([2, -1]), unsafeR([2, -1]))
+    assertEqual(reduce([0, 1]), unsafeR([0, 1]))
   })
 
   it('add', () => {
-    assert.deepEqual(rational.add(r1_3, r2_3), [9, 9])
+    assertEqual(rational.add(unsafeR([-124, 100]), rational.zero), unsafeR([-124, 100]))
+    assertEqual(rational.add(unsafeR([1, 3]), unsafeR([2, 3])), unsafeR([1, 1]))
+    assertEqual(rational.add(unsafeR([1, 3]), unsafeR([-2, 3])), unsafeR([-1, 3]))
+  })
+
+  it('zero', () => {
+    assertEqual(rational.zero, unsafeR([0, 1]))
   })
 
   it('sub', () => {
-    assert.deepEqual(rational.sub(r1_3, r2_3), [-3, 9])
+    assertEqual(rational.sub(unsafeR([1, 3]), unsafeR([2, 3])), unsafeR([-1, 3]))
+  })
+
+  it('one', () => {
+    assertEqual(rational.one, unsafeR([1, 1]))
   })
 
   it('mul', () => {
-    assert.deepEqual(rational.mul(r1_3, r2_3), [2, 9])
+    assertEqual(rational.mul(unsafeR([1, 3]), unsafeR([2, 3])), unsafeR([2, 9]))
   })
 
   it('div', () => {
-    assert.deepEqual(rational.div(r1_3, nzr2_3), [3, 6])
+    assertEqual(rational.div(unsafeR([1, 3]), unsafeNZR([2, 3])), unsafeR([1, 2]))
   })
 
-  it('div_', () => {
-    assert.deepEqual(rational.div_(r1_3, r2_3), some([3, 6]))
-    assert.deepEqual(rational.div_(r1_3, rational.zero), none)
+  it('floor', () => {
+    assertEqualInteger(rational.floor(unsafeR([6, 4])), integer.one)
+    assertEqualInteger(rational.floor(unsafeR([5, 4])), integer.one)
+    assertEqualInteger(rational.floor(unsafeR([7, 4])), integer.one)
+    assertEqualInteger(rational.floor(unsafeR([-1, 2])), z1)
+    assertEqualInteger(rational.floor(unsafeR([-6, 4])), z2)
+    assertEqualInteger(rational.floor(unsafeR([-5, 4])), z2)
+    assertEqualInteger(rational.floor(unsafeR([-7, 4])), z2)
+  })
+
+  it('round', () => {
+    assertEqualInteger(rational.round(unsafeR([6, 4])), n2)
+    assertEqualInteger(rational.round(unsafeR([5, 4])), integer.one)
+    assertEqualInteger(rational.round(unsafeR([7, 4])), n2)
+    assertEqualInteger(rational.round(unsafeR([-6, 4])), z1)
+    assertEqualInteger(rational.round(unsafeR([-5, 4])), z1)
+    assertEqualInteger(rational.round(unsafeR([-7, 4])), z2)
+  })
+
+  it('ceil', () => {
+    assertEqualInteger(rational.ceil(unsafeR([6, 4])), n2)
+    assertEqualInteger(rational.ceil(unsafeR([5, 4])), n2)
+    assertEqualInteger(rational.ceil(unsafeR([7, 4])), n2)
+    assertEqualInteger(rational.ceil(unsafeR([-6, 4])), z1)
+    assertEqualInteger(rational.ceil(unsafeR([-5, 4])), z1)
+    assertEqualInteger(rational.ceil(unsafeR([-7, 4])), z1)
+  })
+
+  it('trunc', () => {
+    assertEqualInteger(rational.trunc(unsafeR([6, 4])), integer.one)
+    assertEqualInteger(rational.trunc(unsafeR([5, 4])), integer.one)
+    assertEqualInteger(rational.trunc(unsafeR([7, 4])), integer.one)
+    assertEqualInteger(rational.trunc(unsafeR([-6, 4])), z1)
+    assertEqualInteger(rational.trunc(unsafeR([-5, 4])), z1)
+    assertEqualInteger(rational.trunc(unsafeR([-7, 4])), z1)
+  })
+
+  it('ord', () => {
+    assert.strictEqual(rational.ord.compare(unsafeR([1, 1]))(unsafeR([2, 1])), 'LT')
+    assert.strictEqual(rational.ord.compare(unsafeR([2, 1]))(unsafeR([2, 1])), 'EQ')
+    assert.strictEqual(rational.ord.compare(unsafeR([2, 1]))(unsafeR([1, 1])), 'GT')
+    assert.strictEqual(rational.ord.compare(unsafeR([2, 3]))(unsafeR([1, 3])), 'GT')
+    assert.strictEqual(rational.ord.compare(unsafeR([-1, 1]))(unsafeR([-2, 1])), 'GT')
+    assert.strictEqual(rational.ord.compare(unsafeR([-2, 1]))(unsafeR([-2, 1])), 'EQ')
+    assert.strictEqual(rational.ord.compare(unsafeR([-2, 1]))(unsafeR([-1, 1])), 'LT')
+    assert.strictEqual(rational.ord.compare(unsafeR([-2, 3]))(unsafeR([-1, 3])), 'LT')
+  })
+
+  it('show', () => {
+    assert.strictEqual(rational.show(rational.one), '1 / 1')
+    assert.strictEqual(rational.show(unsafeR([-2, 3])), '-2 / 3')
   })
 })

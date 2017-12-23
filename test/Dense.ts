@@ -1,95 +1,140 @@
 import * as assert from 'assert'
 import { Dense, Format } from '../src/Dense'
-import * as dense from '../src/Dense'
-import { Integer } from '../src/Integer'
-import { Rational } from '../src/Rational'
-import { NonZeroRational } from '../src/NonZeroRational'
 import { Discrete } from '../src/Discrete'
-import { Dimensions, Units } from '../src/Scale'
+import * as dense from '../src/Dense'
+import * as discrete from '../src/Discrete'
+import * as integer from '../src/Integer'
+import * as rational from '../src/Rational'
+import * as nonZeroRational from '../src/NonZeroRational'
 import '../src/scale/EUR'
 import '../src/scale/XAU'
+import { Dimensions, Units } from '../src/Scale'
+import * as BigInteger from 'big-integer'
+import { fromSome } from '../src/scale/fromSome'
 
-const unsafeUSDFromInteger = (n: number): Dense<'USD'> => [n, 1] as any
+const nzr4 = fromSome(nonZeroRational.fromInput([4, 1]))
 
-const i2: Integer = 2 as any
-const r3: Rational = [3, 1] as any
-const nzr3: NonZeroRational = [3, 1] as any
+const S = dense.getSetoid<any>()
 
-function assertRound<dimension extends Dimensions, Unit extends Units<dimension>>(
-  f: <dimension extends Dimensions, Unit extends Units<dimension>>(
-    format: Format<dimension, Unit>,
-    d: Dense<dimension>
-  ) => [Discrete<dimension, Unit>, Dense<dimension>],
-  format: Format<dimension, Unit>,
-  x: Dense<dimension>
+export function assertEqual<D>(x: Dense<D>): (y: Dense<D>) => void {
+  return y => {
+    if (!S.equals(x)(y)) {
+      assert.fail(`${x} !== ${y}`)
+    }
+  }
+}
+
+export function assertPropertyRound<D extends Dimensions, U extends Units<D>>(
+  format: Format<D, U>,
+  f: (format: Format<D, U>) => (d: Dense<D>) => [Discrete<D, U>, Dense<D>],
+  x: Dense<D>
 ) {
-  const [d, rest] = f(format, x)
-  assert.deepEqual(dense.simplify(x), dense.simplify(dense.add(dense.fromDiscrete(format, d), rest)))
+  const [d, rest] = f(format)(x)
+  assertEqual(x)(dense.add(dense.fromDiscrete(format)(d), rest))
 }
 
 describe('Dense', () => {
-  it('simplify', () => {
-    assert.deepEqual(dense.simplify([4, 2] as any), [2, 1])
-    assert.deepEqual(dense.simplify([-4, 2] as any), [-2, 1])
-    assert.deepEqual(dense.simplify([2, 1] as any), [2, 1])
-    assert.deepEqual(dense.simplify([2, -1] as any), [2, -1])
-  })
-
-  it('fromInteger', () => {
-    const usd2 = dense.fromInteger(i2)
-    assert.deepEqual(usd2, [2, 1])
-  })
-
   it('fromDiscrete', () => {
-    const d1: Discrete<'EUR', 'cent'> = 1 as any
-    assert.deepEqual(dense.fromDiscrete({ dimension: 'EUR', unit: 'cent' }, d1), [1, 100])
-    const d2: Discrete<'EUR', 'euro'> = 1 as any
-    assert.deepEqual(dense.fromDiscrete({ dimension: 'EUR', unit: 'euro' }, d2), [1, 1])
-    const d3: Discrete<'XAU', 'gram'> = 1 as any
-    assert.deepEqual(dense.fromDiscrete({ dimension: 'XAU', unit: 'gram' }, d3), [1000000, 31103477])
-  })
-
-  it('floor', () => {
-    assertRound(dense.floor, { dimension: 'EUR', unit: 'cent' }, [-124, 100] as any)
-    assertRound(dense.floor, { dimension: 'EUR', unit: 'euro' }, [-124, 100] as any)
-  })
-
-  it('round', () => {
-    assertRound(dense.round, { dimension: 'EUR', unit: 'cent' }, [-124, 100] as any)
-    assertRound(dense.round, { dimension: 'EUR', unit: 'euro' }, [-124, 100] as any)
-  })
-
-  it('ceil', () => {
-    assertRound(dense.ceil, { dimension: 'EUR', unit: 'cent' }, [-124, 100] as any)
-    assertRound(dense.ceil, { dimension: 'EUR', unit: 'euro' }, [-124, 100] as any)
-  })
-
-  it('trunc', () => {
-    assertRound(dense.trunc, { dimension: 'EUR', unit: 'cent' }, [-124, 100] as any)
-    assertRound(dense.trunc, { dimension: 'EUR', unit: 'euro' }, [-124, 100] as any)
-  })
-
-  it('getRing', () => {
-    const usd2 = unsafeUSDFromInteger(2)
-    const usd3 = unsafeUSDFromInteger(3)
-    const r = dense.add(usd2, usd3)
-    assert.deepEqual(r, [5, 1])
+    assertEqual(dense.fromDiscrete({ dimension: 'EUR', unit: 'cent' })(discrete.wrap<'EUR', 'cent'>(integer.one)))(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([1, 100])))
+    )
+    assertEqual(dense.fromDiscrete({ dimension: 'EUR', unit: 'euro' })(discrete.wrap<'EUR', 'euro'>(integer.one)))(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([1, 1])))
+    )
+    assertEqual(dense.fromDiscrete({ dimension: 'XAU', unit: 'gram' })(discrete.wrap<'XAU', 'gram'>(integer.one)))(
+      dense.wrap<'XAU'>(fromSome(rational.fromInput([1000000, 31103477])))
+    )
   })
 
   it('mul', () => {
-    const x = unsafeUSDFromInteger(4)
-    assert.deepEqual(dense.mul(x, r3), [12, 1])
+    assertEqual(dense.mul(dense.wrap<'EUR'>(fromSome(rational.fromInput([3, 1]))), nzr4))(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([12, 1])))
+    )
   })
 
   it('div', () => {
-    const x = unsafeUSDFromInteger(4)
-    assert.deepEqual(dense.div(x, nzr3), [4, 3])
+    assertEqual(dense.div(dense.wrap<'EUR'>(fromSome(rational.fromInput([4, 1]))), nzr4))(
+      dense.wrap<'EUR'>(rational.one)
+    )
   })
 
-  it('should not loss of intermediate amounts', () => {
+  it('floor', () => {
+    const [f1, rest1] = dense.floor({ dimension: 'EUR', unit: 'cent' })(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assert.strictEqual(
+      discrete.getSetoid<'EUR', 'cent'>().equals(f1)(discrete.wrap(integer.wrap(BigInteger(124)))),
+      true
+    )
+    assertEqual(rest1)(dense.zero)
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'cent' },
+      dense.floor,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'euro' },
+      dense.floor,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+  })
+
+  it('round', () => {
+    const [f1, rest1] = dense.round({ dimension: 'EUR', unit: 'euro' })(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assert.strictEqual(discrete.getSetoid<'EUR', 'euro'>().equals(f1)(discrete.wrap(integer.wrap(BigInteger(1)))), true)
+    assertEqual(rest1)(dense.wrap<'EUR'>(fromSome(rational.fromInput([24, 100]))))
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'euro' },
+      dense.round,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'cent' },
+      dense.round,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+  })
+
+  it('ceil', () => {
+    const [f1, rest1] = dense.ceil({ dimension: 'EUR', unit: 'euro' })(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assert.strictEqual(discrete.getSetoid<'EUR', 'euro'>().equals(f1)(discrete.wrap(integer.wrap(BigInteger(2)))), true)
+    assertEqual(rest1)(dense.wrap<'EUR'>(fromSome(rational.fromInput([-76, 100]))))
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'euro' },
+      dense.ceil,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assertPropertyRound(
+      { dimension: 'EUR', unit: 'cent' },
+      dense.ceil,
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+  })
+
+  it('trunc', () => {
+    const [f1, rest1] = dense.trunc({ dimension: 'EUR', unit: 'euro' })(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([124, 100])))
+    )
+    assert.strictEqual(discrete.getSetoid<'EUR', 'euro'>().equals(f1)(discrete.wrap(integer.wrap(BigInteger(1)))), true)
+    assertEqual(rest1)(dense.wrap<'EUR'>(fromSome(rational.fromInput([24, 100]))))
+    const [f2, rest2] = dense.trunc({ dimension: 'EUR', unit: 'euro' })(
+      dense.wrap<'EUR'>(fromSome(rational.fromInput([-124, 100])))
+    )
+    assert.strictEqual(
+      discrete.getSetoid<'EUR', 'euro'>().equals(f2)(discrete.wrap(integer.wrap(BigInteger(-1)))),
+      true
+    )
+    assertEqual(rest2)(dense.wrap<'EUR'>(fromSome(rational.fromInput([-24, 100]))))
+  })
+
+  it('should not allow for loss of intermediate amounts', () => {
     const S = dense.getSetoid<'USD'>()
-    const x = unsafeUSDFromInteger(4)
-    const y = dense.div(dense.mul(x, r3), nzr3)
+    const x = dense.wrap<'USD'>(fromSome(rational.fromInput([4, 1])))
+    const y = dense.div(dense.mul(x, nzr4), nzr4)
     assert.strictEqual(S.equals(y)(x), true)
   })
 })

@@ -1,3 +1,5 @@
+import * as bigInteger from './BigInteger'
+export { bigInteger }
 import * as dense from './Dense'
 export { dense }
 import * as discrete from './Discrete'

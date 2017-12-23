@@ -1,23 +1,36 @@
 import * as assert from 'assert'
-import { Integer, one } from '../src/Integer'
+import { ExchangeRate } from '../src/ExchangeRate'
+import * as integer from '../src/Integer'
 import * as dense from '../src/Dense'
 import * as exchangeRate from '../src/ExchangeRate'
+import * as nonZeroRational from '../src/NonZeroRational'
+import { fromSome } from '../src/scale/fromSome'
+import { n2 } from './Integer'
+import { assertEqual as assertEqualDense } from './Dense'
 
-const i2: Integer = 2 as any
+const S = exchangeRate.getSetoid<any, any>()
+
+export function assertEqual<S, D>(x: ExchangeRate<S, D>): (y: ExchangeRate<S, D>) => void {
+  return y => {
+    if (!S.equals(x)(y)) {
+      assert.fail(`${x} !== ${y}`)
+    }
+  }
+}
 
 describe('ExchangeRate', () => {
   it('exchange', () => {
-    const jpybtc = exchangeRate.fromNonZeroRational<'JPY', 'BTC'>([3, 1000000] as any)
-    const btc = dense.fromInteger<'BTC'>(one)
-    const jpy = dense.fromInteger<'JPY'>(i2)
+    const jpybtc = exchangeRate.wrap<'JPY', 'BTC'>(fromSome(nonZeroRational.fromInput([3, 1000000])))
+    const btc = dense.fromInteger<'BTC'>(integer.one)
+    const jpy = dense.fromInteger<'JPY'>(n2)
     const result = dense.add(btc, exchangeRate.exchange(jpybtc)(jpy))
-    assert.deepEqual(dense.simplify(result), [500003, 500000])
+    assertEqualDense(result)(dense.wrap(fromSome(nonZeroRational.fromInput([500003, 500000]))))
   })
 
   it('compose', () => {
-    const goldsmith = exchangeRate.fromNonZeroRational<'XAU', 'JPY'>([2, 1] as any)
-    const fiatshop = exchangeRate.fromNonZeroRational<'JPY', 'EUR'>([3, 1] as any)
+    const goldsmith = exchangeRate.wrap<'XAU', 'JPY'>(fromSome(nonZeroRational.fromInput([2, 1])))
+    const fiatshop = exchangeRate.wrap<'JPY', 'EUR'>(fromSome(nonZeroRational.fromInput([3, 1])))
     const you = exchangeRate.compose(fiatshop, goldsmith)
-    assert.deepEqual(you, [6, 1])
+    assertEqual(you)(exchangeRate.wrap<'XAU', 'EUR'>(fromSome(nonZeroRational.fromInput([6, 1]))))
   })
 })

@@ -1,30 +1,26 @@
 import * as assert from 'assert'
+import { NonZeroRational } from '../src/NonZeroRational'
 import * as nonZeroRational from '../src/NonZeroRational'
-import { some, none } from 'fp-ts/lib/Option'
+import { n1, n2 } from './Integer'
+import { Option, some, none, getSetoid } from 'fp-ts/lib/Option'
 
-const nzr2: nonZeroRational.NonZeroRational = [2, 1] as any
-const nzr3: nonZeroRational.NonZeroRational = [3, 1] as any
+// function assertEqual(x: NonZeroRational, y: NonZeroRational): void {
+//   if (!nonZeroRational.setoid.equals(x)(y)) {
+//     assert.fail(`${x} !== ${y}`)
+//   }
+// }
+
+const S = getSetoid(nonZeroRational.setoid)
+
+function assertEqualOption(x: Option<NonZeroRational>, y: Option<NonZeroRational>): void {
+  if (!S.equals(x)(y)) {
+    assert.fail(`${x} !== ${y}`)
+  }
+}
 
 describe('NonZeroRational', () => {
-  it('prism', () => {
-    assert.deepEqual(nonZeroRational.fromRational([2, 1] as any), some([2, 1]))
-    assert.deepEqual(nonZeroRational.fromRational([0, 1] as any), none)
-  })
-
-  it('add', () => {
-    assert.deepEqual(nonZeroRational.add(nzr2, nzr3), [5, 1])
-  })
-
-  it('mul', () => {
-    assert.deepEqual(nonZeroRational.mul(nzr2, nzr3), [6, 1])
-  })
-
-  it('one', () => {
-    assert.deepEqual(nonZeroRational.one, [1, 1])
-  })
-
-  it('sub', () => {
-    assert.deepEqual(nonZeroRational.sub(nzr2, nzr3), some([-1, 1]))
-    assert.deepEqual(nonZeroRational.sub(nzr2, nzr2), none)
+  it('fromInput', () => {
+    assertEqualOption(nonZeroRational.fromInput([2, 1]), some([n2, n1] as NonZeroRational))
+    assert.deepEqual(nonZeroRational.fromInput([0, 1]), none)
   })
 })

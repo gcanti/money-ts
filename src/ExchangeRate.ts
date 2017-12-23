@@ -7,35 +7,28 @@ import { Dense } from './Dense'
 import * as nonZeroRational from './NonZeroRational'
 import * as dense from './Dense'
 
-export interface ExchangeRate<Source, Destination>
-  extends Newtype<['ExchangeRate', Source, Destination], NonZeroRational> {}
+export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], NonZeroRational> {}
 
-export function fromNonZeroRational<Source, Destination>(r: NonZeroRational): ExchangeRate<Source, Destination> {
+export function wrap<S, D>(r: NonZeroRational): ExchangeRate<S, D> {
   return r as any
 }
 
-export function toNonZeroRational<Source, Destination>(er: ExchangeRate<Source, Destination>): NonZeroRational {
+export function unwrap<S, D>(er: ExchangeRate<S, D>): NonZeroRational {
   return er as any
 }
 
-export function toRational<Source, Destination>(er: ExchangeRate<Source, Destination>): Rational {
+export function toRational<S, D>(er: ExchangeRate<S, D>): Rational {
   return er as any
 }
 
-export const exchange = <Source, Destination>(er: ExchangeRate<Source, Destination>) => (
-  d: Dense<Source>
-): Dense<Destination> => {
+export const exchange = <S, D>(er: ExchangeRate<S, D>) => (d: Dense<S>): Dense<D> => {
   return dense.mul(d, toRational(er)) as any
 }
 
 export const compose = <A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>): ExchangeRate<A, C> => {
-  return fromNonZeroRational(
-    nonZeroRational.simplify(nonZeroRational.mul(toNonZeroRational(bc), toNonZeroRational(ab)))
-  )
+  return wrap(nonZeroRational.mul(unwrap(bc), unwrap(ab)))
 }
 
-export const getSetoid = <Source, Destination>(): Setoid<ExchangeRate<Source, Destination>> =>
-  nonZeroRational.setoidNonZeroRational as any
+export const getSetoid = <S, D>(): Setoid<ExchangeRate<S, D>> => nonZeroRational.setoid as any
 
-export const getOrd = <Source, Destination>(): Ord<ExchangeRate<Source, Destination>> =>
-  nonZeroRational.ordNonZeroRational as any
+export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => nonZeroRational.ord as any
