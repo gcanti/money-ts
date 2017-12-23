@@ -3,5 +3,4 @@ import * as t from 'io-ts'
 import { Dense as DenseNewtype } from '../Dense'
 import { Rational } from './Rational'
 
-export const Dense = <Dimension>(): t.Type<any, DenseNewtype<Dimension>> =>
-  fromNewtype<DenseNewtype<Dimension>>(Rational)
+export const Dense = <D>(): t.Type<any, DenseNewtype<D>> => fromNewtype<DenseNewtype<D>>(Rational)

@@ -7,95 +7,95 @@ import { Discrete } from './Discrete'
 import { Dimensions, Units, scale } from './Scale'
 import { NonZeroRational } from './NonZeroRational'
 import * as rational from './Rational'
+import * as integer from './Integer'
+import * as discrete from './Discrete'
 
-export interface Dense<Dimension> extends Newtype<['Dense', Dimension], Rational> {}
+export interface Dense<D> extends Newtype<['Dense', D], Rational> {}
 
-export function fromRational<Dimension>(r: Rational): Dense<Dimension> {
+export function wrap<D>(r: Rational): Dense<D> {
   return r as any
 }
 
-export function toRational<Dimension>(d: Dense<Dimension>): Rational {
+export function unwrap<D>(d: Dense<D>): Rational {
   return d as any
 }
 
-export function fromInteger<Dimension>(n: Integer): Dense<Dimension> {
-  return fromRational(rational.fromInteger(n))
-}
+export const fromInteger: <D>(n: Integer) => Dense<D> = rational.fromInteger as any
 
-export const simplify: <Dimension>(d: Dense<Dimension>) => Dense<Dimension> = rational.simplify as any
+export const isZero: <D>(n: Dense<D>) => boolean = rational.isZero as any
 
-export function getScale<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>
-): NonZeroRational {
-  return scale[format.dimension][format.unit]
-}
-
-export interface Format<Dimension extends Dimensions, Unit extends Units<Dimension>> {
-  dimension: Dimension
-  unit: Unit
-}
-
-export function fromDiscrete<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>,
-  d: Discrete<Dimension, Unit>
-): Dense<Dimension> {
-  const [sn, sd] = getScale(format) as any
-  return [(d as any) * (sd as any), sn] as any
-}
-
-/** Internal. Used to implement `round`, `ceiling`, `floor` and `truncate` */
-function roundf<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  f: (n: number) => number,
-  format: Format<Dimension, Unit>,
-  c0: Dense<Dimension>
-): [Discrete<Dimension, Unit>, Dense<Dimension>] {
-  const r1: [number, number] = getScale(format) as any
-  const r2: [number, number] = rational.mul(c0 as any, r1 as any) as any
-  const i2 = f(r2[0] / r2[1])
-  const r3 = [i2 * r1[1], r1[0]]
-  return [i2, rational.sub(c0 as any, r3 as any)] as any
-}
-
-export function floor<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>,
-  d: Dense<Dimension>
-): [Discrete<Dimension, Unit>, Dense<Dimension>] {
-  return roundf(Math.floor, format, d)
-}
-
-export function round<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>,
-  d: Dense<Dimension>
-): [Discrete<Dimension, Unit>, Dense<Dimension>] {
-  return roundf(Math.round, format, d)
-}
-
-export function ceil<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>,
-  d: Dense<Dimension>
-): [Discrete<Dimension, Unit>, Dense<Dimension>] {
-  return roundf(Math.ceil, format, d)
-}
-
-export function trunc<Dimension extends Dimensions, Unit extends Units<Dimension>>(
-  format: Format<Dimension, Unit>,
-  d: Dense<Dimension>
-): [Discrete<Dimension, Unit>, Dense<Dimension>] {
-  return roundf(Math.trunc, format, d)
-}
-
-export const add: <Dimension>(x: Dense<Dimension>, y: Dense<Dimension>) => Dense<Dimension> = rational.add as any
+export const add: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = rational.add as any
 
 export const zero: Dense<never> = rational.zero as any
 
-export const mul: <Dimension>(x: Dense<Dimension>, y: Rational) => Dense<Dimension> = rational.mul as any
+export const mul: <D>(x: Dense<D>, y: Rational) => Dense<D> = rational.mul as any
 
 export const one: Dense<never> = rational.one as any
 
-export const sub: <Dimension>(x: Dense<Dimension>, y: Dense<Dimension>) => Dense<Dimension> = rational.sub as any
+export const negate: <D>(x: Dense<D>) => Dense<D> = rational.negate as any
 
-export const div: <Dimension>(x: Dense<Dimension>, y: NonZeroRational) => Dense<Dimension> = rational.div as any
+export const sub: <D>(x: Dense<D>, y: Dense<D>) => Dense<D> = rational.sub as any
 
-export const getSetoid = <Dimension>(): Setoid<Dense<Dimension>> => rational.setoidRational as any
+export const div: <D>(x: Dense<D>, y: NonZeroRational) => Dense<D> = rational.div as any
 
-export const getOrd = <Dimension>(): Ord<Dense<Dimension>> => rational.ordRational as any
+export const getSetoid = <D>(): Setoid<Dense<D>> => rational.setoid as any
+
+export const getOrd = <D>(): Ord<Dense<D>> => rational.ord as any
+
+export interface Format<D extends Dimensions, U extends Units<D>> {
+  dimension: D
+  unit: U
+}
+
+export function getScale<D extends Dimensions, Unit extends Units<D>>(format: Format<D, Unit>): NonZeroRational {
+  return scale[format.dimension][format.unit]
+}
+
+export function fromDiscrete<D extends Dimensions, Unit extends Units<D>>(
+  format: Format<D, Unit>
+): (d: Discrete<D, Unit>) => Dense<D> {
+  return d => {
+    const [ns, ds] = getScale(format)
+    return wrap([integer.mul(discrete.unwrap(d), ds), ns])
+  }
+}
+
+/** Internal. Used to implement `round`, `ceiling`, `floor` and `truncate` */
+export function roundf<D extends Dimensions, Unit extends Units<D>>(
+  f: (n: Rational) => Integer,
+  format: Format<D, Unit>,
+  d: Dense<D>
+): [Discrete<D, Unit>, Dense<D>] {
+  const r0 = unwrap(d)
+  const scale = getScale(format)
+  const r2 = rational.mul(r0, scale)
+  const i2 = f(r2)
+  const r3: Rational = [integer.mul(i2, scale[1]), scale[0]]
+  return [discrete.wrap(i2), wrap(rational.sub(r0, r3))]
+}
+
+export function floor<D extends Dimensions, Unit extends Units<D>>(
+  format: Format<D, Unit>
+): (d: Dense<D>) => [Discrete<D, Unit>, Dense<D>] {
+  return d => roundf(rational.floor, format, d)
+}
+
+export function round<D extends Dimensions, Unit extends Units<D>>(
+  format: Format<D, Unit>
+): (d: Dense<D>) => [Discrete<D, Unit>, Dense<D>] {
+  return d => roundf(rational.round, format, d)
+}
+
+export function ceil<D extends Dimensions, Unit extends Units<D>>(
+  format: Format<D, Unit>
+): (d: Dense<D>) => [Discrete<D, Unit>, Dense<D>] {
+  return d => roundf(rational.ceil, format, d)
+}
+
+export function trunc<D extends Dimensions, Unit extends Units<D>>(
+  format: Format<D, Unit>
+): (d: Dense<D>) => [Discrete<D, Unit>, Dense<D>] {
+  return d => roundf(rational.trunc, format, d)
+}
+
+export const show: <D>(x: Dense<D>) => string = rational.show as any
