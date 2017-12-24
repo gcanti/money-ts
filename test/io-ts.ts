@@ -2,10 +2,12 @@ import * as assert from 'assert'
 import * as t from 'io-ts'
 import { some, none } from 'fp-ts/lib/Option'
 import { BigInteger } from '../src/io-ts/BigInteger'
+import { Natural } from '../src/io-ts/Natural'
 import { Integer } from '../src/io-ts/Integer'
 import { NonZeroInteger } from '../src/io-ts/NonZeroInteger'
 import { Rational } from '../src/io-ts/Rational'
 import { NonZeroRational } from '../src/io-ts/NonZeroRational'
+import { PositiveRational } from '../src/io-ts/PositiveRational'
 import { ExchangeRate } from '../src/io-ts/ExchangeRate'
 import { getDiscrete } from '../src/io-ts/Discrete'
 import * as discrete from '../src/Discrete'
@@ -23,6 +25,14 @@ describe('io-ts types', () => {
       assert.deepEqual(t.validate('1', BigInteger).toOption(), some(bigInteger.one))
       assert.deepEqual(t.validate('0', BigInteger).toOption(), some(bigInteger.zero))
       assert.deepEqual(t.validate('1.1', BigInteger).toOption(), none)
+    })
+  })
+
+  describe('Natural', () => {
+    it('validate', () => {
+      assert.deepEqual(t.validate('1', Natural).toOption(), some(bigInteger.one))
+      assert.deepEqual(t.validate('0', Natural).toOption(), none)
+      assert.deepEqual(t.validate('1.1', Natural).toOption(), none)
     })
   })
 
@@ -50,7 +60,7 @@ describe('io-ts types', () => {
       assert.deepEqual(t.validate([0, 1], Rational).toOption(), some([bigInteger.zero, bigInteger.one]))
       assert.deepEqual(t.validate([2, 2], Rational).toOption(), some([bigInteger.one, bigInteger.one]))
       assert.deepEqual(t.validate([-1, 1], Rational).toOption(), some([bigInteger.one.multiply(-1), bigInteger.one]))
-      assert.deepEqual(t.validate([1, -1], Rational).toOption(), some([bigInteger.one.multiply(-1), bigInteger.one]))
+      assert.deepEqual(t.validate([1, -1], Rational).toOption(), none)
       assert.deepEqual(t.validate([1.1, 1], Rational).toOption(), none)
     })
   })
@@ -66,11 +76,21 @@ describe('io-ts types', () => {
         t.validate([-1, 1], NonZeroRational).toOption(),
         some([bigInteger.one.multiply(-1), bigInteger.one])
       )
-      assert.deepEqual(
-        t.validate([1, -1], NonZeroRational).toOption(),
-        some([bigInteger.one.multiply(-1), bigInteger.one])
-      )
+      assert.deepEqual(t.validate([1, -1], NonZeroRational).toOption(), none)
       assert.deepEqual(t.validate([1.1, 1], NonZeroRational).toOption(), none)
+    })
+  })
+
+  describe('PositiveRational', () => {
+    it('validate', () => {
+      assert.deepEqual(t.validate(null, PositiveRational).toOption(), none)
+      assert.deepEqual(t.validate([1, 0], PositiveRational).toOption(), none)
+      assert.deepEqual(t.validate([1, 1], PositiveRational).toOption(), some([bigInteger.one, bigInteger.one]))
+      assert.deepEqual(t.validate([0, 1], PositiveRational).toOption(), none)
+      assert.deepEqual(t.validate([2, 2], PositiveRational).toOption(), some([bigInteger.one, bigInteger.one]))
+      assert.deepEqual(t.validate([-1, 1], PositiveRational).toOption(), none)
+      assert.deepEqual(t.validate([1, -1], PositiveRational).toOption(), none)
+      assert.deepEqual(t.validate([1.1, 1], PositiveRational).toOption(), none)
     })
   })
 

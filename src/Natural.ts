@@ -4,6 +4,7 @@ import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Integer } from './Integer'
 import { BigInteger } from 'big-integer'
+import { NonZeroInteger } from './NonZeroInteger'
 import * as integer from './Integer'
 import * as nonZeroInteger from './NonZeroInteger'
 import * as bigInteger from './BigInteger'
@@ -13,6 +14,7 @@ export interface Natural
   extends Newtype<
       {
         Integer: true
+        NonZero: true
         Positive: true
       },
       BigInteger
@@ -42,14 +44,16 @@ export function sub(x: Natural, y: Natural): Option<Natural> {
   return fromInteger(integer.sub(x, y))
 }
 
+export const negate: (x: Natural) => NonZeroInteger = unsafeCoerce(integer.negate)
+
 export const div: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.div)
 
-export const gcd: (x: Natural, y: Natural) => Natural = unsafeCoerce(nonZeroInteger.gcd)
+export const gcd: (x: Natural, y: Natural) => Natural = nonZeroInteger.gcd
 
-export const lcm: (x: Natural, y: Natural) => Natural = unsafeCoerce(nonZeroInteger.lcm)
+export const lcm: (x: Natural, y: Natural) => Natural = nonZeroInteger.lcm
 
-export const setoid: Setoid<Natural> = unsafeCoerce(integer.setoid)
+export const setoid: Setoid<Natural> = integer.setoid
 
-export const ord: Ord<Natural> = unsafeCoerce(integer.ord)
+export const ord: Ord<Natural> = integer.ord
 
-export const show: (x: Natural) => string = unsafeCoerce(integer.show)
+export const show: (x: Natural) => string = integer.show

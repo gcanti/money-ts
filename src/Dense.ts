@@ -5,6 +5,7 @@ import { Ord } from 'fp-ts/lib/Ord'
 import { Discrete, Format } from './Discrete'
 import { Dimensions, Units, scale } from './Scale'
 import { NonZeroRational } from './NonZeroRational'
+import { PositiveRational } from './PositiveRational'
 import * as rational from './Rational'
 import * as integer from './Integer'
 
@@ -61,7 +62,7 @@ export function getOrd<D extends string>(): Ord<Dense<D>> {
   }
 }
 
-export function getScale<D extends Dimensions, U extends Units<D>>(format: Format<D, U>): NonZeroRational {
+export function getScale<D extends Dimensions, U extends Units<D>>(format: Format<D, U>): PositiveRational {
   return scale[format.dimension][format.unit]
 }
 
@@ -78,7 +79,7 @@ function roundf<D extends Dimensions, U extends Units<D>>(
 ): [Discrete<D, U>, Dense<D>] {
   const format: Format<D, U> = { dimension: d.dimension, unit }
   const input: Rational = d.value
-  const scale: NonZeroRational = getScale(format)
+  const scale: PositiveRational = getScale(format)
   const result: Integer = f(rational.mul(input, scale))
   const scaledResult: Rational = [integer.mul(result, scale[1]), scale[0]]
   return [new Discrete(format, result), new Dense(d.dimension, rational.sub(input, scaledResult))]

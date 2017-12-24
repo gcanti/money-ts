@@ -15,6 +15,6 @@ function assertEqualOption(x: Option<NonZeroRational>, y: Option<NonZeroRational
 describe('NonZeroRational', () => {
   it('fromInput', () => {
     assertEqualOption(nonZeroRational.fromInput([2, 1]), some([i2, i1] as NonZeroRational))
-    assert.deepEqual(nonZeroRational.fromInput([0, 1]), none)
+    assertEqualOption(nonZeroRational.fromInput([0, 1]), none)
   })
 })

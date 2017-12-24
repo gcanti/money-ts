@@ -53,7 +53,6 @@ describe('Rational', () => {
     assertEqual(reduce([4, 2]), wrapR([2, 1]))
     assertEqual(reduce([-4, 2]), wrapR([-2, 1]))
     assertEqual(reduce([2, 1]), wrapR([2, 1]))
-    assertEqual(reduce([2, -1]), wrapR([2, -1]))
     assertEqual(reduce([0, 1]), wrapR([0, 1]))
   })
 
@@ -81,6 +80,7 @@ describe('Rational', () => {
 
   it('div', () => {
     assertEqual(rational.div(wrapR([1, 3]), wrapNZR([2, 3])), wrapR([1, 2]))
+    assertEqual(rational.div(wrapR([1, 3]), wrapNZR([-2, 3])), wrapR([-1, 2]))
   })
 
   it('floor', () => {

@@ -5,6 +5,7 @@ import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
 import { i3 } from './Integer'
 import * as BigInteger from 'big-integer'
+import { n1 } from './Natural'
 
 const wrap = (x: number | string): NonZeroInteger => BigInteger(x as any) as any
 
@@ -81,6 +82,16 @@ describe('NonZeroInteger', () => {
   it('sign', () => {
     assert.strictEqual(nonZeroInteger.sign(nz1), 1)
     assert.strictEqual(nonZeroInteger.sign(zz1), -1)
+  })
+
+  it('isPositive', () => {
+    assert.strictEqual(nonZeroInteger.isPositive(nz1), true)
+    assert.strictEqual(nonZeroInteger.isPositive(zz1), false)
+  })
+
+  it('abs', () => {
+    assertEqual(nonZeroInteger.abs(nz1), n1)
+    assertEqual(nonZeroInteger.abs(zz1), n1)
   })
 
   it('show', () => {

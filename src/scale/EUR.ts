@@ -1,21 +1,21 @@
 import { scale } from '../Scale'
-import { Rational } from '../Rational'
-import * as rational from '../Rational'
+import { PositiveRational } from '../PositiveRational'
+import * as positiveRational from '../PositiveRational'
 import { fromSome } from './fromSome'
 
 declare module '../Scale' {
   interface Scale {
     /** European euro */
     EUR: {
-      EUR: Rational
-      euro: Rational
-      cent: Rational
+      EUR: PositiveRational
+      euro: PositiveRational
+      cent: PositiveRational
     }
   }
 }
 
 scale['EUR'] = {
-  EUR: fromSome(rational.fromInput([100, 1])),
-  euro: fromSome(rational.fromInput([1, 1])),
-  cent: fromSome(rational.fromInput([100, 1]))
+  EUR: fromSome(positiveRational.fromInput([100, 1])),
+  euro: fromSome(positiveRational.fromInput([1, 1])),
+  cent: fromSome(positiveRational.fromInput([100, 1]))
 }

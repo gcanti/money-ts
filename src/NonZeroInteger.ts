@@ -4,6 +4,7 @@ import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Integer } from './Integer'
 import { BigInteger } from 'big-integer'
+import { Natural } from './Natural'
 import * as integer from './Integer'
 import * as bigInteger from './BigInteger'
 
@@ -12,7 +13,7 @@ export interface NonZeroInteger
   extends Newtype<
       {
         Integer: true
-        NonZeroInteger: true
+        NonZero: true
       },
       BigInteger
     > {}
@@ -47,18 +48,22 @@ export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = uns
 
 export const sign: (x: NonZeroInteger) => -1 | 1 = unsafeCoerce(integer.sign)
 
-const unsafeWrap: (x: BigInteger) => NonZeroInteger = unsafeCoerce(integer.wrap)
-
-export function gcd(x: Integer, y: NonZeroInteger): NonZeroInteger {
-  return unsafeWrap(bigInteger.gcd(integer.unwrap(x), unwrap(y)))
+export function gcd(x: Integer, y: NonZeroInteger): Natural {
+  return unsafeCoerce(bigInteger.gcd(integer.unwrap(x), unwrap(y)))
 }
 
-export function lcm(x: NonZeroInteger, y: NonZeroInteger): NonZeroInteger {
-  return unsafeWrap(bigInteger.lcm(unwrap(x), unwrap(y)))
+export function lcm(x: NonZeroInteger, y: NonZeroInteger): Natural {
+  return unsafeCoerce(bigInteger.lcm(unwrap(x), unwrap(y)))
 }
 
-export const setoid: Setoid<NonZeroInteger> = unsafeCoerce(integer.setoid)
+export const isPositive: (x: NonZeroInteger) => boolean = integer.isPositive
 
-export const ord: Ord<NonZeroInteger> = unsafeCoerce(integer.ord)
+export function abs(x: NonZeroInteger): Natural {
+  return unsafeCoerce(!isPositive(x) ? negate(x) : x)
+}
 
-export const show: (x: NonZeroInteger) => string = unsafeCoerce(integer.show)
+export const setoid: Setoid<NonZeroInteger> = integer.setoid
+
+export const ord: Ord<NonZeroInteger> = integer.ord
+
+export const show: (x: NonZeroInteger) => string = integer.show
