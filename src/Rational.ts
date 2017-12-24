@@ -14,15 +14,7 @@ export type Rational = [Integer, NonZeroInteger]
 export function fromInput([x, y]: [number | string, number | string]): Option<Rational> {
   const on = integer.fromInput(x)
   const od = nonZeroInteger.fromInput(y)
-  return od.ap(
-    on.map(n => (d: NonZeroInteger) => {
-      if (nonZeroInteger.sign(d) === -1) {
-        return reduce(integer.negate(n), nonZeroInteger.negate(d))
-      } else {
-        return reduce(n, d)
-      }
-    })
-  )
+  return od.ap(on.map(n => (d: NonZeroInteger) => normalize(n, d)))
 }
 
 export function fromInteger(x: Integer): Rational {
@@ -31,6 +23,14 @@ export function fromInteger(x: Integer): Rational {
 
 export function isZero(x: Rational): boolean {
   return integer.isZero(x[0])
+}
+
+export function normalize(n: Integer, d: NonZeroInteger): Rational {
+  if (nonZeroInteger.sign(d) === -1) {
+    return reduce(integer.negate(n), nonZeroInteger.negate(d))
+  } else {
+    return reduce(n, d)
+  }
 }
 
 export function reduce(n: Integer, d: NonZeroInteger): Rational {

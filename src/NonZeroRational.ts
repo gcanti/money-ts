@@ -20,6 +20,8 @@ export function fromRational(r: Rational): Option<NonZeroRational> {
 
 export const toRational: (nzr: NonZeroRational) => Rational = unsafeCoerce
 
+export const normalize: (n: NonZeroInteger, d: NonZeroInteger) => NonZeroRational = unsafeCoerce(rational.normalize)
+
 export const reduce: (n: NonZeroInteger, d: NonZeroInteger) => NonZeroRational = unsafeCoerce(rational.reduce)
 
 export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(rational.add)

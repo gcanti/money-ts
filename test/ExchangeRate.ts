@@ -5,7 +5,7 @@ import * as dense from '../src/Dense'
 import * as exchangeRate from '../src/ExchangeRate'
 import * as nonZeroRational from '../src/NonZeroRational'
 import { fromSome } from '../src/scale/fromSome'
-import { n2 } from './Integer'
+import { i2 } from './Integer'
 import { assertEqual as assertEqualDense } from './Dense'
 
 const S = exchangeRate.getSetoid<any, any>()
@@ -22,7 +22,7 @@ describe('ExchangeRate', () => {
   it('exchange', () => {
     const jpybtc = exchangeRate.wrap<'JPY', 'BTC'>(fromSome(nonZeroRational.fromInput([3, 1000000])))
     const btc = dense.fromInteger('BTC', integer.one)
-    const jpy = dense.fromInteger('JPY', n2)
+    const jpy = dense.fromInteger('JPY', i2)
     const result = btc.add(exchangeRate.exchange(jpybtc)(jpy))
     assertEqualDense(result)(new dense.Dense('BTC', fromSome(nonZeroRational.fromInput([500003, 500000]))))
   })

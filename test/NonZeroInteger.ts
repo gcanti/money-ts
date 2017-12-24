@@ -3,19 +3,19 @@ import { Option, some, none, getSetoid } from 'fp-ts/lib/Option'
 import { NonZeroInteger } from '../src/NonZeroInteger'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
-import { fromSome } from '../src/scale/fromSome'
+import { i3 } from './Integer'
+import * as BigInteger from 'big-integer'
 
-const wrap = (x: number | string): NonZeroInteger => fromSome(nonZeroInteger.fromInput(x))
+const wrap = (x: number | string): NonZeroInteger => BigInteger(x as any) as any
 
-const n3 = fromSome(integer.fromInput(3))
-const nz1 = wrap(1)
-const nz2 = wrap(2)
-const nz3 = wrap(3)
-const nz4 = wrap(4)
-const nz5 = wrap(5)
-const nz6 = wrap(6)
-const nz12 = wrap(12)
-const zz1 = wrap(-1)
+export const nz1 = wrap(1)
+export const nz2 = wrap(2)
+export const nz3 = wrap(3)
+export const nz4 = wrap(4)
+export const nz5 = wrap(5)
+export const nz6 = wrap(6)
+export const nz12 = wrap(12)
+export const zz1 = wrap(-1)
 
 function assertEqual(x: NonZeroInteger, y: NonZeroInteger): void {
   if (!nonZeroInteger.setoid.equals(x)(y)) {
@@ -33,7 +33,7 @@ function assertEqualOption(x: Option<NonZeroInteger>, y: Option<NonZeroInteger>)
 
 describe('NonZeroInteger', () => {
   it('fromInteger', () => {
-    assertEqualOption(nonZeroInteger.fromInteger(n3), some(nz3))
+    assertEqualOption(nonZeroInteger.fromInteger(i3), some(nz3))
     assertEqualOption(nonZeroInteger.fromInteger(integer.zero), none)
   })
 
@@ -65,6 +65,7 @@ describe('NonZeroInteger', () => {
 
   it('gcd', () => {
     assertEqual(nonZeroInteger.gcd(nz6, nz4), nz2)
+    assertEqual(nonZeroInteger.gcd(integer.zero, nz4), nz4)
   })
 
   it('lcm', () => {
@@ -78,8 +79,8 @@ describe('NonZeroInteger', () => {
   })
 
   it('sign', () => {
-    assert.strictEqual(integer.sign(nz1), 1)
-    assert.strictEqual(integer.sign(zz1), -1)
+    assert.strictEqual(nonZeroInteger.sign(nz1), 1)
+    assert.strictEqual(nonZeroInteger.sign(zz1), -1)
   })
 
   it('show', () => {

@@ -5,8 +5,8 @@ import * as rational from '../src/Rational'
 import * as nonZeroRational from '../src/NonZeroRational'
 import * as integer from '../src/Integer'
 import { fromSome } from '../src/scale/fromSome'
-import { assertEqual as assertEqualInteger, n1, n2, z1, z2 } from './Integer'
-import { Option, getSetoid, some } from 'fp-ts/lib/Option'
+import { assertEqual as assertEqualInteger, i1, i2, z1, z2 } from './Integer'
+import { Option, getSetoid, some, none } from 'fp-ts/lib/Option'
 
 export function wrapR(t: [number | string, number | string]): Rational {
   return fromSome(rational.fromInput(t))
@@ -31,13 +31,13 @@ function assertEqualOption(x: Option<Rational>, y: Option<Rational>): void {
 }
 
 describe('Rational', () => {
-  it('fromInteger', () => {
-    assertEqualOption(rational.fromInput([1, 1]), some([n1, n1] as Rational))
-    assertEqualOption(rational.fromInput([-1, 1]), some([z1, n1] as Rational))
-    assertEqualOption(rational.fromInput([1, -1]), some([z1, n1] as Rational))
+  it('fromInput', () => {
+    assertEqualOption(rational.fromInput([1, 1]), some([i1, i1] as Rational))
+    assertEqualOption(rational.fromInput([-1, 1]), some([z1, i1] as Rational))
+    assertEqualOption(rational.fromInput([1, -1]), none)
   })
 
-  it('fromInput', () => {
+  it('fromInteger', () => {
     assertEqual(rational.fromInteger(integer.one), wrapR([1, 1]))
   })
 
@@ -94,18 +94,18 @@ describe('Rational', () => {
   })
 
   it('round', () => {
-    assertEqualInteger(rational.round(wrapR([6, 4])), n2)
+    assertEqualInteger(rational.round(wrapR([6, 4])), i2)
     assertEqualInteger(rational.round(wrapR([5, 4])), integer.one)
-    assertEqualInteger(rational.round(wrapR([7, 4])), n2)
+    assertEqualInteger(rational.round(wrapR([7, 4])), i2)
     assertEqualInteger(rational.round(wrapR([-6, 4])), z1)
     assertEqualInteger(rational.round(wrapR([-5, 4])), z1)
     assertEqualInteger(rational.round(wrapR([-7, 4])), z2)
   })
 
   it('ceil', () => {
-    assertEqualInteger(rational.ceil(wrapR([6, 4])), n2)
-    assertEqualInteger(rational.ceil(wrapR([5, 4])), n2)
-    assertEqualInteger(rational.ceil(wrapR([7, 4])), n2)
+    assertEqualInteger(rational.ceil(wrapR([6, 4])), i2)
+    assertEqualInteger(rational.ceil(wrapR([5, 4])), i2)
+    assertEqualInteger(rational.ceil(wrapR([7, 4])), i2)
     assertEqualInteger(rational.ceil(wrapR([-6, 4])), z1)
     assertEqualInteger(rational.ceil(wrapR([-5, 4])), z1)
     assertEqualInteger(rational.ceil(wrapR([-7, 4])), z1)

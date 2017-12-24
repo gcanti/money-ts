@@ -1,6 +1,6 @@
 import { Newtype, unsafeCoerce } from 'newtype-ts'
 import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Ord, lessThan } from 'fp-ts/lib/Ord'
 import { BigInteger } from 'big-integer'
 import { Ordering } from 'fp-ts/lib/Ordering'
 import { NonZeroInteger } from './NonZeroInteger'
@@ -59,6 +59,8 @@ export const ord: Ord<Integer> = {
   ...setoid,
   compare: x => y => fromNumber(unwrap(x).compare(unwrap(y)))
 }
+
+export const isPositive: (x: Integer) => boolean = lessThan(ord)(zero)
 
 export function show(x: Integer): string {
   return unwrap(x).toString()

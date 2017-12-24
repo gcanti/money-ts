@@ -49,6 +49,8 @@ describe('io-ts types', () => {
       assert.deepEqual(t.validate([1, 1], Rational).toOption(), some([bigInteger.one, bigInteger.one]))
       assert.deepEqual(t.validate([0, 1], Rational).toOption(), some([bigInteger.zero, bigInteger.one]))
       assert.deepEqual(t.validate([2, 2], Rational).toOption(), some([bigInteger.one, bigInteger.one]))
+      assert.deepEqual(t.validate([-1, 1], Rational).toOption(), some([bigInteger.one.multiply(-1), bigInteger.one]))
+      assert.deepEqual(t.validate([1, -1], Rational).toOption(), some([bigInteger.one.multiply(-1), bigInteger.one]))
       assert.deepEqual(t.validate([1.1, 1], Rational).toOption(), none)
     })
   })
@@ -60,6 +62,14 @@ describe('io-ts types', () => {
       assert.deepEqual(t.validate([1, 1], NonZeroRational).toOption(), some([bigInteger.one, bigInteger.one]))
       assert.deepEqual(t.validate([0, 1], NonZeroRational).toOption(), none)
       assert.deepEqual(t.validate([2, 2], NonZeroRational).toOption(), some([bigInteger.one, bigInteger.one]))
+      assert.deepEqual(
+        t.validate([-1, 1], NonZeroRational).toOption(),
+        some([bigInteger.one.multiply(-1), bigInteger.one])
+      )
+      assert.deepEqual(
+        t.validate([1, -1], NonZeroRational).toOption(),
+        some([bigInteger.one.multiply(-1), bigInteger.one])
+      )
       assert.deepEqual(t.validate([1.1, 1], NonZeroRational).toOption(), none)
     })
   })
