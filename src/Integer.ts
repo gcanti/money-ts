@@ -9,39 +9,57 @@ import { Option } from 'fp-ts/lib/Option'
 
 export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
 
-export const fromInput = (x: number | string): Option<Integer> => bigInteger.wrap(x).map(wrap)
+export function fromInput(x: number | string): Option<Integer> {
+  return bigInteger.wrap(x).map(wrap)
+}
 
-export const wrap: (bi: BigInteger) => Integer = unsafeCoerce
+export const wrap: (x: BigInteger) => Integer = unsafeCoerce
 
-export const unwrap: (i: Integer) => BigInteger = unsafeCoerce
+export const unwrap: (x: Integer) => BigInteger = unsafeCoerce
 
-export const add = (x: Integer, y: Integer): Integer => wrap(unwrap(x).add(unwrap(y)))
+export function add(x: Integer, y: Integer): Integer {
+  return wrap(unwrap(x).add(unwrap(y)))
+}
 
-export const mul = (x: Integer, y: Integer): Integer => wrap(unwrap(x).times(unwrap(y)))
+export function mul(x: Integer, y: Integer): Integer {
+  return wrap(unwrap(x).times(unwrap(y)))
+}
 
 export const one: Integer = wrap(bigInteger.one)
 
-export const negate = (x: Integer): Integer => wrap(unwrap(x).negate())
+export function negate(x: Integer): Integer {
+  return wrap(unwrap(x).negate())
+}
 
-export const sub = (x: Integer, y: Integer): Integer => wrap(unwrap(x).subtract(unwrap(y)))
+export function sub(x: Integer, y: Integer): Integer {
+  return wrap(unwrap(x).subtract(unwrap(y)))
+}
 
 export const zero: Integer = wrap(bigInteger.zero)
 
-export const div = (x: Integer, y: NonZeroInteger): Integer => wrap(unwrap(x).divide(unwrap(y)))
+export function div(x: Integer, y: NonZeroInteger): Integer {
+  return wrap(unwrap(x).divide(unwrap(y)))
+}
 
 export const setoid: Setoid<Integer> = {
   equals: x => y => unwrap(x).equals(unwrap(y))
 }
 
-export const isZero: (i: Integer) => boolean = setoid.equals(zero)
+export const isZero: (x: Integer) => boolean = setoid.equals(zero)
 
-export const sign = (i: Integer): -1 | 0 | 1 => unsafeCoerce(unwrap(i).compare(bigInteger.zero))
+export function sign(x: Integer): -1 | 0 | 1 {
+  return unsafeCoerce(unwrap(x).compare(bigInteger.zero))
+}
 
-const fromNumber = (n: number): Ordering => (n <= -1 ? 'LT' : n >= 1 ? 'GT' : 'EQ')
+function fromNumber(x: number): Ordering {
+  return x <= -1 ? 'LT' : x >= 1 ? 'GT' : 'EQ'
+}
 
 export const ord: Ord<Integer> = {
   ...setoid,
   compare: x => y => fromNumber(unwrap(x).compare(unwrap(y)))
 }
 
-export const show = (x: Integer): string => unwrap(x).toString()
+export function show(x: Integer): string {
+  return unwrap(x).toString()
+}

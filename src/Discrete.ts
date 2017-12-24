@@ -37,17 +37,23 @@ export class Discrete<D extends string, U extends string> {
   }
 }
 
-export const getOne = <D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> =>
-  new Discrete(format, integer.one)
+export function getOne<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> {
+  return new Discrete(format, integer.one)
+}
 
-export const getZero = <D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> =>
-  new Discrete(format, integer.zero)
+export function getZero<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> {
+  return new Discrete(format, integer.zero)
+}
 
-export const getSetoid = <D extends string, U extends string>(): Setoid<Discrete<D, U>> => ({
-  equals: x => y => integer.setoid.equals(x.value)(y.value)
-})
+export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> {
+  return {
+    equals: x => y => integer.setoid.equals(x.value)(y.value)
+  }
+}
 
-export const getOrd = <D extends string, U extends string>(): Ord<Discrete<D, U>> => ({
-  ...getSetoid(),
-  compare: x => y => integer.ord.compare(x.value)(y.value)
-})
+export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
+  return {
+    ...getSetoid(),
+    compare: x => y => integer.ord.compare(x.value)(y.value)
+  }
+}

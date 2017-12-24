@@ -3,6 +3,7 @@ import { Integer } from '../src/Integer'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
 import { fromSome } from '../src/scale/fromSome'
+import { Option, getSetoid, some, none } from 'fp-ts/lib/Option'
 
 const wrap = (x: number | string): Integer => fromSome(integer.fromInput(x))
 
@@ -23,7 +24,21 @@ export function assertEqual(x: Integer, y: Integer): void {
   }
 }
 
+const S = getSetoid(integer.setoid)
+
+function assertEqualOption(x: Option<Integer>, y: Option<Integer>): void {
+  if (!S.equals(x)(y)) {
+    assert.fail(`${x} !== ${y}`)
+  }
+}
+
 describe('Integer', () => {
+  it('fromInput', () => {
+    assertEqualOption(integer.fromInput(1), some(n1))
+    assertEqualOption(integer.fromInput(-1), some(z1))
+    assertEqualOption(integer.fromInput(1.1), none)
+  })
+
   it('add', () => {
     assertEqual(integer.add(n2, n3), n5)
   })
@@ -68,6 +83,9 @@ describe('Integer', () => {
     assert.strictEqual(integer.ord.compare(n1)(n2), 'LT')
     assert.strictEqual(integer.ord.compare(n2)(n1), 'GT')
     assert.strictEqual(integer.ord.compare(n2)(n2), 'EQ')
+    assert.strictEqual(integer.ord.compare(z1)(z2), 'GT')
+    assert.strictEqual(integer.ord.compare(z2)(z1), 'LT')
+    assert.strictEqual(integer.ord.compare(z2)(z2), 'EQ')
   })
 
   it('show', () => {

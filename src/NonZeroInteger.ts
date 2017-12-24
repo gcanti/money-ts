@@ -7,15 +7,29 @@ import { BigInteger } from 'big-integer'
 import * as integer from './Integer'
 import * as bigInteger from './BigInteger'
 
-export interface NonZeroInteger extends Newtype<{ Integer: true; NonZeroInteger: true }, BigInteger> {}
+/** A NonZeroInteger is also an Integer */
+export interface NonZeroInteger
+  extends Newtype<
+      {
+        Integer: true
+        NonZeroInteger: true
+      },
+      BigInteger
+    > {}
 
-export const fromInput = (x: number | string): Option<NonZeroInteger> => bigInteger.wrap(x).chain(wrap)
+export function fromInput(x: number | string): Option<NonZeroInteger> {
+  return bigInteger.wrap(x).chain(wrap)
+}
 
-export const wrap = (bi: BigInteger): Option<NonZeroInteger> => fromInteger(integer.wrap(bi))
+export function wrap(x: BigInteger): Option<NonZeroInteger> {
+  return fromInteger(integer.wrap(x))
+}
 
-export const unwrap: (i: NonZeroInteger) => BigInteger = unsafeCoerce
+export const unwrap: (x: NonZeroInteger) => BigInteger = unsafeCoerce
 
-export const fromInteger = (i: Integer): Option<NonZeroInteger> => (integer.isZero(i) ? none : some(unsafeCoerce(i)))
+export function fromInteger(i: Integer): Option<NonZeroInteger> {
+  return integer.isZero(i) ? none : some(unsafeCoerce(i))
+}
 
 export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.add)
 
@@ -25,21 +39,23 @@ export const one: NonZeroInteger = unsafeCoerce(integer.one)
 
 export const negate: (x: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.negate)
 
-export const sub = (x: NonZeroInteger, y: NonZeroInteger): Option<NonZeroInteger> => {
+export function sub(x: NonZeroInteger, y: NonZeroInteger): Option<NonZeroInteger> {
   return fromInteger(integer.sub(x, y))
 }
 
 export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = unsafeCoerce(integer.div)
 
-export const sign: (i: NonZeroInteger) => -1 | 1 = unsafeCoerce(integer.sign)
+export const sign: (x: NonZeroInteger) => -1 | 1 = unsafeCoerce(integer.sign)
 
-const unsafeWrap: (bi: BigInteger) => NonZeroInteger = unsafeCoerce(integer.wrap)
+const unsafeWrap: (x: BigInteger) => NonZeroInteger = unsafeCoerce(integer.wrap)
 
-export const gcd = (x: Integer, y: NonZeroInteger): NonZeroInteger =>
-  unsafeWrap(bigInteger.gcd(integer.unwrap(x), unwrap(y)))
+export function gcd(x: Integer, y: NonZeroInteger): NonZeroInteger {
+  return unsafeWrap(bigInteger.gcd(integer.unwrap(x), unwrap(y)))
+}
 
-export const lcm = (x: NonZeroInteger, y: NonZeroInteger): NonZeroInteger =>
-  unsafeWrap(bigInteger.lcm(unwrap(x), unwrap(y)))
+export function lcm(x: NonZeroInteger, y: NonZeroInteger): NonZeroInteger {
+  return unsafeWrap(bigInteger.lcm(unwrap(x), unwrap(y)))
+}
 
 export const setoid: Setoid<NonZeroInteger> = unsafeCoerce(integer.setoid)
 

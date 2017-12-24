@@ -7,6 +7,7 @@ import * as rational from './Rational'
 import * as nonZeroInteger from './NonZeroInteger'
 import { unsafeCoerce } from 'newtype-ts'
 
+/** A NonZeroRational is also a Rational */
 export type NonZeroRational = [NonZeroInteger, NonZeroInteger]
 
 export function fromInput(input: [number | string, number | string]): Option<NonZeroRational> {
@@ -33,9 +34,8 @@ export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRatio
 
 export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(rational.div)
 
-export function inverse(nzr: NonZeroRational): NonZeroRational {
-  const [n, d] = nzr
-  return [d, n]
+export function inverse(x: NonZeroRational): NonZeroRational {
+  return [x[1], x[0]]
 }
 
 export const setoid: Setoid<NonZeroRational> = unsafeCoerce(rational.setoid)
