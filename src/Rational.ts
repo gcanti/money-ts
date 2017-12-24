@@ -14,18 +14,26 @@ export type Rational = [Integer, NonZeroInteger]
 export function fromInput([x, y]: [number | string, number | string]): Option<Rational> {
   const on = integer.fromInput(x)
   const od = nonZeroInteger.fromInput(y)
-  return od.ap(on.map(n => (d: NonZeroInteger) => reduce(n, d)))
+  return od.ap(
+    on.map(n => (d: NonZeroInteger) => {
+      if (nonZeroInteger.sign(d) === -1) {
+        return reduce(integer.negate(n), nonZeroInteger.negate(d))
+      } else {
+        return reduce(n, d)
+      }
+    })
+  )
 }
 
-export function fromInteger(n: Integer): Rational {
-  return [n, nonZeroInteger.one]
+export function fromInteger(x: Integer): Rational {
+  return [x, nonZeroInteger.one]
 }
 
-export function isZero(r: Rational): boolean {
-  return integer.isZero(r[0])
+export function isZero(x: Rational): boolean {
+  return integer.isZero(x[0])
 }
 
-export const reduce = (n: Integer, d: NonZeroInteger): Rational => {
+export function reduce(n: Integer, d: NonZeroInteger): Rational {
   const divisor = nonZeroInteger.gcd(n, d)
   const n2 = integer.div(n, divisor)
   const d2 = nonZeroInteger.div(d, divisor)
@@ -61,7 +69,9 @@ export function div(x: Rational, y: NonZeroRational): Rational {
   return reduce(integer.mul(x[0], y[1]), nonZeroInteger.mul(x[1], y[0]))
 }
 
-export const sign = ([n, d]: Rational): -1 | 0 | 1 => unsafeCoerce(integer.sign(n) * nonZeroInteger.sign(d))
+export function sign(x: Rational): -1 | 0 | 1 {
+  return unsafeCoerce(integer.sign(x[0]) * nonZeroInteger.sign(x[1]))
+}
 
 export function floor(x: Rational): Integer {
   const n = integer.unwrap(x[0])
