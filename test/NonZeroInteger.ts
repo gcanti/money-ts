@@ -1,41 +1,35 @@
 import * as assert from 'assert'
-import { Option, some, none, getSetoid } from 'fp-ts/lib/Option'
+import { some, none } from 'fp-ts/lib/Option'
 import { NonZeroInteger } from '../src/NonZeroInteger'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
-import { i3 } from './Integer'
 import * as BigInteger from 'big-integer'
-import { n1 } from './Natural'
+import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './util'
+import { property } from 'testcheck'
 
 const wrap = (x: number | string): NonZeroInteger => BigInteger(x as any) as any
 
-export const nz1 = wrap(1)
-export const nz2 = wrap(2)
-export const nz3 = wrap(3)
-export const nz4 = wrap(4)
-export const nz5 = wrap(5)
-export const nz6 = wrap(6)
-export const nz12 = wrap(12)
-export const zz1 = wrap(-1)
+const n1 = unsafeNatural(1)
+const nz1 = wrap(1)
+const nz2 = wrap(2)
+const nz3 = wrap(3)
+const nz4 = wrap(4)
+const nz5 = wrap(5)
+const nz6 = wrap(6)
+const nz12 = wrap(12)
+const zz1 = wrap(-1)
 
-function assertEqual(x: NonZeroInteger, y: NonZeroInteger): void {
-  if (!nonZeroInteger.setoid.equals(x)(y)) {
-    assert.fail(`${x} !== ${y}`)
-  }
-}
+const assertEqual = getAssertEqual(nonZeroInteger.setoid)
 
-const S = getSetoid(nonZeroInteger.setoid)
-
-function assertEqualOption(x: Option<NonZeroInteger>, y: Option<NonZeroInteger>): void {
-  if (!S.equals(x)(y)) {
-    assert.fail(`${x} !== ${y}`)
-  }
-}
+const assertEqualOption = getAssertEqualOption(nonZeroInteger.setoid)
 
 describe('NonZeroInteger', () => {
   it('fromInteger', () => {
-    assertEqualOption(nonZeroInteger.fromInteger(i3), some(nz3))
-    assertEqualOption(nonZeroInteger.fromInteger(integer.zero), none)
+    assertProperty(
+      property(IntegerGenerator, i => {
+        return nonZeroInteger.fromInteger(i).fold(() => integer.setoid.equals(i)(integer.zero), () => true)
+      })
+    )
   })
 
   it('add', () => {

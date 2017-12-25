@@ -1,51 +1,41 @@
 import * as assert from 'assert'
-import { Option, some, none, getSetoid } from 'fp-ts/lib/Option'
-import { Natural } from '../src/Natural'
+import { some, none } from 'fp-ts/lib/Option'
 import * as integer from '../src/Integer'
 import * as natural from '../src/Natural'
-import { i3 } from './Integer'
-import * as BigInteger from 'big-integer'
+import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './util'
+import { property } from 'testcheck'
+import { lessThanOrEq, greaterThanOrEq } from 'fp-ts/lib/Ord'
 
-const wrap = (x: number | string): Natural => BigInteger(x as any) as any
+const n1 = unsafeNatural(1)
+const n2 = unsafeNatural(2)
+const n3 = unsafeNatural(3)
+const n4 = unsafeNatural(4)
+const n5 = unsafeNatural(5)
+const n6 = unsafeNatural(6)
+const n12 = unsafeNatural(12)
 
-export const n1 = wrap(1)
-export const n2 = wrap(2)
-export const n3 = wrap(3)
-export const n4 = wrap(4)
-export const n5 = wrap(5)
-export const n6 = wrap(6)
-export const n12 = wrap(12)
+const assertEqual = getAssertEqual(natural.setoid)
 
-function assertEqual(x: Natural, y: Natural): void {
-  if (!natural.setoid.equals(x)(y)) {
-    assert.fail(`${x} !== ${y}`)
-  }
-}
-
-const S = getSetoid(natural.setoid)
-
-function assertEqualOption(x: Option<Natural>, y: Option<Natural>): void {
-  if (!S.equals(x)(y)) {
-    assert.fail(`${x} !== ${y}`)
-  }
-}
+const assertEqualOption = getAssertEqualOption(natural.setoid)
 
 describe('Natural', () => {
   it('fromInteger', () => {
-    assertEqualOption(natural.fromInteger(i3), some(n3))
-    assertEqualOption(natural.fromInteger(integer.zero), none)
+    const lte = lessThanOrEq(integer.ord)
+    const gte = greaterThanOrEq(natural.ord)
+    assertProperty(
+      property(IntegerGenerator, i => {
+        return natural.fromInteger(i).fold(() => lte(i)(integer.zero), n => gte(n)(natural.one))
+      })
+    )
   })
 
   it('add', () => {
     assertEqual(natural.add(n2, n3), n5)
+    assertEqual(natural.add(unsafeNatural('9007199254740992'), natural.one), unsafeNatural('9007199254740993'))
   })
 
   it('mul', () => {
     assertEqual(natural.mul(n2, n3), n6)
-  })
-
-  it('one', () => {
-    assertEqual(natural.one, n1)
   })
 
   it('sub', () => {
@@ -73,11 +63,7 @@ describe('Natural', () => {
   })
 
   it('show', () => {
-    assert.strictEqual(natural.show(natural.one), '1')
-    assert.strictEqual(natural.show(wrap('9007199254740993')), '9007199254740993')
-  })
-
-  it('should handle big numbers', () => {
-    assertEqual(natural.add(wrap(9007199254740992), natural.one), wrap('9007199254740993'))
+    assert.strictEqual(natural.show(unsafeNatural(100)), '100')
+    assert.strictEqual(natural.show(unsafeNatural('9007199254740993')), '9007199254740993')
   })
 })

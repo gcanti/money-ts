@@ -11,10 +11,6 @@ import { unsafeCoerce } from 'newtype-ts'
 
 export type NonZeroRational = [NonZeroInteger, Natural]
 
-export function fromInput(input: [number | string, number | string]): Option<NonZeroRational> {
-  return rational.fromInput(input).chain(fromRational)
-}
-
 export function fromRational(r: Rational): Option<NonZeroRational> {
   return nonZeroInteger.fromInteger(r[0]).map((n): NonZeroRational => [n, r[1]])
 }

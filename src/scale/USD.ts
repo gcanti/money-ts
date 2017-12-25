@@ -1,7 +1,6 @@
 import { scale } from '../Scale'
 import { PositiveRational } from '../PositiveRational'
-import * as positiveRational from '../PositiveRational'
-import { fromSome } from './fromSome'
+import { unsafePositiveRational } from './unsafePositiveRational'
 
 declare module '../Scale' {
   interface Scale {
@@ -15,7 +14,7 @@ declare module '../Scale' {
 }
 
 scale['USD'] = {
-  USD: fromSome(positiveRational.fromInput([100, 1])),
-  dollar: fromSome(positiveRational.fromInput([1, 1])),
-  cent: fromSome(positiveRational.fromInput([100, 1]))
+  USD: unsafePositiveRational([100, 1]),
+  dollar: unsafePositiveRational([1, 1]),
+  cent: unsafePositiveRational([100, 1])
 }
