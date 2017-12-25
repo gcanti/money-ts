@@ -45,6 +45,7 @@
     "big-integer": "^1.6.26",
     "mocha": "3.2.0",
     "prettier": "1.9.2",
+    "testcheck": "^1.0.0-rc.2",
     "ts-node": "3.3.0",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",

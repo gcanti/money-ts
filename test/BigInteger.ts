@@ -1,10 +1,22 @@
-import * as assert from 'assert'
 import * as bigInteger from '../src/BigInteger'
-import { some, none } from 'fp-ts/lib/Option'
+import { gen, property } from 'testcheck'
+import { assertProperty, checkOrdLaws, checkRingLaws, BigIntegerGenerator } from './util'
+import * as BigInteger from 'big-integer'
 
 describe('BigInteger', () => {
   it('wrap', () => {
-    assert.deepEqual(bigInteger.wrap(1), some(bigInteger.one))
-    assert.deepEqual(bigInteger.wrap(1.1), none)
+    assertProperty(
+      property(gen.number, n => {
+        return bigInteger.wrap(n).fold(() => n % 1 !== 0, b => b.equals(BigInteger(n)))
+      })
+    )
+  })
+
+  it('Ord', () => {
+    checkOrdLaws(BigIntegerGenerator, bigInteger.setoid, bigInteger.ord)
+  })
+
+  it('Ring', () => {
+    checkRingLaws(BigIntegerGenerator, bigInteger.setoid, bigInteger.ring)
   })
 })

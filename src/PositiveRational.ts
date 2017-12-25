@@ -10,10 +10,6 @@ import { unsafeCoerce } from 'newtype-ts'
 
 export type PositiveRational = [Natural, Natural]
 
-export function fromInput(input: [number | string, number | string]): Option<PositiveRational> {
-  return rational.fromInput(input).chain(fromRational)
-}
-
 export function fromRational(r: Rational): Option<PositiveRational> {
   return natural.fromInteger(r[0]).map((n): PositiveRational => [n, r[1]])
 }

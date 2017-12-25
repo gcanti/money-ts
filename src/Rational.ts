@@ -3,19 +3,13 @@ import { Natural } from './Natural'
 import { NonZeroRational } from './NonZeroRational'
 import { Setoid, getProductSetoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
+import * as bigInteger from './BigInteger'
 import * as integer from './Integer'
 import * as natural from './Natural'
 import * as nonZeroInteger from './NonZeroInteger'
-import { Option } from 'fp-ts/lib/Option'
-import { fromSome } from './scale/fromSome'
+import { unsafeCoerce } from 'newtype-ts'
 
 export type Rational = [Integer, Natural]
-
-export function fromInput([x, y]: [number | string, number | string]): Option<Rational> {
-  const on = integer.fromInput(x)
-  const od = natural.fromInput(y)
-  return od.ap(on.map(n => (d: Natural) => reduce(n, d)))
-}
 
 export function fromInteger(x: Integer): Rational {
   return [x, natural.one]
@@ -83,7 +77,7 @@ export function floor(x: Rational): Integer {
   }
 }
 
-const semi: Rational = fromSome(fromInput([1, 2]))
+const semi: Rational = unsafeCoerce([bigInteger.one, bigInteger.two])
 
 export function round(x: Rational): Integer {
   return floor(add(x, semi))

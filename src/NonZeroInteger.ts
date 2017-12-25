@@ -18,10 +18,6 @@ export interface NonZeroInteger
       BigInteger
     > {}
 
-export function fromInput(x: number | string): Option<NonZeroInteger> {
-  return bigInteger.wrap(x).chain(wrap)
-}
-
 export function wrap(x: BigInteger): Option<NonZeroInteger> {
   return fromInteger(integer.wrap(x))
 }

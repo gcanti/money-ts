@@ -1,7 +1,6 @@
 import { scale } from '../Scale'
 import { PositiveRational } from '../PositiveRational'
-import * as positiveRational from '../PositiveRational'
-import { fromSome } from './fromSome'
+import { unsafePositiveRational } from './unsafePositiveRational'
 
 declare module '../Scale' {
   interface Scale {
@@ -20,12 +19,12 @@ declare module '../Scale' {
 }
 
 scale['XAU'] = {
-  'troy-ounce': fromSome(positiveRational.fromInput([1, 1])),
-  grain: fromSome(positiveRational.fromInput([480, 1])),
-  milligrain: fromSome(positiveRational.fromInput([480000, 1])),
-  micrograin: fromSome(positiveRational.fromInput([480000000, 1])),
-  kilogram: fromSome(positiveRational.fromInput([31103477, 1000000000])),
-  gram: fromSome(positiveRational.fromInput([31103477, 1000000])),
-  milligram: fromSome(positiveRational.fromInput([31103477, 1000])),
-  microgram: fromSome(positiveRational.fromInput([31103477, 1]))
+  'troy-ounce': unsafePositiveRational([1, 1]),
+  grain: unsafePositiveRational([480, 1]),
+  milligrain: unsafePositiveRational([480000, 1]),
+  micrograin: unsafePositiveRational([480000000, 1]),
+  kilogram: unsafePositiveRational([31103477, 1000000000]),
+  gram: unsafePositiveRational([31103477, 1000000]),
+  milligram: unsafePositiveRational([31103477, 1000]),
+  microgram: unsafePositiveRational([31103477, 1])
 }

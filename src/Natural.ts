@@ -7,7 +7,6 @@ import { BigInteger } from 'big-integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import * as integer from './Integer'
 import * as nonZeroInteger from './NonZeroInteger'
-import * as bigInteger from './BigInteger'
 
 /** A PositiveInteger is also an Integer */
 export interface Natural
@@ -19,10 +18,6 @@ export interface Natural
       },
       BigInteger
     > {}
-
-export function fromInput(x: number | string): Option<Natural> {
-  return bigInteger.wrap(x).chain(wrap)
-}
 
 export function wrap(x: BigInteger): Option<Natural> {
   return fromInteger(integer.wrap(x))
@@ -37,8 +32,6 @@ export function fromInteger(i: Integer): Option<Natural> {
 export const add: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.add)
 
 export const mul: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.mul)
-
-export const one: Natural = unsafeCoerce(integer.one)
 
 export function sub(x: Natural, y: Natural): Option<Natural> {
   return fromInteger(integer.sub(x, y))
@@ -57,3 +50,5 @@ export const setoid: Setoid<Natural> = integer.setoid
 export const ord: Ord<Natural> = integer.ord
 
 export const show: (x: Natural) => string = integer.show
+
+export const one: Natural = unsafeCoerce(integer.one)

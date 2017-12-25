@@ -6,7 +6,7 @@ export const getDiscrete = <D extends string, U extends string>(dimension: D, un
   const format = { dimension, unit }
   return new t.Type(
     'Discrete',
-    (v): v is Discrete<D, U> => v instanceof Discrete,
+    (v): v is Discrete<D, U> => v instanceof Discrete && v.format.dimension === dimension && v.format.unit === unit,
     (v, c) => Integer.validate(v, c).map(r => new Discrete(format, r)),
     v => Integer.serialize(v.value)
   )
