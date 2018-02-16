@@ -51,14 +51,14 @@ export function getOne<D extends string>(d: D): Dense<D> {
 
 export function getSetoid<D extends string>(): Setoid<Dense<D>> {
   return {
-    equals: x => y => rational.setoid.equals(x.value)(y.value)
+    equals: (x, y) => rational.setoid.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string>(): Ord<Dense<D>> {
   return {
     ...getSetoid(),
-    compare: x => y => rational.ord.compare(x.value)(y.value)
+    compare: (x, y) => rational.ord.compare(x.value, y.value)
   }
 }
 

@@ -30,14 +30,14 @@ describe('Integer', () => {
     assertProperty(
       property(NaturalGenerator, NaturalGenerator, (a, b) => {
         const c = integer.add(a, b)
-        return integer.ord.compare(c)(a) === 'GT' && integer.ord.compare(c)(b) === 'GT'
+        return integer.ord.compare(c, a) === 1 && integer.ord.compare(c, b) === 1
       })
     )
     assertProperty(
       property(IntegerGenerator, IntegerGenerator, (a, b) => {
         const c = integer.add(a, b)
         const d = integer.sub(c, b)
-        integer.setoid.equals(d)(a)
+        integer.setoid.equals(d, a)
       })
     )
   })
@@ -85,12 +85,12 @@ describe('Integer', () => {
   })
 
   it('ord', () => {
-    assert.strictEqual(integer.ord.compare(i1)(i2), 'LT')
-    assert.strictEqual(integer.ord.compare(i2)(i1), 'GT')
-    assert.strictEqual(integer.ord.compare(i2)(i2), 'EQ')
-    assert.strictEqual(integer.ord.compare(in1)(in2), 'GT')
-    assert.strictEqual(integer.ord.compare(in2)(in1), 'LT')
-    assert.strictEqual(integer.ord.compare(in2)(in2), 'EQ')
+    assert.strictEqual(integer.ord.compare(i1, i2), -1)
+    assert.strictEqual(integer.ord.compare(i2, i1), 1)
+    assert.strictEqual(integer.ord.compare(i2, i2), 0)
+    assert.strictEqual(integer.ord.compare(in1, in2), 1)
+    assert.strictEqual(integer.ord.compare(in2, in1), -1)
+    assert.strictEqual(integer.ord.compare(in2, in2), 0)
   })
 
   it('show', () => {

@@ -30,7 +30,7 @@ export function div(x: Integer, y: NonZeroInteger): Integer {
 
 export const setoid: Setoid<Integer> = unsafeCoerce(bigInteger.setoid)
 
-export const isZero: (x: Integer) => boolean = setoid.equals(zero)
+export const isZero = (x: Integer): boolean => setoid.equals(zero, x)
 
 export function sign(x: Integer): -1 | 0 | 1 {
   return unsafeCoerce(unwrap(x).compare(bigInteger.zero))
@@ -38,7 +38,9 @@ export function sign(x: Integer): -1 | 0 | 1 {
 
 export const ord: Ord<Integer> = unsafeCoerce(bigInteger.ord)
 
-export const isPositive: (x: Integer) => boolean = lessThan(ord)(zero)
+const lessThanO = lessThan(ord)
+
+export const isPositive = (x: Integer): boolean => lessThanO(zero, x)
 
 export function show(x: Integer): string {
   return unwrap(x).toString()

@@ -1,13 +1,13 @@
-import * as t from 'io-ts'
+import { Type, mixed, tuple } from 'io-ts'
 import { NonZeroInteger } from './NonZeroInteger'
 import { Natural } from './Natural'
 import { NonZeroRational as NonZeroRationalNewtype, reduce } from '../NonZeroRational'
 
-const Tuple = t.tuple([NonZeroInteger, Natural])
+const NZR = tuple([NonZeroInteger, Natural])
 
-export const NonZeroRational: t.Type<any, NonZeroRationalNewtype> = new t.Type(
+export const NonZeroRational: Type<NonZeroRationalNewtype, [string, string], mixed> = new Type(
   'NonZeroRational',
-  Tuple.is,
-  (v, c) => Tuple.validate(v, c).map(([n, d]) => reduce(n, d)),
-  Tuple.serialize
+  NZR.is,
+  (m, c) => NZR.validate(m, c).map(([n, d]) => reduce(n, d)),
+  NZR.encode
 )

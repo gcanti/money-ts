@@ -1,8 +1,8 @@
-import { fromNewtype } from 'io-ts-types/lib/newtype-ts/fromNewtype'
-import * as t from 'io-ts'
+import { unsafeCoerce } from 'newtype-ts'
+import { Type, mixed, refinement } from 'io-ts'
 import { NonZeroInteger as NonZeroIntegerNewtype } from '../NonZeroInteger'
 import { BigInteger } from './BigInteger'
 
-export const NonZeroInteger = fromNewtype<NonZeroIntegerNewtype>(
-  t.refinement(BigInteger, bi => !bi.isZero(), 'NonZeroInteger')
+export const NonZeroInteger: Type<NonZeroIntegerNewtype, string, mixed> = unsafeCoerce(
+  refinement(BigInteger, bi => !bi.isZero(), 'NonZeroInteger')
 )

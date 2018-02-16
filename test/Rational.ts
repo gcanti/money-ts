@@ -98,16 +98,16 @@ describe('Rational', () => {
   })
 
   it('ord', () => {
-    assert.strictEqual(rational.ord.compare(unsafeRational([1, 1]))(unsafeRational([2, 1])), 'LT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]))(unsafeRational([2, 1])), 'EQ')
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]))(unsafeRational([1, 1])), 'GT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 3]))(unsafeRational([1, 3])), 'GT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([1, 2]))(unsafeRational([1, 3])), 'GT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 1]))(unsafeRational([-2, 1])), 'GT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]))(unsafeRational([-2, 1])), 'EQ')
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]))(unsafeRational([-1, 1])), 'LT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 3]))(unsafeRational([-1, 3])), 'LT')
-    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 2]))(unsafeRational([-1, 3])), 'LT')
+    assert.strictEqual(rational.ord.compare(unsafeRational([1, 1]), unsafeRational([2, 1])), -1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]), unsafeRational([2, 1])), 0)
+    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]), unsafeRational([1, 1])), 1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([2, 3]), unsafeRational([1, 3])), 1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([1, 2]), unsafeRational([1, 3])), 1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 1]), unsafeRational([-2, 1])), 1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]), unsafeRational([-2, 1])), 0)
+    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]), unsafeRational([-1, 1])), -1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 3]), unsafeRational([-1, 3])), -1)
+    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 2]), unsafeRational([-1, 3])), -1)
   })
 
   it('show', () => {

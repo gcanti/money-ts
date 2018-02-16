@@ -48,9 +48,9 @@ describe('Discrete', () => {
 
   it('ord', () => {
     const O = getOrd()
-    assert.strictEqual(O.compare(dn1)(dn2), 'LT')
-    assert.strictEqual(O.compare(dn2)(dn1), 'GT')
-    assert.strictEqual(O.compare(dn2)(dn2), 'EQ')
+    assert.strictEqual(O.compare(dn1, dn2), -1)
+    assert.strictEqual(O.compare(dn2, dn1), 1)
+    assert.strictEqual(O.compare(dn2, dn2), 0)
   })
 
   it('toString', () => {

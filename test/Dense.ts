@@ -46,7 +46,7 @@ describe('Dense', () => {
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
         const [cent, rest] = dense.floor('cent', euro)
-        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest))(euro)
+        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest), euro)
       })
     )
   })
@@ -58,7 +58,7 @@ describe('Dense', () => {
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
         const [cent, rest] = dense.round('cent', euro)
-        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest))(euro)
+        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest), euro)
       })
     )
   })
@@ -70,7 +70,7 @@ describe('Dense', () => {
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
         const [cent, rest] = dense.ceil('cent', euro)
-        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest))(euro)
+        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest), euro)
       })
     )
   })
@@ -87,7 +87,7 @@ describe('Dense', () => {
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
         const [cent, rest] = dense.trunc('cent', euro)
-        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest))(euro)
+        return dense.getSetoid<'EUR'>().equals(fromDiscrete(cent).add(rest), euro)
       })
     )
   })

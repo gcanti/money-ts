@@ -1,13 +1,16 @@
-import * as t from 'io-ts'
+import { Type, mixed } from 'io-ts'
 import { Discrete } from '../Discrete'
 import { Integer } from './Integer'
 
-export const getDiscrete = <D extends string, U extends string>(dimension: D, unit: U): t.Type<any, Discrete<D, U>> => {
+export const getDiscrete = <D extends string, U extends string>(
+  dimension: D,
+  unit: U
+): Type<Discrete<D, U>, string, mixed> => {
   const format = { dimension, unit }
-  return new t.Type(
+  return new Type(
     'Discrete',
-    (v): v is Discrete<D, U> => v instanceof Discrete && v.format.dimension === dimension && v.format.unit === unit,
-    (v, c) => Integer.validate(v, c).map(r => new Discrete(format, r)),
-    v => Integer.serialize(v.value)
+    (m): m is Discrete<D, U> => m instanceof Discrete && m.format.dimension === dimension && m.format.unit === unit,
+    (m, c) => Integer.validate(m, c).map(r => new Discrete(format, r)),
+    a => Integer.encode(a.value)
   )
 }

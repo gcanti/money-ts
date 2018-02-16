@@ -5,7 +5,6 @@ import * as bigInteger from 'big-integer'
 import { Ring } from 'fp-ts/lib/Ring'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
-import { fromNumber } from 'fp-ts/lib/Ordering'
 
 export function wrap(x: number | string): Option<BigInteger> {
   try {
@@ -46,18 +45,18 @@ export function lcm(x: BigInteger, y: BigInteger): BigInteger {
 }
 
 export const setoid: Setoid<BigInteger> = {
-  equals: x => y => x.equals(y)
+  equals: (x, y) => x.equals(y)
 }
 
 export const ord: Ord<BigInteger> = {
   ...setoid,
-  compare: x => y => fromNumber(x.compare(y))
+  compare: (x, y) => x.compare(y) as any
 }
 
 export const ring: Ring<BigInteger> = {
-  add: x => y => add(x, y),
-  zero: () => zero,
-  mul: x => y => mul(x, y),
-  one: () => one,
-  sub: x => y => sub(x, y)
+  add: (x, y) => add(x, y),
+  zero: zero,
+  mul: (x, y) => mul(x, y),
+  one: one,
+  sub: (x, y) => sub(x, y)
 }

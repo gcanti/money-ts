@@ -27,7 +27,7 @@ describe('NonZeroInteger', () => {
   it('fromInteger', () => {
     assertProperty(
       property(IntegerGenerator, i => {
-        return nonZeroInteger.fromInteger(i).fold(() => integer.setoid.equals(i)(integer.zero), () => true)
+        return nonZeroInteger.fromInteger(i).foldL(() => integer.setoid.equals(i, integer.zero), () => true)
       })
     )
   })
@@ -68,9 +68,9 @@ describe('NonZeroInteger', () => {
   })
 
   it('ord', () => {
-    assert.strictEqual(nonZeroInteger.ord.compare(nz1)(nz2), 'LT')
-    assert.strictEqual(nonZeroInteger.ord.compare(nz2)(nz1), 'GT')
-    assert.strictEqual(nonZeroInteger.ord.compare(nz2)(nz2), 'EQ')
+    assert.strictEqual(nonZeroInteger.ord.compare(nz1, nz2), -1)
+    assert.strictEqual(nonZeroInteger.ord.compare(nz2, nz1), 1)
+    assert.strictEqual(nonZeroInteger.ord.compare(nz2, nz2), 0)
   })
 
   it('sign', () => {

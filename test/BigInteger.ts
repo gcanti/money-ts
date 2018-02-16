@@ -7,7 +7,7 @@ describe('BigInteger', () => {
   it('wrap', () => {
     assertProperty(
       property(gen.number, n => {
-        return bigInteger.wrap(n).fold(() => n % 1 !== 0, b => b.equals(BigInteger(n)))
+        return bigInteger.wrap(n).fold(n % 1 !== 0, b => b.equals(BigInteger(n)))
       })
     )
   })

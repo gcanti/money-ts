@@ -4,9 +4,9 @@ import * as bigInteger from '../BigInteger'
 
 const StringOrNumber = t.union([t.string, t.number])
 
-export const BigInteger = new t.Type<any, BI.BigInteger>(
+export const BigInteger = new t.Type<BI.BigInteger, string>(
   'BigInteger',
-  (v): v is BI.BigInteger => v instanceof BI,
-  (v, c) => StringOrNumber.validate(v, c).chain(s => bigInteger.wrap(s).fold(() => t.failure(s, c), t.success)),
+  (m): m is BI.BigInteger => m instanceof BI,
+  (m, c) => StringOrNumber.validate(m, c).chain(s => bigInteger.wrap(s).foldL(() => t.failure(s, c), t.success)),
   a => a.toString()
 )

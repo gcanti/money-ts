@@ -6,7 +6,7 @@ import * as bigInteger from '../BigInteger'
 import * as natural from '../Natural'
 
 const fromSome = <A>(fa: Option<A>): A =>
-  fa.getOrElse(() => {
+  fa.getOrElseL(() => {
     throw new Error('fromSome called with None')
   })
 
