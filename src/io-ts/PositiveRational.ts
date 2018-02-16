@@ -1,12 +1,12 @@
-import * as t from 'io-ts'
+import { Type, mixed, tuple } from 'io-ts'
 import { Natural } from './Natural'
 import { PositiveRational as PositiveRationalNewtype, reduce } from '../PositiveRational'
 
-const Tuple = t.tuple([Natural, Natural])
+const PR = tuple([Natural, Natural])
 
-export const PositiveRational: t.Type<any, PositiveRationalNewtype> = new t.Type(
+export const PositiveRational: Type<PositiveRationalNewtype, [string, string], mixed> = new Type(
   'PositiveRational',
-  Tuple.is,
-  (v, c) => Tuple.validate(v, c).map(([n, d]) => reduce(n, d)),
-  Tuple.serialize
+  PR.is,
+  (m, c) => PR.validate(m, c).map(([n, d]) => reduce(n, d)),
+  PR.encode
 )

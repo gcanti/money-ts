@@ -9,7 +9,7 @@ const S = M.exchangeRate.getSetoid<any, any>()
 
 function assertEqual<S, D>(x: ExchangeRate<S, D>): (y: ExchangeRate<S, D>) => void {
   return y => {
-    if (!S.equals(x)(y)) {
+    if (!S.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }

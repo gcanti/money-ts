@@ -1,6 +1,5 @@
 import * as assert from 'assert'
-import * as t from 'io-ts'
-import { some, none } from 'fp-ts/lib/Option'
+import { some, none, fromEither } from 'fp-ts/lib/Option'
 import { BigInteger } from '../src/io-ts/BigInteger'
 import { Natural } from '../src/io-ts/Natural'
 import { Integer } from '../src/io-ts/Integer'
@@ -14,33 +13,42 @@ import * as discrete from '../src/Discrete'
 import * as dense from '../src/Dense'
 import { getDense } from '../src/io-ts/Dense'
 import * as BI from 'big-integer'
-import { Discrete } from '../src/Discrete'
+import { Discrete, Format } from '../src/Discrete'
 import { Dense } from '../src/Dense'
 import { unsafeRational } from './util'
+import * as natural from '../src/Natural'
+import * as nonZeroInteger from '../src/NonZeroInteger'
+import * as rational from '../src/Rational'
+import * as nonZeroRational from '../src/NonZeroRational'
+import * as positiveRational from '../src/PositiveRational'
 
 describe('io-ts types', () => {
   describe('BigInteger', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate(null, BigInteger).toOption(), none)
-      assert.deepEqual(t.validate(1, BigInteger).toOption(), some(BI(1)))
-      assert.deepEqual(t.validate(0, BigInteger).toOption(), some(BI(0)))
-      assert.deepEqual(t.validate(1.1, BigInteger).toOption(), none)
-      assert.deepEqual(t.validate('1', BigInteger).toOption(), some(BI(1)))
-      assert.deepEqual(t.validate('0', BigInteger).toOption(), some(BI(0)))
-      assert.deepEqual(t.validate('1.1', BigInteger).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(BigInteger.decode(null)), none)
+      assert.deepEqual(fromEither(BigInteger.decode(1)), some(BI(1)))
+      assert.deepEqual(fromEither(BigInteger.decode(0)), some(BI(0)))
+      assert.deepEqual(fromEither(BigInteger.decode(1.1)), none)
+      assert.deepEqual(fromEither(BigInteger.decode('1')), some(BI(1)))
+      assert.deepEqual(fromEither(BigInteger.decode('0')), some(BI(0)))
+      assert.deepEqual(fromEither(BigInteger.decode('1.1')), none)
     })
 
     it('is', () => {
       assert.strictEqual(BigInteger.is(BI(1)), true)
       assert.strictEqual(BigInteger.is(1), false)
     })
+
+    it('encode', () => {
+      assert.strictEqual(BigInteger.encode(BI(1)), '1')
+    })
   })
 
   describe('Natural', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate('1', Natural).toOption(), some(BI(1)))
-      assert.deepEqual(t.validate('0', Natural).toOption(), none)
-      assert.deepEqual(t.validate('1.1', Natural).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(Natural.decode('1')), some(BI(1)))
+      assert.deepEqual(fromEither(Natural.decode('0')), none)
+      assert.deepEqual(fromEither(Natural.decode('1.1')), none)
     })
 
     it('is', () => {
@@ -49,13 +57,17 @@ describe('io-ts types', () => {
       assert.strictEqual(Natural.is(BI(0)), false)
       assert.strictEqual(Natural.is(BI(-1)), false)
     })
+
+    it('encode', () => {
+      assert.strictEqual(Natural.encode(natural.one), '1')
+    })
   })
 
   describe('Integer', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate('1', Integer).toOption(), some(BI(1)))
-      assert.deepEqual(t.validate('0', Integer).toOption(), some(BI(0)))
-      assert.deepEqual(t.validate('1.1', Integer).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(Integer.decode('1')), some(BI(1)))
+      assert.deepEqual(fromEither(Integer.decode('0')), some(BI(0)))
+      assert.deepEqual(fromEither(Integer.decode('1.1')), none)
     })
 
     it('is', () => {
@@ -64,13 +76,17 @@ describe('io-ts types', () => {
       assert.strictEqual(Integer.is(BI(0)), true)
       assert.strictEqual(Integer.is(BI(-1)), true)
     })
+
+    it('encode', () => {
+      assert.strictEqual(Integer.encode(integer.one), '1')
+    })
   })
 
   describe('NonZeroInteger', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate('1', NonZeroInteger).toOption(), some(BI(1)))
-      assert.deepEqual(t.validate('0', NonZeroInteger).toOption(), none)
-      assert.deepEqual(t.validate('1.1', NonZeroInteger).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(NonZeroInteger.decode('1')), some(BI(1)))
+      assert.deepEqual(fromEither(NonZeroInteger.decode('0')), none)
+      assert.deepEqual(fromEither(NonZeroInteger.decode('1.1')), none)
     })
 
     it('is', () => {
@@ -79,18 +95,22 @@ describe('io-ts types', () => {
       assert.strictEqual(NonZeroInteger.is(BI(0)), false)
       assert.strictEqual(NonZeroInteger.is(BI(-1)), true)
     })
+
+    it('encode', () => {
+      assert.strictEqual(NonZeroInteger.encode(nonZeroInteger.one), '1')
+    })
   })
 
   describe('Rational', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate(null, Rational).toOption(), none)
-      assert.deepEqual(t.validate([1, 0], Rational).toOption(), none)
-      assert.deepEqual(t.validate([1, 1], Rational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([0, 1], Rational).toOption(), some([BI(0), BI(1)]))
-      assert.deepEqual(t.validate([2, 2], Rational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([-1, 1], Rational).toOption(), some([BI(1).multiply(-1), BI(1)]))
-      assert.deepEqual(t.validate([1, -1], Rational).toOption(), none)
-      assert.deepEqual(t.validate([1.1, 1], Rational).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(Rational.decode(null)), none)
+      assert.deepEqual(fromEither(Rational.decode([1, 0])), none)
+      assert.deepEqual(fromEither(Rational.decode([1, 1])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(Rational.decode([0, 1])), some([BI(0), BI(1)]))
+      assert.deepEqual(fromEither(Rational.decode([2, 2])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(Rational.decode([-1, 1])), some([BI(1).multiply(-1), BI(1)]))
+      assert.deepEqual(fromEither(Rational.decode([1, -1])), none)
+      assert.deepEqual(fromEither(Rational.decode([1.1, 1])), none)
     })
 
     it('is', () => {
@@ -100,18 +120,22 @@ describe('io-ts types', () => {
       assert.strictEqual(Rational.is([BI(1), BI(-2)]), false)
       assert.strictEqual(Rational.is([BI(2), BI(2)]), true)
     })
+
+    it('encode', () => {
+      assert.deepEqual(Rational.encode(rational.one), ['1', '1'])
+    })
   })
 
   describe('NonZeroRational', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate(null, NonZeroRational).toOption(), none)
-      assert.deepEqual(t.validate([1, 0], NonZeroRational).toOption(), none)
-      assert.deepEqual(t.validate([1, 1], NonZeroRational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([0, 1], NonZeroRational).toOption(), none)
-      assert.deepEqual(t.validate([2, 2], NonZeroRational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([-1, 1], NonZeroRational).toOption(), some([BI(1).multiply(-1), BI(1)]))
-      assert.deepEqual(t.validate([1, -1], NonZeroRational).toOption(), none)
-      assert.deepEqual(t.validate([1.1, 1], NonZeroRational).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(NonZeroRational.decode(null)), none)
+      assert.deepEqual(fromEither(NonZeroRational.decode([1, 0])), none)
+      assert.deepEqual(fromEither(NonZeroRational.decode([1, 1])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(NonZeroRational.decode([0, 1])), none)
+      assert.deepEqual(fromEither(NonZeroRational.decode([2, 2])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(NonZeroRational.decode([-1, 1])), some([BI(1).multiply(-1), BI(1)]))
+      assert.deepEqual(fromEither(NonZeroRational.decode([1, -1])), none)
+      assert.deepEqual(fromEither(NonZeroRational.decode([1.1, 1])), none)
     })
 
     it('is', () => {
@@ -121,18 +145,22 @@ describe('io-ts types', () => {
       assert.strictEqual(NonZeroRational.is([BI(1), BI(-2)]), false)
       assert.strictEqual(NonZeroRational.is([BI(2), BI(2)]), true)
     })
+
+    it('encode', () => {
+      assert.deepEqual(NonZeroRational.encode(nonZeroRational.one), ['1', '1'])
+    })
   })
 
   describe('PositiveRational', () => {
-    it('validate', () => {
-      assert.deepEqual(t.validate(null, PositiveRational).toOption(), none)
-      assert.deepEqual(t.validate([1, 0], PositiveRational).toOption(), none)
-      assert.deepEqual(t.validate([1, 1], PositiveRational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([0, 1], PositiveRational).toOption(), none)
-      assert.deepEqual(t.validate([2, 2], PositiveRational).toOption(), some([BI(1), BI(1)]))
-      assert.deepEqual(t.validate([-1, 1], PositiveRational).toOption(), none)
-      assert.deepEqual(t.validate([1, -1], PositiveRational).toOption(), none)
-      assert.deepEqual(t.validate([1.1, 1], PositiveRational).toOption(), none)
+    it('decode', () => {
+      assert.deepEqual(fromEither(PositiveRational.decode(null)), none)
+      assert.deepEqual(fromEither(PositiveRational.decode([1, 0])), none)
+      assert.deepEqual(fromEither(PositiveRational.decode([1, 1])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(PositiveRational.decode([0, 1])), none)
+      assert.deepEqual(fromEither(PositiveRational.decode([2, 2])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(PositiveRational.decode([-1, 1])), none)
+      assert.deepEqual(fromEither(PositiveRational.decode([1, -1])), none)
+      assert.deepEqual(fromEither(PositiveRational.decode([1.1, 1])), none)
     })
 
     it('is', () => {
@@ -142,17 +170,21 @@ describe('io-ts types', () => {
       assert.strictEqual(PositiveRational.is([BI(1), BI(-2)]), false)
       assert.strictEqual(PositiveRational.is([BI(2), BI(2)]), true)
     })
+
+    it('encode', () => {
+      assert.deepEqual(PositiveRational.encode(positiveRational.one), ['1', '1'])
+    })
   })
 
   describe('Discrete', () => {
-    it('validate', () => {
-      const format = { dimension: 'EUR', unit: 'cent' }
+    it('decode', () => {
+      const format: Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
       const one = discrete.getOne(format)
       const zero = discrete.getZero(format)
       const T = getDiscrete('EUR', 'cent')
-      assert.deepEqual(t.validate(1, T).toOption(), some(one))
-      assert.deepEqual(t.validate(0, T).toOption(), some(zero))
-      assert.deepEqual(t.validate(1.1, T).toOption(), none)
+      assert.deepEqual(fromEither(T.decode(1)), some(one))
+      assert.deepEqual(fromEither(T.decode(0)), some(zero))
+      assert.deepEqual(fromEither(T.decode(1.1)), none)
     })
 
     it('is', () => {
@@ -164,18 +196,25 @@ describe('io-ts types', () => {
       assert.strictEqual(T.is(new Discrete({ dimension: 'EUR', unit: 'euro' }, integer.wrap(BI(1)))), false)
       assert.strictEqual(T.is(new Discrete({ dimension: 'USD', unit: 'cent' }, integer.wrap(BI(1)))), false)
     })
+
+    it('encode', () => {
+      const format: Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
+      const T = getDiscrete('EUR', 'cent')
+      const d = new Discrete(format, integer.wrap(BI(100)))
+      assert.strictEqual(T.encode(d), '100')
+    })
   })
 
   describe('Dense', () => {
-    it('validate', () => {
+    it('decode', () => {
       const one = dense.getOne('EUR')
       const zero = dense.getZero('EUR')
       const T = getDense('EUR')
-      assert.deepEqual(t.validate(1, T).toOption(), none)
-      assert.deepEqual(t.validate([1, 0], T).toOption(), none)
-      assert.deepEqual(t.validate([1, 1], T).toOption(), some(one))
-      assert.deepEqual(t.validate([0, 1], T).toOption(), some(zero))
-      assert.deepEqual(t.validate([1.1, 1], T).toOption(), none)
+      assert.deepEqual(fromEither(T.decode(1)), none)
+      assert.deepEqual(fromEither(T.decode([1, 0])), none)
+      assert.deepEqual(fromEither(T.decode([1, 1])), some(one))
+      assert.deepEqual(fromEither(T.decode([0, 1])), some(zero))
+      assert.deepEqual(fromEither(T.decode([1.1, 1])), none)
     })
 
     it('is', () => {
@@ -184,6 +223,12 @@ describe('io-ts types', () => {
       assert.strictEqual(T.is(new Dense('EUR', unsafeRational([2, 1]))), true)
       assert.strictEqual(T.is(new Dense('EUR', unsafeRational([-2, 1]))), true)
       assert.strictEqual(T.is(new Dense('USD', unsafeRational([2, 1]))), false)
+    })
+
+    it('encode', () => {
+      const T = getDense('EUR')
+      const d = new Dense('EUR', unsafeRational([2, 1]))
+      assert.deepEqual(T.encode(d), ['2', '1'])
     })
   })
 })

@@ -47,13 +47,13 @@ export function getZero<D extends string, U extends string>(format: Format<D, U>
 
 export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> {
   return {
-    equals: x => y => integer.setoid.equals(x.value)(y.value)
+    equals: (x, y) => integer.setoid.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
   return {
     ...getSetoid(),
-    compare: x => y => integer.ord.compare(x.value)(y.value)
+    compare: (x, y) => integer.ord.compare(x.value, y.value)
   }
 }

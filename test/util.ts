@@ -26,13 +26,13 @@ import { Ring } from 'fp-ts/lib/Ring'
 import { Ord } from 'fp-ts/lib/Ord'
 
 const fromSome = <A>(fa: Option<A>): A =>
-  fa.getOrElse(() => {
+  fa.getOrElseL(() => {
     throw new Error('fromSome called with None')
   })
 
 export function getAssertEqual<A>(S: Setoid<A>): (x: A, y: A) => void {
   return function assertEqual(x: A, y: A): void {
-    if (!S.equals(x)(y)) {
+    if (!S.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
@@ -48,7 +48,7 @@ const denseSetoid = dense.getSetoid<any>()
 
 export function assertEqualDense<D extends string>(x: dense.Dense<D>): (y: Dense<D>) => void {
   return y => {
-    if (!denseSetoid.equals(x)(y)) {
+    if (!denseSetoid.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
@@ -60,7 +60,7 @@ export function assertEqualDiscrete<D extends string, U extends string>(
   x: Discrete<D, U>
 ): (y: Discrete<D, U>) => void {
   return y => {
-    if (!discreteSetoid.equals(x)(y)) {
+    if (!discreteSetoid.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
@@ -137,97 +137,97 @@ export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>
   // Compatibility with Setoid
   assertProperty(
     property(generator, generator, (a, b) => {
-      return O.compare(a)(b) === 'EQ' ? E.equals(a)(b) : true
+      return O.compare(a, b) === 0 ? E.equals(a, b) : true
     })
   )
   // Reflexivity
   assertProperty(
     property(generator, a => {
-      return O.compare(a)(a) !== 'GT'
+      return O.compare(a, a) !== 1
     })
   )
   // Antisymmetry
   assertProperty(
     property(generator, generator, (a, b) => {
-      return O.compare(a)(b) !== 'GT' && O.compare(b)(a) !== 'GT' ? E.equals(a)(b) : true
+      return O.compare(a, b) !== 1 && O.compare(b, a) !== 1 ? E.equals(a, b) : true
     })
   )
   // Transitivity
   assertProperty(
     property(generator, generator, generator, (a, b, c) => {
-      return O.compare(a)(b) !== 'GT' && O.compare(b)(c) !== 'GT' ? O.compare(a)(c) !== 'GT' : true
+      return O.compare(a, b) !== 1 && O.compare(b, c) !== 1 ? O.compare(a, c) !== 1 : true
     })
   )
 }
 
 export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: Semiring<A>): void {
-  const zero = S.zero()
+  const zero = S.zero
   // addition Associativity
   assertProperty(
     property(generator, generator, generator, (a, b, c) => {
-      return E.equals(S.add(S.add(a)(b))(c))(S.add(a)(S.add(b)(c)))
+      return E.equals(S.add(S.add(a, b), c), S.add(a, S.add(b, c)))
     })
   )
   // addition Identity
   assertProperty(
     property(generator, a => {
-      const b = S.add(a)(zero)
-      const c = S.add(zero)(a)
-      return E.equals(b)(c) && E.equals(b)(a)
+      const b = S.add(a, zero)
+      const c = S.add(zero, a)
+      return E.equals(b, c) && E.equals(b, a)
     })
   )
   // addition Commutativity
   assertProperty(
     property(generator, generator, (a, b) => {
-      return E.equals(S.add(a)(b))(S.add(b)(a))
+      return E.equals(S.add(a, b), S.add(b, a))
     })
   )
-  const one = S.one()
+  const one = S.one
   // multiplication Associativity
   assertProperty(
     property(generator, generator, generator, (a, b, c) => {
-      return E.equals(S.mul(S.mul(a)(b))(c))(S.mul(a)(S.mul(b)(c)))
+      return E.equals(S.mul(S.mul(a, b), c), S.mul(a, S.mul(b, c)))
     })
   )
   // multiplication Identity
   assertProperty(
     property(generator, a => {
-      const b = S.mul(a)(one)
-      const c = S.mul(one)(a)
-      return E.equals(b)(c) && E.equals(b)(a)
+      const b = S.mul(a, one)
+      const c = S.mul(one, a)
+      return E.equals(b, c) && E.equals(b, a)
     })
   )
   // Left distributivity
   assertProperty(
     property(generator, generator, generator, (a, b, c) => {
-      return E.equals(S.mul(a)(S.add(b)(c)))(S.add(S.mul(a)(b))(S.mul(a)(c)))
+      return E.equals(S.mul(a, S.add(b, c)), S.add(S.mul(a, b), S.mul(a, c)))
     })
   )
   // Right distributivity
   assertProperty(
     property(generator, generator, generator, (a, b, c) => {
-      return E.equals(S.mul(S.add(a)(b))(c))(S.add(S.mul(a)(c))(S.mul(b)(c)))
+      return E.equals(S.mul(S.add(a, b), c), S.add(S.mul(a, c), S.mul(b, c)))
     })
   )
   // Annihilation
   assertProperty(
     property(generator, a => {
-      const b = S.mul(a)(zero)
-      const c = S.mul(zero)(a)
-      return E.equals(b)(c) && E.equals(b)(zero)
+      const b = S.mul(a, zero)
+      const c = S.mul(zero, a)
+      return E.equals(b, c) && E.equals(b, zero)
     })
   )
 }
 
 export function checkRingLaws<A>(generator: Generator<A>, E: Setoid<A>, R: Ring<A>): void {
   checkSemiringLaws(generator, E, R)
-  const zero = R.zero()
+  const zero = R.zero
   // Additive inverse
   assertProperty(
     property(generator, a => {
-      const b = R.sub(a)(a)
-      const c = R.add(R.sub(zero)(a))(a)
-      return E.equals(b)(c) && E.equals(b)(zero)
+      const b = R.sub(a, a)
+      const c = R.add(R.sub(zero, a), a)
+      return E.equals(b, c) && E.equals(b, zero)
     })
   )
 }

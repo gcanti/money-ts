@@ -24,7 +24,7 @@ describe('Natural', () => {
     const gte = greaterThanOrEq(natural.ord)
     assertProperty(
       property(IntegerGenerator, i => {
-        return natural.fromInteger(i).fold(() => lte(i)(integer.zero), n => gte(n)(natural.one))
+        return natural.fromInteger(i).foldL(() => lte(i, integer.zero), n => gte(n, natural.one))
       })
     )
   })
@@ -57,9 +57,9 @@ describe('Natural', () => {
   })
 
   it('ord', () => {
-    assert.strictEqual(natural.ord.compare(n1)(n2), 'LT')
-    assert.strictEqual(natural.ord.compare(n2)(n1), 'GT')
-    assert.strictEqual(natural.ord.compare(n2)(n2), 'EQ')
+    assert.strictEqual(natural.ord.compare(n1, n2), -1)
+    assert.strictEqual(natural.ord.compare(n2, n1), 1)
+    assert.strictEqual(natural.ord.compare(n2, n2), 0)
   })
 
   it('show', () => {

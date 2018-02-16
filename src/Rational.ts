@@ -20,15 +20,12 @@ export function isZero(x: Rational): boolean {
 }
 
 export function reduce(n: Integer, d: Natural): Rational {
-  return nonZeroInteger.fromInteger(n).fold<Rational>(
-    () => zero,
-    n => {
-      const divisor = natural.gcd(nonZeroInteger.abs(n), d)
-      const n2 = integer.div(n, divisor)
-      const d2 = natural.div(d, divisor)
-      return [n2, d2]
-    }
-  )
+  return nonZeroInteger.fromInteger(n).fold<Rational>(zero, n => {
+    const divisor = natural.gcd(nonZeroInteger.abs(n), d)
+    const n2 = integer.div(n, divisor)
+    const d2 = natural.div(d, divisor)
+    return [n2, d2]
+  })
 }
 
 export function add([nx, dx]: Rational, [ny, dy]: Rational): Rational {
@@ -106,11 +103,11 @@ export const setoid: Setoid<Rational> = getProductSetoid(integer.setoid, natural
 
 export const ord: Ord<Rational> = {
   ...setoid,
-  compare: ([nx, dx]) => ([ny, dy]) => {
-    if (integer.setoid.equals(dx)(dy)) {
-      return integer.ord.compare(nx)(ny)
+  compare: ([nx, dx], [ny, dy]) => {
+    if (integer.setoid.equals(dx, dy)) {
+      return integer.ord.compare(nx, ny)
     } else {
-      return integer.ord.compare(integer.mul(nx, dy))(integer.mul(ny, dx))
+      return integer.ord.compare(integer.mul(nx, dy), integer.mul(ny, dx))
     }
   }
 }

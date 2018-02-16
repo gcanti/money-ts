@@ -1,11 +1,11 @@
-import * as t from 'io-ts'
+import { Type, mixed } from 'io-ts'
 import { Dense } from '../Dense'
 import { Rational } from './Rational'
 
-export const getDense = <D extends string>(dimension: D): t.Type<any, Dense<D>> =>
-  new t.Type(
+export const getDense = <D extends string>(dimension: D): Type<Dense<D>, [string, string], mixed> =>
+  new Type(
     'Dense',
-    (v): v is Dense<D> => v instanceof Dense && v.dimension === dimension,
-    (v, c) => Rational.validate(v, c).map(r => new Dense(dimension, r)),
-    v => Rational.serialize(v.value)
+    (m): m is Dense<D> => m instanceof Dense && m.dimension === dimension,
+    (m, c) => Rational.validate(m, c).map(r => new Dense(dimension, r)),
+    a => Rational.encode(a.value)
   )
