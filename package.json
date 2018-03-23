@@ -1,6 +1,6 @@
 {
   "name": "money-ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description":
     "TypeScript library for type-safe and lossless encoding and manipulation of world currencies and precious metals",
   "files": ["lib"],
