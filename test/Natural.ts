@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import { some, none } from 'fp-ts/lib/Option'
 import * as integer from '../src/Integer'
 import * as natural from '../src/Natural'
-import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './util'
+import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './helpers'
 import { property } from 'testcheck'
 import { lessThanOrEq, greaterThanOrEq } from 'fp-ts/lib/Ord'
 

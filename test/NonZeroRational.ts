@@ -1,4 +1,4 @@
-import { assertProperty, NonZeroRationalGenerator } from './util'
+import { assertProperty, NonZeroRationalGenerator } from './helpers'
 import { property } from 'testcheck'
 import * as nonZeroRational from '../src/NonZeroRational'
 

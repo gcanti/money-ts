@@ -63,7 +63,7 @@ export function getOrd<D extends string>(): Ord<Dense<D>> {
 }
 
 export function getScale<D extends Dimensions, U extends Units<D>>(format: Format<D, U>): PositiveRational {
-  return scale[format.dimension][format.unit]
+  return scale[format.dimension][format.unit] as any
 }
 
 export function fromDiscrete<D extends Dimensions, U extends Units<D>>(d: Discrete<D, U>): Dense<D> {

@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { Discrete, getOne, getZero, getOrd } from '../src/Discrete'
-import { unsafeInteger, unsafeNonZeroInteger, assertEqualDiscrete } from './util'
+import { unsafeInteger, unsafeNonZeroInteger, assertEqualDiscrete } from './helpers'
 
 const format = { dimension: 'EUR', unit: 'cent' }
 const dn0 = new Discrete(format, unsafeInteger(0))

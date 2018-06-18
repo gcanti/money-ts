@@ -1,6 +1,6 @@
 import * as bigInteger from '../src/BigInteger'
 import { gen, property } from 'testcheck'
-import { assertProperty, checkOrdLaws, checkRingLaws, BigIntegerGenerator } from './util'
+import { assertProperty, checkOrdLaws, checkRingLaws, BigIntegerGenerator } from './helpers'
 import * as BigInteger from 'big-integer'
 
 describe('BigInteger', () => {

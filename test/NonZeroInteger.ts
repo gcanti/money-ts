@@ -4,7 +4,7 @@ import { NonZeroInteger } from '../src/NonZeroInteger'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
 import * as BigInteger from 'big-integer'
-import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './util'
+import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './helpers'
 import { property } from 'testcheck'
 
 const wrap = (x: number | string): NonZeroInteger => BigInteger(x as any) as any
