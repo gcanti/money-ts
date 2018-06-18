@@ -7,7 +7,7 @@ import '../src/scale/EUR'
 import '../src/scale/XAU'
 import * as BigInteger from 'big-integer'
 import { unsafePositiveRational } from '../src/scale/unsafePositiveRational'
-import { unsafeRational, assertEqualDense, assertEqualDiscrete, assertProperty, getDenseGenerator } from './util'
+import { unsafeRational, assertEqualDense, assertEqualDiscrete, assertProperty, getDenseGenerator } from './helpers'
 import { property } from 'testcheck'
 
 describe('Dense', () => {

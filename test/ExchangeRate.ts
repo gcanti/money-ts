@@ -3,7 +3,7 @@ import * as M from '../src'
 import { ExchangeRate } from '../src/ExchangeRate'
 import * as exchangeRate from '../src/ExchangeRate'
 import { unsafePositiveRational } from '../src/scale/unsafePositiveRational'
-import { unsafeInteger, assertEqualDense } from './util'
+import { unsafeInteger, assertEqualDense } from './helpers'
 
 const S = M.exchangeRate.getSetoid<any, any>()
 
@@ -27,7 +27,10 @@ describe('ExchangeRate', () => {
   it('compose', () => {
     const goldsmith = exchangeRate.wrap<'XAU', 'JPY'>(unsafePositiveRational([2, 1]))
     const fiatshop = exchangeRate.wrap<'JPY', 'EUR'>(unsafePositiveRational([3, 1]))
-    const you = exchangeRate.compose(fiatshop, goldsmith)
+    const you = exchangeRate.compose(
+      fiatshop,
+      goldsmith
+    )
     assertEqual(you)(exchangeRate.wrap<'XAU', 'EUR'>(unsafePositiveRational([6, 1])))
   })
 })

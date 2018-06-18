@@ -4,12 +4,12 @@ import * as integer from './Integer'
 import { Setoid } from 'fp-ts/lib/Setoid'
 import { Ord } from 'fp-ts/lib/Ord'
 
-export interface Format<D extends string, U extends string> {
+export interface Format<D extends string, U extends string | number | symbol> {
   dimension: D
   unit: U
 }
 
-export class Discrete<D extends string, U extends string> {
+export class Discrete<D extends string, U extends string | number | symbol> {
   constructor(readonly format: Format<D, U>, readonly value: Integer) {}
   add(y: Discrete<D, U>): Discrete<D, U> {
     return new Discrete(this.format, integer.add(this.value, y.value))

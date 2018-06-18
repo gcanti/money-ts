@@ -1,4 +1,4 @@
-import { assertProperty, PositiveRationalGenerator } from './util'
+import { assertProperty, PositiveRationalGenerator } from './helpers'
 import { property } from 'testcheck'
 import * as positiveRational from '../src/PositiveRational'
 

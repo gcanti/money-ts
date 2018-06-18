@@ -7,7 +7,7 @@ import {
   unsafeInteger,
   unsafeNatural,
   assertEqualInteger
-} from './util'
+} from './helpers'
 import { property } from 'testcheck'
 
 const n2 = unsafeNatural(2)

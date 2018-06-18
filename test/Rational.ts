@@ -8,7 +8,7 @@ import {
   unsafeNatural,
   unsafeNonZeroRational,
   assertEqualInteger
-} from './util'
+} from './helpers'
 
 const i2 = unsafeInteger(2)
 const in1 = unsafeInteger(-1)
