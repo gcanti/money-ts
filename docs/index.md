@@ -1,3 +1,8 @@
+---
+title: Home
+nav_order: 1
+---
+
 A porting of [safe-money](https://github.com/k0001/safe-money) (Haskell)
 
 Blog post: https://ren.zone/articles/safe-money
@@ -62,7 +67,3 @@ Via [io-ts](https://github.com/gcanti/io-ts)
 - `NonZeroRational`
 - `PositiveRational`
 - `Rational`
-
-# Documentation
-
-- [API Reference](https://gcanti.github.io/money-ts)
