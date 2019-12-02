@@ -18,7 +18,7 @@ describe('ExchangeRate', () => {
   it('exchange', () => {
     const jpybtc = ER.wrap<'JPY', 'BTC'>(unsafePositiveRational([3, 1000000]))
     const btc = M.dense.fromInteger('BTC', M.integer.one)
-    const jpy = M.dense.fromInteger('JPY', unsafeInteger(2))
+    const jpy = M.dense.fromInteger('JPY', unsafeInteger('2'))
     const result = btc.add(ER.exchange(jpybtc)(jpy))
     assertEqualDense(result)(new M.dense.Dense('BTC', unsafePositiveRational([500003, 500000])))
   })
