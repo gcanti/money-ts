@@ -1,23 +1,22 @@
 import * as assert from 'assert'
-import * as BI from 'big-integer'
 import * as O from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { property } from 'testcheck'
-import * as integer from '../src/Integer'
+import * as I from '../src/Integer'
 import * as NZI from '../src/NonZeroInteger'
 import { assertProperty, getAssertEqual, getAssertEqualOption, IntegerGenerator, unsafeNatural } from './helpers'
 
-const wrap = (x: number | string): NZI.NonZeroInteger => BI(x as any) as any
+const wrap = (x: string): NZI.NonZeroInteger => BigInt(x) as any
 
-const n1 = unsafeNatural(1)
-const nz1 = wrap(1)
-const nz2 = wrap(2)
-const nz3 = wrap(3)
-const nz4 = wrap(4)
-const nz5 = wrap(5)
-const nz6 = wrap(6)
-const nz12 = wrap(12)
-const zz1 = wrap(-1)
+const n1 = unsafeNatural('1')
+const nz1 = wrap('1')
+const nz2 = wrap('2')
+const nz3 = wrap('3')
+const nz4 = wrap('4')
+const nz5 = wrap('5')
+const nz6 = wrap('6')
+const nz12 = wrap('12')
+const zz1 = wrap('-1')
 
 const assertEqual = getAssertEqual(NZI.ord)
 
@@ -30,7 +29,7 @@ describe('NonZeroInteger', () => {
         return pipe(
           NZI.fromInteger(i),
           O.fold(
-            () => integer.ord.equals(i, integer.zero),
+            () => I.integer.equals(i, I.zero),
             () => true
           )
         )
@@ -61,12 +60,12 @@ describe('NonZeroInteger', () => {
 
   it('div', () => {
     assertEqual(NZI.div(nz6, nz2), nz3)
-    assertEqual(NZI.div(nz6, nz4), nz1)
+    assert.strictEqual(NZI.div(nz6, nz4), nz1)
   })
 
   it('gcd', () => {
     assertEqual(NZI.gcd(nz6, nz4), nz2)
-    assertEqual(NZI.gcd(integer.zero, nz4), nz4)
+    assertEqual(NZI.gcd(I.zero, nz4), nz4)
   })
 
   it('lcm', () => {
@@ -100,6 +99,6 @@ describe('NonZeroInteger', () => {
   })
 
   it('should handle big numbers', () => {
-    assertEqual(NZI.add(wrap(9007199254740992), NZI.one), wrap('9007199254740993'))
+    assertEqual(NZI.add(wrap('9007199254740992'), NZI.one), wrap('9007199254740993'))
   })
 })

@@ -1,15 +1,15 @@
 import * as assert from 'assert'
-import { Discrete, getOne, getZero, getOrd } from '../src/Discrete'
-import { unsafeInteger, unsafeNonZeroInteger, assertEqualDiscrete } from './helpers'
+import { Discrete, getOne, getOrd, getZero } from '../src/Discrete'
+import { assertEqualDiscrete, unsafeInteger, unsafeNonZeroInteger } from './helpers'
 
 const format = { dimension: 'EUR', unit: 'cent' }
-const dn0 = new Discrete(format, unsafeInteger(0))
-const dn1 = new Discrete(format, unsafeInteger(1))
-const dn2 = new Discrete(format, unsafeInteger(2))
-const dn3 = new Discrete(format, unsafeInteger(3))
-const dn5 = new Discrete(format, unsafeInteger(5))
-const dn6 = new Discrete(format, unsafeInteger(6))
-const dz1 = new Discrete(format, unsafeInteger(-1))
+const dn0 = new Discrete(format, unsafeInteger('0'))
+const dn1 = new Discrete(format, unsafeInteger('1'))
+const dn2 = new Discrete(format, unsafeInteger('2'))
+const dn3 = new Discrete(format, unsafeInteger('3'))
+const dn5 = new Discrete(format, unsafeInteger('5'))
+const dn6 = new Discrete(format, unsafeInteger('6'))
+const dz1 = new Discrete(format, unsafeInteger('-1'))
 
 describe('Discrete', () => {
   it('add', () => {
@@ -17,7 +17,7 @@ describe('Discrete', () => {
   })
 
   it('mul', () => {
-    assertEqualDiscrete(dn2.mul(unsafeInteger(3)))(dn6)
+    assertEqualDiscrete(dn2.mul(unsafeInteger('3')))(dn6)
   })
 
   it('one', () => {
@@ -58,7 +58,7 @@ describe('Discrete', () => {
   })
 
   it('should handle big numbers', () => {
-    assertEqualDiscrete(new Discrete(format, unsafeInteger(9007199254740992)).add(dn1))(
+    assertEqualDiscrete(new Discrete(format, unsafeInteger('9007199254740992')).add(dn1))(
       new Discrete(format, unsafeInteger('9007199254740993'))
     )
   })

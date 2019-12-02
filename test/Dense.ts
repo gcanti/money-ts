@@ -5,7 +5,6 @@ import { Discrete } from '../src/Discrete'
 import * as R from '../src/Rational'
 import '../src/scale/EUR'
 import '../src/scale/XAU'
-import * as BigInteger from 'big-integer'
 import { unsafePositiveRational } from '../src/scale/unsafePositiveRational'
 import { unsafeRational, assertEqualDense, assertEqualDiscrete, assertProperty, getDenseGenerator } from './helpers'
 import { property } from 'testcheck'
@@ -41,7 +40,7 @@ describe('Dense', () => {
 
   it('floor', () => {
     const [d1, rest1] = D.floor('cent', new D.Dense('EUR', unsafePositiveRational([124, 100])))
-    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'cent' }, M.integer.wrap(BigInteger(124))))
+    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'cent' }, M.integer.wrap(BigInt(124))))
     assertEqualDense(rest1)(D.getZero('EUR'))
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
@@ -53,7 +52,7 @@ describe('Dense', () => {
 
   it('round', () => {
     const [d1, rest1] = D.round('euro', new D.Dense('EUR', unsafePositiveRational([124, 100])))
-    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInteger(1))))
+    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInt(1))))
     assertEqualDense(rest1)(new D.Dense('EUR', unsafePositiveRational([24, 100])))
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
@@ -65,7 +64,7 @@ describe('Dense', () => {
 
   it('ceil', () => {
     const [d1, rest1] = D.ceil('euro', new D.Dense('EUR', unsafePositiveRational([124, 100])))
-    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInteger(2))))
+    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInt(2))))
     assertEqualDense(rest1)(new D.Dense('EUR', unsafeRational([-76, 100])))
     assertProperty(
       property(getDenseGenerator('EUR'), euro => {
@@ -77,11 +76,11 @@ describe('Dense', () => {
 
   it('trunc', () => {
     const [d1, rest1] = D.trunc('euro', new D.Dense('EUR', unsafePositiveRational([124, 100])))
-    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInteger(1))))
+    assertEqualDiscrete(d1)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInt(1))))
     assertEqualDense(rest1)(new D.Dense('EUR', unsafePositiveRational([24, 100])))
 
     const [d2, rest2] = D.trunc('euro', new D.Dense('EUR', unsafeRational([-124, 100])))
-    assertEqualDiscrete(d2)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInteger(-1))))
+    assertEqualDiscrete(d2)(new Discrete({ dimension: 'EUR', unit: 'euro' }, M.integer.wrap(BigInt(-1))))
     assertEqualDense(rest2)(new D.Dense('EUR', unsafeRational([-24, 100])))
 
     assertProperty(

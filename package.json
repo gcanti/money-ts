@@ -16,7 +16,8 @@
     "test": "npm run prettier && npm run lint && npm run typings-checker && npm run jest && npm run docs",
     "clean": "rm -rf lib/*",
     "build": "npm run clean && tsc",
-    "docs": "docs-ts"
+    "docs": "docs-ts",
+    "mocha": "mocha -r ts-node/register test/*.ts"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,6 @@
   },
   "homepage": "https://github.com/gcanti/money-ts",
   "peerDependencies": {
-    "big-integer": "^1.6.48",
     "fp-ts": "^2.2.0",
     "io-ts": "^2.0.1",
     "io-ts-types": "^0.3.1",
@@ -38,21 +38,20 @@
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
-    "@types/big-integer": "0.0.31",
     "@types/jest": "^22.2.2",
     "@types/node": "^12.12.14",
     "benchmark": "^2.1.4",
-    "big-integer": "^1.6.48",
     "docs-ts": "^0.2.1",
     "fp-ts": "^2.2.0",
     "io-ts": "^2.0.1",
     "io-ts-types": "^0.3.1",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
+    "mocha": "^6.2.2",
     "monocle-ts": "^1.0.0",
     "newtype-ts": "^0.2.0",
     "prettier": "^1.19.1",
     "testcheck": "^1.0.0-rc.2",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^24.2.0",
     "ts-node": "3.3.0",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^8.0.1",

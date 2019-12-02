@@ -7,13 +7,13 @@ import * as I from '../src/Integer'
 import * as N from '../src/Natural'
 import { assertProperty, getAssertEqual, getAssertEqualOption, IntegerGenerator, unsafeNatural } from './helpers'
 
-const n1 = unsafeNatural(1)
-const n2 = unsafeNatural(2)
-const n3 = unsafeNatural(3)
-const n4 = unsafeNatural(4)
-const n5 = unsafeNatural(5)
-const n6 = unsafeNatural(6)
-const n12 = unsafeNatural(12)
+const n1 = unsafeNatural('1')
+const n2 = unsafeNatural('2')
+const n3 = unsafeNatural('3')
+const n4 = unsafeNatural('4')
+const n5 = unsafeNatural('5')
+const n6 = unsafeNatural('6')
+const n12 = unsafeNatural('12')
 
 const assertEqual = getAssertEqual(N.ord)
 
@@ -21,7 +21,7 @@ const assertEqualOption = getAssertEqualOption(N.ord)
 
 describe('Natural', () => {
   it('fromInteger', () => {
-    const lte = leq(I.ord)
+    const lte = leq(I.integer)
     const gte = geq(N.ord)
     assertProperty(
       property(IntegerGenerator, i => {
@@ -70,7 +70,7 @@ describe('Natural', () => {
   })
 
   it('show', () => {
-    assert.strictEqual(N.show(unsafeNatural(100)), '100')
+    assert.strictEqual(N.show(unsafeNatural('100')), '100')
     assert.strictEqual(N.show(unsafeNatural('9007199254740993')), '9007199254740993')
   })
 })

@@ -2,7 +2,6 @@ import { unsafeCoerce } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/lib/Option'
 import { fromCompare, Ord } from 'fp-ts/lib/Ord'
 import { pipe } from 'fp-ts/lib/pipeable'
-import * as BI from './BigInteger'
 import * as I from './Integer'
 import * as N from './Natural'
 import * as NZI from './NonZeroInteger'
@@ -113,18 +112,19 @@ export function sign(x: Rational): -1 | 0 | 1 {
 export function floor(x: Rational): Integer {
   const n = I.unwrap(x[0])
   const d = I.unwrap(x[1])
-  const divmod = n.divmod(d)
-  if (divmod.remainder.isZero() || sign(x) >= 0) {
-    return I.wrap(divmod.quotient)
+  const quotient = n / d
+  const remainder = n % d
+  if (remainder === 0n || sign(x) >= 0) {
+    return I.wrap(quotient)
   } else {
-    return I.wrap(divmod.quotient.prev())
+    return I.wrap(quotient - 1n)
   }
 }
 
 /**
  * @since 0.1.2
  */
-const semi: Rational = unsafeCoerce([BI.one, BI.two])
+const semi: Rational = unsafeCoerce([1n, 2n])
 
 /**
  * @since 0.1.2
@@ -139,11 +139,12 @@ export function round(x: Rational): Integer {
 export function ceil(x: Rational): Integer {
   const n = I.unwrap(x[0])
   const d = I.unwrap(x[1])
-  const divmod = n.divmod(d)
-  if (divmod.remainder.isZero() || sign(x) < 0) {
-    return I.wrap(divmod.quotient)
+  const quotient = n / d
+  const remainder = n % d
+  if (remainder === 0n || sign(x) < 0) {
+    return I.wrap(quotient)
   } else {
-    return I.wrap(divmod.quotient.next())
+    return I.wrap(quotient + 1n)
   }
 }
 
@@ -162,10 +163,10 @@ export function trunc(x: Rational): Integer {
  * @since 0.1.2
  */
 export const ord: Ord<Rational> = fromCompare(([nx, dx], [ny, dy]) => {
-  if (I.ord.equals(dx, dy)) {
-    return I.ord.compare(nx, ny)
+  if (I.integer.equals(dx, dy)) {
+    return I.integer.compare(nx, ny)
   } else {
-    return I.ord.compare(I.mul(nx, dy), I.mul(ny, dx))
+    return I.integer.compare(I.mul(nx, dy), I.mul(ny, dx))
   }
 })
 

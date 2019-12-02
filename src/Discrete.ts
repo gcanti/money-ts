@@ -79,5 +79,5 @@ export function getZero<D extends string, U extends string>(format: Format<D, U>
  * @since 0.1.2
  */
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
-  return fromCompare((x, y) => I.ord.compare(x.value, y.value))
+  return fromCompare((x, y) => I.integer.compare(x.value, y.value))
 }

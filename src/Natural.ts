@@ -1,4 +1,3 @@
-import { BigInteger } from 'big-integer'
 import { unsafeCoerce } from 'fp-ts/lib/function'
 import { none, Option, some } from 'fp-ts/lib/Option'
 import { Ord } from 'fp-ts/lib/Ord'
@@ -19,20 +18,20 @@ export interface Natural
       NonZero: true
       Positive: true
     },
-    BigInteger
+    bigint
   > {}
 
 /**
  * @since 0.1.2
  */
-export function wrap(x: BigInteger): Option<Natural> {
+export function wrap(x: bigint): Option<Natural> {
   return fromInteger(I.wrap(x))
 }
 
 /**
  * @since 0.1.2
  */
-export const unwrap: (x: Natural) => BigInteger = unsafeCoerce
+export const unwrap: (x: Natural) => bigint = unsafeCoerce
 
 /**
  * @since 0.1.2
@@ -81,7 +80,10 @@ export const lcm: (x: Natural, y: Natural) => Natural = NZI.lcm
 /**
  * @since 0.1.2
  */
-export const ord: Ord<Natural> = I.ord
+export const ord: Ord<Natural> = {
+  equals: I.integer.equals,
+  compare: I.integer.compare
+}
 
 /**
  * @since 0.1.2

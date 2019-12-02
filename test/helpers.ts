@@ -1,30 +1,19 @@
 import * as assert from 'assert'
-import { check, Property, gen, Generator, property } from 'testcheck'
 import { Eq } from 'fp-ts/lib/Eq'
-import { BigInteger } from 'big-integer'
-import * as BI from '../src/BigInteger'
-import * as I from '../src/Integer'
-import * as NZI from '../src/NonZeroInteger'
-import * as N from '../src/Natural'
-import * as R from '../src/Rational'
-import * as NZR from '../src/NonZeroRational'
+import { unsafeCoerce } from 'fp-ts/lib/function'
+import * as O from 'fp-ts/lib/Option'
+import { Ord } from 'fp-ts/lib/Ord'
+import { Ring } from 'fp-ts/lib/Ring'
+import { Semiring } from 'fp-ts/lib/Semiring'
+import { check, gen, Generator, Property, property } from 'testcheck'
 import * as D from '../src/Dense'
 import * as DI from '../src/Discrete'
+import * as I from '../src/Integer'
+import * as N from '../src/Natural'
+import * as NZI from '../src/NonZeroInteger'
+import * as NZR from '../src/NonZeroRational'
 import * as PR from '../src/PositiveRational'
-import { Semiring } from 'fp-ts/lib/Semiring'
-import { Ring } from 'fp-ts/lib/Ring'
-import { Ord } from 'fp-ts/lib/Ord'
-import * as O from 'fp-ts/lib/Option'
-import { pipe } from 'fp-ts/lib/pipeable'
-import { unsafeCoerce } from 'fp-ts/lib/function'
-
-const fromSome = <A>(fa: O.Option<A>): A =>
-  pipe(
-    fa,
-    O.getOrElse<A>(() => {
-      throw new Error('fromSome called with None')
-    })
-  )
+import * as R from '../src/Rational'
 
 export function getAssertEqual<A>(S: Eq<A>): (x: A, y: A) => void {
   return function assertEqual(x: A, y: A): void {
@@ -38,7 +27,7 @@ export function getAssertEqualOption<A>(S: Eq<A>): (x: O.Option<A>, y: O.Option<
   return getAssertEqual(O.getEq(S))
 }
 
-export const assertEqualInteger = getAssertEqual(I.ord)
+export const assertEqualInteger = getAssertEqual(I.integer)
 
 const denseSetoid = D.getOrd<any>()
 
@@ -69,48 +58,44 @@ export function assertProperty<A>(p: Property<A>): void {
   }
 }
 
-export function unsafeBigInteger(x: number | string): BigInteger {
-  return fromSome(BI.wrap(x))
+export function unsafeInteger(x: string): I.Integer {
+  return BigInt(x) as any
 }
 
-export function unsafeInteger(x: number | string): I.Integer {
-  return fromSome(pipe(BI.wrap(x), O.map(I.wrap)))
+export function unsafeNatural(x: string): N.Natural {
+  return BigInt(x) as any
 }
 
-export function unsafeNatural(x: number | string): N.Natural {
-  return fromSome(pipe(BI.wrap(x), O.chain(N.wrap)))
+export function unsafeNonZeroInteger(x: number): NZI.NonZeroInteger {
+  return BigInt(x) as any
 }
 
-export function unsafeNonZeroInteger(x: number | string): NZI.NonZeroInteger {
-  return fromSome(pipe(BI.wrap(x), O.chain(NZI.wrap)))
+export function unsafeRational([x, y]: [number, number]): R.Rational {
+  return R.reduce(BigInt(x) as any, BigInt(y) as any)
 }
 
-export function unsafeRational([x, y]: [number | string, number | string]): R.Rational {
-  return R.reduce(unsafeInteger(x), unsafeNatural(y))
-}
-
-export function unsafeNonZeroRational([x, y]: [number | string, number | string]): NZR.NonZeroRational {
-  return NZR.reduce(unsafeNonZeroInteger(x), unsafeNatural(y))
+export function unsafeNonZeroRational([x, y]: [number, number]): NZR.NonZeroRational {
+  return NZR.reduce(BigInt(x) as any, BigInt(y) as any)
 }
 
 const BigNaturalStringGenerator: Generator<string> = gen.sPosInt.then(i => i + '9007199254740992')
 
 const BigIntegerStringGenerator: Generator<string> = gen.int.then(i => i + '9007199254740992')
 
-const BigNaturalGenerator: Generator<BigInteger> = gen
+const BigNaturalGenerator: Generator<bigint> = gen
   .oneOf<string | number>([gen.sPosInt, BigNaturalStringGenerator])
-  .then(unsafeBigInteger)
+  .then(BigInt)
 
-export const BigIntegerGenerator: Generator<BigInteger> = gen
+export const BigIntegerGenerator: Generator<bigint> = gen
   .oneOf<string | number>([gen.int, BigIntegerStringGenerator])
-  .then(unsafeBigInteger)
+  .then(BigInt)
 
 export const NaturalGenerator: Generator<N.Natural> = unsafeCoerce(BigNaturalGenerator)
 
 export const IntegerGenerator: Generator<I.Integer> = unsafeCoerce(BigIntegerGenerator)
 
 export const NonZeroIntegerGenerator: Generator<NZI.NonZeroInteger> = BigIntegerGenerator.suchThat(
-  bi => !bi.isZero()
+  bi => bi !== 0n
 ).then(bi => unsafeCoerce(bi))
 
 export const NonZeroRationalGenerator: Generator<NZR.NonZeroRational> = gen

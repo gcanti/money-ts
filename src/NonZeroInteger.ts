@@ -1,9 +1,8 @@
-import { BigInteger } from 'big-integer'
 import { unsafeCoerce } from 'fp-ts/lib/function'
 import { none, Option, some } from 'fp-ts/lib/Option'
 import { Ord } from 'fp-ts/lib/Ord'
 import { Newtype } from 'newtype-ts'
-import * as BI from './BigInteger'
+import * as BI from './bigint'
 import * as I from './Integer'
 import { Natural } from './Natural'
 
@@ -18,20 +17,20 @@ export interface NonZeroInteger
       Integer: true
       NonZero: true
     },
-    BigInteger
+    bigint
   > {}
 
 /**
  * @since 0.1.2
  */
-export function wrap(x: BigInteger): Option<NonZeroInteger> {
+export function wrap(x: bigint): Option<NonZeroInteger> {
   return fromInteger(I.wrap(x))
 }
 
 /**
  * @since 0.1.2
  */
-export const unwrap: (x: NonZeroInteger) => BigInteger = unsafeCoerce
+export const unwrap: (x: NonZeroInteger) => bigint = unsafeCoerce
 
 /**
  * @since 0.1.2
@@ -106,7 +105,10 @@ export function abs(x: NonZeroInteger): Natural {
 /**
  * @since 0.1.2
  */
-export const ord: Ord<NonZeroInteger> = I.ord
+export const ord: Ord<NonZeroInteger> = {
+  equals: I.integer.equals,
+  compare: I.integer.compare
+}
 
 /**
  * @since 0.1.2

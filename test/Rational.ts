@@ -10,9 +10,9 @@ import {
   assertEqualInteger
 } from './helpers'
 
-const i2 = unsafeInteger(2)
-const in1 = unsafeInteger(-1)
-const in2 = unsafeInteger(-2)
+const i2 = unsafeInteger('2')
+const in1 = unsafeInteger('-1')
+const in2 = unsafeInteger('-2')
 
 const assertEqual = getAssertEqual(rational.ord)
 
@@ -27,10 +27,10 @@ describe('Rational', () => {
   })
 
   it('reduce', () => {
-    assertEqual(rational.reduce(unsafeInteger(4), unsafeNatural(2)), unsafeRational([2, 1]))
-    assertEqual(rational.reduce(unsafeInteger(-4), unsafeNatural(2)), unsafeRational([-2, 1]))
-    assertEqual(rational.reduce(unsafeInteger(2), unsafeNatural(1)), unsafeRational([2, 1]))
-    assertEqual(rational.reduce(unsafeInteger(0), unsafeNatural(1)), unsafeRational([0, 1]))
+    assertEqual(rational.reduce(unsafeInteger('4'), unsafeNatural('2')), unsafeRational([2, 1]))
+    assertEqual(rational.reduce(unsafeInteger('-4'), unsafeNatural('2')), unsafeRational([-2, 1]))
+    assertEqual(rational.reduce(unsafeInteger('2'), unsafeNatural('1')), unsafeRational([2, 1]))
+    assertEqual(rational.reduce(unsafeInteger('0'), unsafeNatural('1')), unsafeRational([0, 1]))
   })
 
   it('add', () => {

@@ -1,4 +1,4 @@
-import * as bigInteger from './BigInteger'
+import * as bigInt from './bigint'
 import * as dense from './Dense'
 import * as discrete from './Discrete'
 import * as exchangeRate from './ExchangeRate'
@@ -12,9 +12,9 @@ import * as scale from './Scale'
 
 export {
   /**
-   * @since 0.1.2
+   * @since 0.2.0
    */
-  bigInteger,
+  bigInt,
   /**
    * @since 0.1.2
    */
