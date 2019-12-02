@@ -15,7 +15,6 @@ parent: Modules
   - [negate (method)](#negate-method)
   - [sub (method)](#sub-method)
   - [div (method)](#div-method)
-  - [inspect (method)](#inspect-method)
   - [toString (method)](#tostring-method)
 - [ceil (function)](#ceil-function)
 - [floor (function)](#floor-function)
@@ -24,7 +23,6 @@ parent: Modules
 - [getOne (function)](#getone-function)
 - [getOrd (function)](#getord-function)
 - [getScale (function)](#getscale-function)
-- [getSetoid (function)](#getsetoid-function)
 - [getZero (function)](#getzero-function)
 - [round (function)](#round-function)
 - [trunc (function)](#trunc-function)
@@ -42,6 +40,8 @@ export class Dense<D> {
 }
 ```
 
+Added in v0.1.2
+
 ## isZero (method)
 
 **Signature**
@@ -49,6 +49,8 @@ export class Dense<D> {
 ```ts
 isZero(): boolean { ... }
 ```
+
+Added in v0.1.2
 
 ## add (method)
 
@@ -58,6 +60,8 @@ isZero(): boolean { ... }
 add(y: Dense<D>): Dense<D> { ... }
 ```
 
+Added in v0.1.2
+
 ## mul (method)
 
 **Signature**
@@ -65,6 +69,8 @@ add(y: Dense<D>): Dense<D> { ... }
 ```ts
 mul(y: Rational): Dense<D> { ... }
 ```
+
+Added in v0.1.2
 
 ## negate (method)
 
@@ -74,6 +80,8 @@ mul(y: Rational): Dense<D> { ... }
 negate(): Dense<D> { ... }
 ```
 
+Added in v0.1.2
+
 ## sub (method)
 
 **Signature**
@@ -81,6 +89,8 @@ negate(): Dense<D> { ... }
 ```ts
 sub(y: Dense<D>): Dense<D> { ... }
 ```
+
+Added in v0.1.2
 
 ## div (method)
 
@@ -90,13 +100,7 @@ sub(y: Dense<D>): Dense<D> { ... }
 div(y: NonZeroRational): Dense<D> { ... }
 ```
 
-## inspect (method)
-
-**Signature**
-
-```ts
-inspect(): string { ... }
-```
+Added in v0.1.2
 
 ## toString (method)
 
@@ -106,6 +110,8 @@ inspect(): string { ... }
 toString(): string { ... }
 ```
 
+Added in v0.1.2
+
 # ceil (function)
 
 **Signature**
@@ -113,6 +119,8 @@ toString(): string { ... }
 ```ts
 export function ceil<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense<D>): [Discrete<D, U>, Dense<D>] { ... }
 ```
+
+Added in v0.1.2
 
 # floor (function)
 
@@ -122,6 +130,8 @@ export function ceil<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense
 export function floor<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense<D>): [Discrete<D, U>, Dense<D>] { ... }
 ```
 
+Added in v0.1.2
+
 # fromDiscrete (function)
 
 **Signature**
@@ -129,6 +139,8 @@ export function floor<D extends Dimensions, U extends Units<D>>(unit: U, d: Dens
 ```ts
 export function fromDiscrete<D extends Dimensions, U extends Units<D>>(d: Discrete<D, U>): Dense<D> { ... }
 ```
+
+Added in v0.1.2
 
 # fromInteger (function)
 
@@ -138,6 +150,8 @@ export function fromDiscrete<D extends Dimensions, U extends Units<D>>(d: Discre
 export function fromInteger<D extends string>(d: D, i: Integer): Dense<D> { ... }
 ```
 
+Added in v0.1.2
+
 # getOne (function)
 
 **Signature**
@@ -145,6 +159,8 @@ export function fromInteger<D extends string>(d: D, i: Integer): Dense<D> { ... 
 ```ts
 export function getOne<D extends string>(d: D): Dense<D> { ... }
 ```
+
+Added in v0.1.2
 
 # getOrd (function)
 
@@ -154,6 +170,8 @@ export function getOne<D extends string>(d: D): Dense<D> { ... }
 export function getOrd<D extends string>(): Ord<Dense<D>> { ... }
 ```
 
+Added in v0.1.2
+
 # getScale (function)
 
 **Signature**
@@ -162,13 +180,7 @@ export function getOrd<D extends string>(): Ord<Dense<D>> { ... }
 export function getScale<D extends Dimensions, U extends Units<D>>(format: Format<D, U>): PositiveRational { ... }
 ```
 
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export function getSetoid<D extends string>(): Setoid<Dense<D>> { ... }
-```
+Added in v0.1.2
 
 # getZero (function)
 
@@ -178,6 +190,8 @@ export function getSetoid<D extends string>(): Setoid<Dense<D>> { ... }
 export function getZero<D extends string>(d: D): Dense<D> { ... }
 ```
 
+Added in v0.1.2
+
 # round (function)
 
 **Signature**
@@ -186,6 +200,8 @@ export function getZero<D extends string>(d: D): Dense<D> { ... }
 export function round<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense<D>): [Discrete<D, U>, Dense<D>] { ... }
 ```
 
+Added in v0.1.2
+
 # trunc (function)
 
 **Signature**
@@ -193,3 +209,5 @@ export function round<D extends Dimensions, U extends Units<D>>(unit: U, d: Dens
 ```ts
 export function trunc<D extends Dimensions, U extends Units<D>>(unit: U, d: Dense<D>): [Discrete<D, U>, Dense<D>] { ... }
 ```
+
+Added in v0.1.2

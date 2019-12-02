@@ -1,59 +1,83 @@
-import { Integer } from './Integer'
+import { fromCompare, Ord } from 'fp-ts/lib/Ord'
+import * as I from './Integer'
 import { NonZeroInteger } from './NonZeroInteger'
-import * as integer from './Integer'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
 
+import Integer = I.Integer
+
+/**
+ * @since 0.1.2
+ */
 export interface Format<D extends string, U extends string | number | symbol> {
   dimension: D
   unit: U
 }
 
+/**
+ * @since 0.1.2
+ */
 export class Discrete<D extends string, U extends string | number | symbol> {
   constructor(readonly format: Format<D, U>, readonly value: Integer) {}
+  /**
+   * @since 0.1.2
+   */
   add(y: Discrete<D, U>): Discrete<D, U> {
-    return new Discrete(this.format, integer.add(this.value, y.value))
+    return new Discrete(this.format, I.add(this.value, y.value))
   }
+  /**
+   * @since 0.1.2
+   */
   mul(y: Integer): Discrete<D, U> {
-    return new Discrete(this.format, integer.mul(this.value, y))
+    return new Discrete(this.format, I.mul(this.value, y))
   }
+  /**
+   * @since 0.1.2
+   */
   negate(): Discrete<D, U> {
-    return new Discrete(this.format, integer.negate(this.value))
+    return new Discrete(this.format, I.negate(this.value))
   }
+  /**
+   * @since 0.1.2
+   */
   sub(y: Discrete<D, U>): Discrete<D, U> {
-    return new Discrete(this.format, integer.sub(this.value, y.value))
+    return new Discrete(this.format, I.sub(this.value, y.value))
   }
+  /**
+   * @since 0.1.2
+   */
   div(y: NonZeroInteger): Discrete<D, U> {
-    return new Discrete(this.format, integer.div(this.value, y))
+    return new Discrete(this.format, I.div(this.value, y))
   }
+  /**
+   * @since 0.1.2
+   */
   isZero(): boolean {
-    return integer.isZero(this.value)
+    return I.isZero(this.value)
   }
-  inspect(): string {
-    return this.toString()
-  }
+  /**
+   * @since 0.1.2
+   */
   toString(): string {
-    return `${this.format.dimension} ${this.format.unit} ${integer.show(this.value)}`
+    return `${this.format.dimension} ${this.format.unit} ${I.show(this.value)}`
   }
 }
 
+/**
+ * @since 0.1.2
+ */
 export function getOne<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> {
-  return new Discrete(format, integer.one)
+  return new Discrete(format, I.one)
 }
 
+/**
+ * @since 0.1.2
+ */
 export function getZero<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> {
-  return new Discrete(format, integer.zero)
+  return new Discrete(format, I.zero)
 }
 
-export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> {
-  return {
-    equals: (x, y) => integer.setoid.equals(x.value, y.value)
-  }
-}
-
+/**
+ * @since 0.1.2
+ */
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
-  return {
-    ...getSetoid(),
-    compare: (x, y) => integer.ord.compare(x.value, y.value)
-  }
+  return fromCompare((x, y) => I.ord.compare(x.value, y.value))
 }

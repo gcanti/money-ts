@@ -27,85 +27,107 @@ parent: Modules
 **Signature**
 
 ```ts
-export { bigInteger }
+typeof bigInteger
 ```
+
+Added in v0.1.2
 
 # dense (export)
 
 **Signature**
 
 ```ts
-export { dense }
+typeof dense
 ```
+
+Added in v0.1.2
 
 # discrete (export)
 
 **Signature**
 
 ```ts
-export { discrete }
+typeof discrete
 ```
+
+Added in v0.1.2
 
 # exchangeRate (export)
 
 **Signature**
 
 ```ts
-export { exchangeRate }
+typeof exchangeRate
 ```
+
+Added in v0.1.2
 
 # integer (export)
 
 **Signature**
 
 ```ts
-export { integer }
+typeof integer
 ```
+
+Added in v0.1.2
 
 # natural (export)
 
 **Signature**
 
 ```ts
-export { natural }
+typeof natural
 ```
+
+Added in v0.1.2
 
 # nonZeroInteger (export)
 
 **Signature**
 
 ```ts
-export { nonZeroInteger }
+typeof nonZeroInteger
 ```
+
+Added in v0.1.2
 
 # nonZeroRational (export)
 
 **Signature**
 
 ```ts
-export { nonZeroRational }
+typeof nonZeroRational
 ```
+
+Added in v0.1.2
 
 # positiveRational (export)
 
 **Signature**
 
 ```ts
-export { positiveRational }
+typeof positiveRational
 ```
+
+Added in v0.1.2
 
 # rational (export)
 
 **Signature**
 
 ```ts
-export { rational }
+typeof rational
 ```
+
+Added in v0.1.2
 
 # scale (export)
 
 **Signature**
 
 ```ts
-export { scale }
+typeof scale
 ```
+
+Added in v0.1.2

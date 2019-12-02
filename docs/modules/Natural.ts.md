@@ -17,7 +17,6 @@ parent: Modules
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [fromInteger (function)](#frominteger-function)
@@ -27,8 +26,6 @@ parent: Modules
 ---
 
 # Natural (interface)
-
-A PositiveInteger is also an Integer
 
 **Signature**
 
@@ -44,6 +41,8 @@ export interface Natural
   > {}
 ```
 
+Added in v0.1.2
+
 # add (constant)
 
 **Signature**
@@ -51,6 +50,8 @@ export interface Natural
 ```ts
 export const add: (x: Natural, y: Natural) => Natural = ...
 ```
+
+Added in v0.1.2
 
 # div (constant)
 
@@ -60,6 +61,8 @@ export const add: (x: Natural, y: Natural) => Natural = ...
 export const div: (x: Natural, y: Natural) => Natural = ...
 ```
 
+Added in v0.1.2
+
 # gcd (constant)
 
 **Signature**
@@ -67,6 +70,8 @@ export const div: (x: Natural, y: Natural) => Natural = ...
 ```ts
 export const gcd: (x: Natural, y: Natural) => Natural = ...
 ```
+
+Added in v0.1.2
 
 # lcm (constant)
 
@@ -76,6 +81,8 @@ export const gcd: (x: Natural, y: Natural) => Natural = ...
 export const lcm: (x: Natural, y: Natural) => Natural = ...
 ```
 
+Added in v0.1.2
+
 # mul (constant)
 
 **Signature**
@@ -83,6 +90,8 @@ export const lcm: (x: Natural, y: Natural) => Natural = ...
 ```ts
 export const mul: (x: Natural, y: Natural) => Natural = ...
 ```
+
+Added in v0.1.2
 
 # negate (constant)
 
@@ -92,6 +101,8 @@ export const mul: (x: Natural, y: Natural) => Natural = ...
 export const negate: (x: Natural) => NonZeroInteger = ...
 ```
 
+Added in v0.1.2
+
 # one (constant)
 
 **Signature**
@@ -99,6 +110,8 @@ export const negate: (x: Natural) => NonZeroInteger = ...
 ```ts
 export const one: Natural = ...
 ```
+
+Added in v0.1.2
 
 # ord (constant)
 
@@ -108,13 +121,7 @@ export const one: Natural = ...
 export const ord: Ord<Natural> = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Natural> = ...
-```
+Added in v0.1.2
 
 # show (constant)
 
@@ -124,6 +131,8 @@ export const setoid: Setoid<Natural> = ...
 export const show: (x: Natural) => string = ...
 ```
 
+Added in v0.1.2
+
 # unwrap (constant)
 
 **Signature**
@@ -131,6 +140,8 @@ export const show: (x: Natural) => string = ...
 ```ts
 export const unwrap: (x: Natural) => BigInteger = ...
 ```
+
+Added in v0.1.2
 
 # fromInteger (function)
 
@@ -140,6 +151,8 @@ export const unwrap: (x: Natural) => BigInteger = ...
 export function fromInteger(i: Integer): Option<Natural> { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -148,6 +161,8 @@ export function fromInteger(i: Integer): Option<Natural> { ... }
 export function sub(x: Natural, y: Natural): Option<Natural> { ... }
 ```
 
+Added in v0.1.2
+
 # wrap (function)
 
 **Signature**
@@ -155,3 +170,5 @@ export function sub(x: Natural, y: Natural): Option<Natural> { ... }
 ```ts
 export function wrap(x: BigInteger): Option<Natural> { ... }
 ```
+
+Added in v0.1.2

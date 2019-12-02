@@ -11,7 +11,6 @@ parent: Modules
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [ring (constant)](#ring-constant)
-- [setoid (constant)](#setoid-constant)
 - [two (constant)](#two-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
@@ -29,8 +28,10 @@ parent: Modules
 **Signature**
 
 ```ts
-export const one = ...
+export const one: BigInteger = ...
 ```
+
+Added in v0.1.2
 
 # ord (constant)
 
@@ -40,6 +41,8 @@ export const one = ...
 export const ord: Ord<BigInteger> = ...
 ```
 
+Added in v0.1.2
+
 # ring (constant)
 
 **Signature**
@@ -48,29 +51,27 @@ export const ord: Ord<BigInteger> = ...
 export const ring: Ring<BigInteger> = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<BigInteger> = ...
-```
+Added in v0.1.2
 
 # two (constant)
 
 **Signature**
 
 ```ts
-export const two = ...
+export const two: BigInteger = ...
 ```
+
+Added in v0.1.2
 
 # zero (constant)
 
 **Signature**
 
 ```ts
-export const zero = ...
+export const zero: BigInteger = ...
 ```
+
+Added in v0.1.2
 
 # add (function)
 
@@ -80,6 +81,8 @@ export const zero = ...
 export function add(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```
 
+Added in v0.1.2
+
 # gcd (function)
 
 **Signature**
@@ -87,6 +90,8 @@ export function add(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```ts
 export function gcd(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```
+
+Added in v0.1.2
 
 # lcm (function)
 
@@ -96,6 +101,8 @@ export function gcd(x: BigInteger, y: BigInteger): BigInteger { ... }
 export function lcm(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```
 
+Added in v0.1.2
+
 # mul (function)
 
 **Signature**
@@ -103,6 +110,8 @@ export function lcm(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```ts
 export function mul(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```
+
+Added in v0.1.2
 
 # negate (function)
 
@@ -112,6 +121,8 @@ export function mul(x: BigInteger, y: BigInteger): BigInteger { ... }
 export function negate(x: BigInteger): BigInteger { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -120,6 +131,8 @@ export function negate(x: BigInteger): BigInteger { ... }
 export function sub(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```
 
+Added in v0.1.2
+
 # wrap (function)
 
 **Signature**
@@ -127,3 +140,5 @@ export function sub(x: BigInteger, y: BigInteger): BigInteger { ... }
 ```ts
 export function wrap(x: number | string): Option<BigInteger> { ... }
 ```
+
+Added in v0.1.2

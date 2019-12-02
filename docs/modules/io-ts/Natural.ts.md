@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const Natural: Type<NaturalNewtype, string, mixed> = ...
+export const Natural: Type<NaturalNewtype, string, unknown> = ...
 ```
+
+Added in v0.1.2

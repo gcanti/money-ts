@@ -15,7 +15,6 @@ parent: Modules
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
 - [inverse (function)](#inverse-function)
@@ -31,6 +30,8 @@ parent: Modules
 export type NonZeroRational = [NonZeroInteger, Natural]
 ```
 
+Added in v0.1.2
+
 # add (constant)
 
 **Signature**
@@ -38,6 +39,8 @@ export type NonZeroRational = [NonZeroInteger, Natural]
 ```ts
 export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = ...
 ```
+
+Added in v0.1.2
 
 # div (constant)
 
@@ -47,6 +50,8 @@ export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = ...
 ```
 
+Added in v0.1.2
+
 # mul (constant)
 
 **Signature**
@@ -54,6 +59,8 @@ export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 ```ts
 export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = ...
 ```
+
+Added in v0.1.2
 
 # one (constant)
 
@@ -63,6 +70,8 @@ export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 export const one: NonZeroRational = ...
 ```
 
+Added in v0.1.2
+
 # ord (constant)
 
 **Signature**
@@ -70,6 +79,8 @@ export const one: NonZeroRational = ...
 ```ts
 export const ord: Ord<NonZeroRational> = ...
 ```
+
+Added in v0.1.2
 
 # reduce (constant)
 
@@ -79,13 +90,7 @@ export const ord: Ord<NonZeroRational> = ...
 export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroRational> = ...
-```
+Added in v0.1.2
 
 # show (constant)
 
@@ -95,6 +100,8 @@ export const setoid: Setoid<NonZeroRational> = ...
 export const show: (x: NonZeroRational) => string = ...
 ```
 
+Added in v0.1.2
+
 # fromRational (function)
 
 **Signature**
@@ -102,6 +109,8 @@ export const show: (x: NonZeroRational) => string = ...
 ```ts
 export function fromRational(r: Rational): Option<NonZeroRational> { ... }
 ```
+
+Added in v0.1.2
 
 # inverse (function)
 
@@ -111,6 +120,8 @@ export function fromRational(r: Rational): Option<NonZeroRational> { ... }
 export function inverse(x: NonZeroRational): NonZeroRational { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -118,3 +129,5 @@ export function inverse(x: NonZeroRational): NonZeroRational { ... }
 ```ts
 export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRational> { ... }
 ```
+
+Added in v0.1.2

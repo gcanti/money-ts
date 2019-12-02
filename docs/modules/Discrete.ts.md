@@ -16,11 +16,9 @@ parent: Modules
   - [sub (method)](#sub-method)
   - [div (method)](#div-method)
   - [isZero (method)](#iszero-method)
-  - [inspect (method)](#inspect-method)
   - [toString (method)](#tostring-method)
 - [getOne (function)](#getone-function)
 - [getOrd (function)](#getord-function)
-- [getSetoid (function)](#getsetoid-function)
 - [getZero (function)](#getzero-function)
 
 ---
@@ -36,6 +34,8 @@ export interface Format<D extends string, U extends string | number | symbol> {
 }
 ```
 
+Added in v0.1.2
+
 # Discrete (class)
 
 **Signature**
@@ -47,6 +47,8 @@ export class Discrete<D, U> {
 }
 ```
 
+Added in v0.1.2
+
 ## add (method)
 
 **Signature**
@@ -54,6 +56,8 @@ export class Discrete<D, U> {
 ```ts
 add(y: Discrete<D, U>): Discrete<D, U> { ... }
 ```
+
+Added in v0.1.2
 
 ## mul (method)
 
@@ -63,6 +67,8 @@ add(y: Discrete<D, U>): Discrete<D, U> { ... }
 mul(y: Integer): Discrete<D, U> { ... }
 ```
 
+Added in v0.1.2
+
 ## negate (method)
 
 **Signature**
@@ -70,6 +76,8 @@ mul(y: Integer): Discrete<D, U> { ... }
 ```ts
 negate(): Discrete<D, U> { ... }
 ```
+
+Added in v0.1.2
 
 ## sub (method)
 
@@ -79,6 +87,8 @@ negate(): Discrete<D, U> { ... }
 sub(y: Discrete<D, U>): Discrete<D, U> { ... }
 ```
 
+Added in v0.1.2
+
 ## div (method)
 
 **Signature**
@@ -86,6 +96,8 @@ sub(y: Discrete<D, U>): Discrete<D, U> { ... }
 ```ts
 div(y: NonZeroInteger): Discrete<D, U> { ... }
 ```
+
+Added in v0.1.2
 
 ## isZero (method)
 
@@ -95,13 +107,7 @@ div(y: NonZeroInteger): Discrete<D, U> { ... }
 isZero(): boolean { ... }
 ```
 
-## inspect (method)
-
-**Signature**
-
-```ts
-inspect(): string { ... }
-```
+Added in v0.1.2
 
 ## toString (method)
 
@@ -111,6 +117,8 @@ inspect(): string { ... }
 toString(): string { ... }
 ```
 
+Added in v0.1.2
+
 # getOne (function)
 
 **Signature**
@@ -118,6 +126,8 @@ toString(): string { ... }
 ```ts
 export function getOne<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> { ... }
 ```
+
+Added in v0.1.2
 
 # getOrd (function)
 
@@ -127,13 +137,7 @@ export function getOne<D extends string, U extends string>(format: Format<D, U>)
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> { ... }
 ```
 
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> { ... }
-```
+Added in v0.1.2
 
 # getZero (function)
 
@@ -142,3 +146,5 @@ export function getSetoid<D extends string, U extends string>(): Setoid<Discrete
 ```ts
 export function getZero<D extends string, U extends string>(format: Format<D, U>): Discrete<D, U> { ... }
 ```
+
+Added in v0.1.2

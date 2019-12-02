@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const BigInteger = ...
+export const BigInteger: t.Type<BI.BigInteger, string, unknown> = ...
 ```
+
+Added in v0.1.2

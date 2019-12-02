@@ -3,7 +3,7 @@
     "outDir": "./lib",
     "sourceMap": true,
     "declaration": true,
-    "target": "es5",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,

@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const Rational: Type<RationalNewtype, [string, string], mixed> = ...
+export const Rational: Type<RationalNewtype, [string, string], unknown> = ...
 ```
+
+Added in v0.1.2

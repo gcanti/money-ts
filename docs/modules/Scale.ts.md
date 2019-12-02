@@ -23,6 +23,8 @@ parent: Modules
 export interface Scale {}
 ```
 
+Added in v0.1.2
+
 # Dimensions (type alias)
 
 **Signature**
@@ -30,6 +32,8 @@ export interface Scale {}
 ```ts
 export type Dimensions = keyof Scale
 ```
+
+Added in v0.1.2
 
 # Units (type alias)
 
@@ -39,6 +43,8 @@ export type Dimensions = keyof Scale
 export type Units<Dimension extends Dimensions> = keyof Scale[Dimension]
 ```
 
+Added in v0.1.2
+
 # scale (constant)
 
 **Signature**
@@ -46,3 +52,5 @@ export type Units<Dimension extends Dimensions> = keyof Scale[Dimension]
 ```ts
 export const scale: Scale = ...
 ```
+
+Added in v0.1.2

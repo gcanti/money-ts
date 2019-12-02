@@ -1,54 +1,94 @@
-import { Newtype, unsafeCoerce } from 'newtype-ts'
-import { Option, none, some } from 'fp-ts/lib/Option'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
-import { Integer } from './Integer'
 import { BigInteger } from 'big-integer'
-import { NonZeroInteger } from './NonZeroInteger'
-import * as integer from './Integer'
-import * as nonZeroInteger from './NonZeroInteger'
+import { unsafeCoerce } from 'fp-ts/lib/function'
+import { none, Option, some } from 'fp-ts/lib/Option'
+import { Ord } from 'fp-ts/lib/Ord'
+import { Newtype } from 'newtype-ts'
+import * as I from './Integer'
+import * as NZI from './NonZeroInteger'
 
-/** A PositiveInteger is also an Integer */
+import Integer = I.Integer
+import NonZeroInteger = NZI.NonZeroInteger
+
+/**
+ * @since 0.1.2
+ */
 export interface Natural
   extends Newtype<
-      {
-        Integer: true
-        NonZero: true
-        Positive: true
-      },
-      BigInteger
-    > {}
+    {
+      Integer: true
+      NonZero: true
+      Positive: true
+    },
+    BigInteger
+  > {}
 
+/**
+ * @since 0.1.2
+ */
 export function wrap(x: BigInteger): Option<Natural> {
-  return fromInteger(integer.wrap(x))
+  return fromInteger(I.wrap(x))
 }
 
+/**
+ * @since 0.1.2
+ */
 export const unwrap: (x: Natural) => BigInteger = unsafeCoerce
 
+/**
+ * @since 0.1.2
+ */
 export function fromInteger(i: Integer): Option<Natural> {
-  return integer.isPositive(i) ? some(unsafeCoerce(i)) : none
+  return I.isPositive(i) ? some(unsafeCoerce(i)) : none
 }
 
-export const add: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.add)
+/**
+ * @since 0.1.2
+ */
+export const add: (x: Natural, y: Natural) => Natural = unsafeCoerce(I.add)
 
-export const mul: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.mul)
+/**
+ * @since 0.1.2
+ */
+export const mul: (x: Natural, y: Natural) => Natural = unsafeCoerce(I.mul)
 
+/**
+ * @since 0.1.2
+ */
 export function sub(x: Natural, y: Natural): Option<Natural> {
-  return fromInteger(integer.sub(x, y))
+  return fromInteger(I.sub(x, y))
 }
 
-export const negate: (x: Natural) => NonZeroInteger = unsafeCoerce(integer.negate)
+/**
+ * @since 0.1.2
+ */
+export const negate: (x: Natural) => NonZeroInteger = unsafeCoerce(I.negate)
 
-export const div: (x: Natural, y: Natural) => Natural = unsafeCoerce(integer.div)
+/**
+ * @since 0.1.2
+ */
+export const div: (x: Natural, y: Natural) => Natural = unsafeCoerce(I.div)
 
-export const gcd: (x: Natural, y: Natural) => Natural = nonZeroInteger.gcd
+/**
+ * @since 0.1.2
+ */
+export const gcd: (x: Natural, y: Natural) => Natural = NZI.gcd
 
-export const lcm: (x: Natural, y: Natural) => Natural = nonZeroInteger.lcm
+/**
+ * @since 0.1.2
+ */
+export const lcm: (x: Natural, y: Natural) => Natural = NZI.lcm
 
-export const setoid: Setoid<Natural> = integer.setoid
+/**
+ * @since 0.1.2
+ */
+export const ord: Ord<Natural> = I.ord
 
-export const ord: Ord<Natural> = integer.ord
+/**
+ * @since 0.1.2
+ */
+export const show: (x: Natural) => string = I.show
 
-export const show: (x: Natural) => string = integer.show
-
-export const one: Natural = unsafeCoerce(integer.one)
+/**
+ * @since 0.1.2
+ */
+export const one: Natural = unsafeCoerce(I.one)

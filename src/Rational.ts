@@ -1,96 +1,155 @@
-import { Integer } from './Integer'
-import { Natural } from './Natural'
+import { unsafeCoerce } from 'fp-ts/lib/function'
+import * as O from 'fp-ts/lib/Option'
+import { fromCompare, Ord } from 'fp-ts/lib/Ord'
+import { pipe } from 'fp-ts/lib/pipeable'
+import * as BI from './BigInteger'
+import * as I from './Integer'
+import * as N from './Natural'
+import * as NZI from './NonZeroInteger'
 import { NonZeroRational } from './NonZeroRational'
-import { Setoid, getProductSetoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
-import * as bigInteger from './BigInteger'
-import * as integer from './Integer'
-import * as natural from './Natural'
-import * as nonZeroInteger from './NonZeroInteger'
-import { unsafeCoerce } from 'newtype-ts'
 
+import Integer = I.Integer
+import Natural = N.Natural
+
+/**
+ * @since 0.1.2
+ */
 export type Rational = [Integer, Natural]
 
+/**
+ * @since 0.1.2
+ */
 export function fromInteger(x: Integer): Rational {
-  return [x, natural.one]
+  return [x, N.one]
 }
 
+/**
+ * @since 0.1.2
+ */
 export function isZero(x: Rational): boolean {
-  return integer.isZero(x[0])
+  return I.isZero(x[0])
 }
 
+/**
+ * @since 0.1.2
+ */
 export function reduce(n: Integer, d: Natural): Rational {
-  return nonZeroInteger.fromInteger(n).fold<Rational>(zero, n => {
-    const divisor = natural.gcd(nonZeroInteger.abs(n), d)
-    const n2 = integer.div(n, divisor)
-    const d2 = natural.div(d, divisor)
-    return [n2, d2]
-  })
+  return pipe(
+    NZI.fromInteger(n),
+    O.fold(
+      () => zero,
+      n => {
+        const divisor = N.gcd(NZI.abs(n), d)
+        const n2 = I.div(n, divisor)
+        const d2 = N.div(d, divisor)
+        return [n2, d2]
+      }
+    )
+  )
 }
 
+/**
+ * @since 0.1.2
+ */
 export function add([nx, dx]: Rational, [ny, dy]: Rational): Rational {
-  const multiple = natural.lcm(dx, dy)
-  const a = natural.div(multiple, dx)
-  const b = natural.div(multiple, dy)
-  const xa = integer.mul(nx, a)
-  const xb = integer.mul(ny, b)
-  return reduce(integer.add(xa, xb), multiple)
+  const multiple = N.lcm(dx, dy)
+  const a = N.div(multiple, dx)
+  const b = N.div(multiple, dy)
+  const xa = I.mul(nx, a)
+  const xb = I.mul(ny, b)
+  return reduce(I.add(xa, xb), multiple)
 }
 
-export const zero: Rational = [integer.zero, natural.one]
+/**
+ * @since 0.1.2
+ */
+export const zero: Rational = [I.zero, N.one]
 
+/**
+ * @since 0.1.2
+ */
 export function mul(x: Rational, y: Rational): Rational {
-  return reduce(integer.mul(x[0], y[0]), natural.mul(x[1], y[1]))
+  return reduce(I.mul(x[0], y[0]), N.mul(x[1], y[1]))
 }
 
-export const one: Rational = [integer.one, natural.one]
+/**
+ * @since 0.1.2
+ */
+export const one: Rational = [I.one, N.one]
 
+/**
+ * @since 0.1.2
+ */
 export function negate(x: Rational): Rational {
-  return [integer.negate(x[0]), x[1]]
+  return [I.negate(x[0]), x[1]]
 }
 
+/**
+ * @since 0.1.2
+ */
 export function sub(x: Rational, y: Rational): Rational {
   return add(x, negate(y))
 }
 
+/**
+ * @since 0.1.2
+ */
 export function div(x: Rational, y: NonZeroRational): Rational {
-  const ny = nonZeroInteger.abs(y[0])
-  const n = integer.mul(x[0], y[1])
-  return reduce(integer.isPositive(y[0]) ? n : integer.negate(n), natural.mul(x[1], ny))
+  const ny = NZI.abs(y[0])
+  const n = I.mul(x[0], y[1])
+  return reduce(I.isPositive(y[0]) ? n : I.negate(n), N.mul(x[1], ny))
 }
 
+/**
+ * @since 0.1.2
+ */
 export function sign(x: Rational): -1 | 0 | 1 {
-  return integer.sign(x[0])
+  return I.sign(x[0])
 }
 
+/**
+ * @since 0.1.2
+ */
 export function floor(x: Rational): Integer {
-  const n = integer.unwrap(x[0])
-  const d = integer.unwrap(x[1])
+  const n = I.unwrap(x[0])
+  const d = I.unwrap(x[1])
   const divmod = n.divmod(d)
   if (divmod.remainder.isZero() || sign(x) >= 0) {
-    return integer.wrap(divmod.quotient)
+    return I.wrap(divmod.quotient)
   } else {
-    return integer.wrap(divmod.quotient.prev())
+    return I.wrap(divmod.quotient.prev())
   }
 }
 
-const semi: Rational = unsafeCoerce([bigInteger.one, bigInteger.two])
+/**
+ * @since 0.1.2
+ */
+const semi: Rational = unsafeCoerce([BI.one, BI.two])
 
+/**
+ * @since 0.1.2
+ */
 export function round(x: Rational): Integer {
   return floor(add(x, semi))
 }
 
+/**
+ * @since 0.1.2
+ */
 export function ceil(x: Rational): Integer {
-  const n = integer.unwrap(x[0])
-  const d = integer.unwrap(x[1])
+  const n = I.unwrap(x[0])
+  const d = I.unwrap(x[1])
   const divmod = n.divmod(d)
   if (divmod.remainder.isZero() || sign(x) < 0) {
-    return integer.wrap(divmod.quotient)
+    return I.wrap(divmod.quotient)
   } else {
-    return integer.wrap(divmod.quotient.next())
+    return I.wrap(divmod.quotient.next())
   }
 }
 
+/**
+ * @since 0.1.2
+ */
 export function trunc(x: Rational): Integer {
   if (sign(x) >= 0) {
     return floor(x)
@@ -99,17 +158,18 @@ export function trunc(x: Rational): Integer {
   }
 }
 
-export const setoid: Setoid<Rational> = getProductSetoid(integer.setoid, natural.setoid)
-
-export const ord: Ord<Rational> = {
-  ...setoid,
-  compare: ([nx, dx], [ny, dy]) => {
-    if (integer.setoid.equals(dx, dy)) {
-      return integer.ord.compare(nx, ny)
-    } else {
-      return integer.ord.compare(integer.mul(nx, dy), integer.mul(ny, dx))
-    }
+/**
+ * @since 0.1.2
+ */
+export const ord: Ord<Rational> = fromCompare(([nx, dx], [ny, dy]) => {
+  if (I.ord.equals(dx, dy)) {
+    return I.ord.compare(nx, ny)
+  } else {
+    return I.ord.compare(I.mul(nx, dy), I.mul(ny, dx))
   }
-}
+})
 
-export const show = (x: Rational): string => `${integer.show(x[0])} / ${natural.show(x[1])}`
+/**
+ * @since 0.1.2
+ */
+export const show = (x: Rational): string => `${I.show(x[0])} / ${N.show(x[1])}`

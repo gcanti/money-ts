@@ -20,5 +20,7 @@ parent: Modules
 export const getDiscrete = <D extends string, U extends string>(
   dimension: D,
   unit: U
-): Type<Discrete<D, U>, string, mixed> => ...
+): Type<Discrete<D, U>, string, unknown> => ...
 ```
+
+Added in v0.1.2

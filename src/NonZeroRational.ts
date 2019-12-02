@@ -1,42 +1,78 @@
-import { NonZeroInteger } from './NonZeroInteger'
-import { Natural } from './Natural'
-import { Option } from 'fp-ts/lib/Option'
-import { Setoid } from 'fp-ts/lib/Setoid'
+import { unsafeCoerce } from 'fp-ts/lib/function'
+import * as O from 'fp-ts/lib/Option'
 import { Ord } from 'fp-ts/lib/Ord'
-import { Rational } from './Rational'
-import * as natural from './Natural'
-import * as rational from './Rational'
-import * as nonZeroInteger from './NonZeroInteger'
-import { unsafeCoerce } from 'newtype-ts'
+import { pipe } from 'fp-ts/lib/pipeable'
+import * as N from './Natural'
+import * as NZI from './NonZeroInteger'
+import * as R from './Rational'
 
+import Option = O.Option
+import NonZeroInteger = NZI.NonZeroInteger
+import Natural = N.Natural
+import Rational = R.Rational
+
+/**
+ * @since 0.1.2
+ */
 export type NonZeroRational = [NonZeroInteger, Natural]
 
+/**
+ * @since 0.1.2
+ */
 export function fromRational(r: Rational): Option<NonZeroRational> {
-  return nonZeroInteger.fromInteger(r[0]).map((n): NonZeroRational => [n, r[1]])
+  return pipe(
+    NZI.fromInteger(r[0]),
+    O.map((n): NonZeroRational => [n, r[1]])
+  )
 }
 
-export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = unsafeCoerce(rational.reduce)
+/**
+ * @since 0.1.2
+ */
+export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = unsafeCoerce(R.reduce)
 
-export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(rational.add)
+/**
+ * @since 0.1.2
+ */
+export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(R.add)
 
-export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(rational.mul)
+/**
+ * @since 0.1.2
+ */
+export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(R.mul)
 
-export const one: NonZeroRational = unsafeCoerce(rational.one)
+/**
+ * @since 0.1.2
+ */
+export const one: NonZeroRational = unsafeCoerce(R.one)
 
+/**
+ * @since 0.1.2
+ */
 export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRational> {
-  return fromRational(rational.sub(x, y))
+  return fromRational(R.sub(x, y))
 }
 
-export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(rational.div)
+/**
+ * @since 0.1.2
+ */
+export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = unsafeCoerce(R.div)
 
+/**
+ * @since 0.1.2
+ */
 export function inverse(x: NonZeroRational): NonZeroRational {
   const d = x[1]
-  const n = nonZeroInteger.abs(x[0])
-  return nonZeroInteger.isPositive(x[0]) ? [d, n] : [natural.negate(d), n]
+  const n = NZI.abs(x[0])
+  return NZI.isPositive(x[0]) ? [d, n] : [N.negate(d), n]
 }
 
-export const setoid: Setoid<NonZeroRational> = rational.setoid
+/**
+ * @since 0.1.2
+ */
+export const ord: Ord<NonZeroRational> = R.ord
 
-export const ord: Ord<NonZeroRational> = rational.ord
-
-export const show: (x: NonZeroRational) => string = rational.show
+/**
+ * @since 0.1.2
+ */
+export const show: (x: NonZeroRational) => string = R.show

@@ -16,7 +16,6 @@ parent: Modules
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [sign (constant)](#sign-constant)
 - [unwrap (constant)](#unwrap-constant)
@@ -31,8 +30,6 @@ parent: Modules
 
 # NonZeroInteger (interface)
 
-A NonZeroInteger is also an Integer
-
 **Signature**
 
 ```ts
@@ -46,6 +43,8 @@ export interface NonZeroInteger
   > {}
 ```
 
+Added in v0.1.2
+
 # add (constant)
 
 **Signature**
@@ -53,6 +52,8 @@ export interface NonZeroInteger
 ```ts
 export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```
+
+Added in v0.1.2
 
 # div (constant)
 
@@ -62,6 +63,8 @@ export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```
 
+Added in v0.1.2
+
 # isPositive (constant)
 
 **Signature**
@@ -69,6 +72,8 @@ export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```ts
 export const isPositive: (x: NonZeroInteger) => boolean = ...
 ```
+
+Added in v0.1.2
 
 # mul (constant)
 
@@ -78,6 +83,8 @@ export const isPositive: (x: NonZeroInteger) => boolean = ...
 export const mul: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```
 
+Added in v0.1.2
+
 # negate (constant)
 
 **Signature**
@@ -85,6 +92,8 @@ export const mul: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```ts
 export const negate: (x: NonZeroInteger) => NonZeroInteger = ...
 ```
+
+Added in v0.1.2
 
 # one (constant)
 
@@ -94,6 +103,8 @@ export const negate: (x: NonZeroInteger) => NonZeroInteger = ...
 export const one: NonZeroInteger = ...
 ```
 
+Added in v0.1.2
+
 # ord (constant)
 
 **Signature**
@@ -102,13 +113,7 @@ export const one: NonZeroInteger = ...
 export const ord: Ord<NonZeroInteger> = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroInteger> = ...
-```
+Added in v0.1.2
 
 # show (constant)
 
@@ -118,6 +123,8 @@ export const setoid: Setoid<NonZeroInteger> = ...
 export const show: (x: NonZeroInteger) => string = ...
 ```
 
+Added in v0.1.2
+
 # sign (constant)
 
 **Signature**
@@ -125,6 +132,8 @@ export const show: (x: NonZeroInteger) => string = ...
 ```ts
 export const sign: (x: NonZeroInteger) => -1 | 1 = ...
 ```
+
+Added in v0.1.2
 
 # unwrap (constant)
 
@@ -134,6 +143,8 @@ export const sign: (x: NonZeroInteger) => -1 | 1 = ...
 export const unwrap: (x: NonZeroInteger) => BigInteger = ...
 ```
 
+Added in v0.1.2
+
 # abs (function)
 
 **Signature**
@@ -141,6 +152,8 @@ export const unwrap: (x: NonZeroInteger) => BigInteger = ...
 ```ts
 export function abs(x: NonZeroInteger): Natural { ... }
 ```
+
+Added in v0.1.2
 
 # fromInteger (function)
 
@@ -150,6 +163,8 @@ export function abs(x: NonZeroInteger): Natural { ... }
 export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
 ```
 
+Added in v0.1.2
+
 # gcd (function)
 
 **Signature**
@@ -157,6 +172,8 @@ export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
 ```ts
 export function gcd(x: Integer, y: NonZeroInteger): Natural { ... }
 ```
+
+Added in v0.1.2
 
 # lcm (function)
 
@@ -166,6 +183,8 @@ export function gcd(x: Integer, y: NonZeroInteger): Natural { ... }
 export function lcm(x: NonZeroInteger, y: NonZeroInteger): Natural { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -174,6 +193,8 @@ export function lcm(x: NonZeroInteger, y: NonZeroInteger): Natural { ... }
 export function sub(x: NonZeroInteger, y: NonZeroInteger): Option<NonZeroInteger> { ... }
 ```
 
+Added in v0.1.2
+
 # wrap (function)
 
 **Signature**
@@ -181,3 +202,5 @@ export function sub(x: NonZeroInteger, y: NonZeroInteger): Option<NonZeroInteger
 ```ts
 export function wrap(x: BigInteger): Option<NonZeroInteger> { ... }
 ```
+
+Added in v0.1.2

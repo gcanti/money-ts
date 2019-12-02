@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const Integer: Type<IntegerNewtype, string, mixed> = ...
+export const Integer: Type<IntegerNewtype, string, unknown> = ...
 ```
+
+Added in v0.1.2

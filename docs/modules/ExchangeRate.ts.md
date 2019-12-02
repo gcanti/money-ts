@@ -14,7 +14,6 @@ parent: Modules
 - [compose (function)](#compose-function)
 - [exchange (function)](#exchange-function)
 - [getOrd (function)](#getord-function)
-- [getSetoid (function)](#getsetoid-function)
 
 ---
 
@@ -26,6 +25,8 @@ parent: Modules
 export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], PositiveRational> {}
 ```
 
+Added in v0.1.2
+
 # unwrap (constant)
 
 **Signature**
@@ -33,6 +34,8 @@ export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], Posi
 ```ts
 export const unwrap: <S, D>(er: ExchangeRate<S, D>) => PositiveRational = ...
 ```
+
+Added in v0.1.2
 
 # wrap (constant)
 
@@ -42,6 +45,8 @@ export const unwrap: <S, D>(er: ExchangeRate<S, D>) => PositiveRational = ...
 export const wrap: <S, D>(r: PositiveRational) => ExchangeRate<S, D> = ...
 ```
 
+Added in v0.1.2
+
 # compose (function)
 
 **Signature**
@@ -49,6 +54,8 @@ export const wrap: <S, D>(r: PositiveRational) => ExchangeRate<S, D> = ...
 ```ts
 export function compose<A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>): ExchangeRate<A, C> { ... }
 ```
+
+Added in v0.1.2
 
 # exchange (function)
 
@@ -58,6 +65,8 @@ export function compose<A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>)
 export const exchange = <S extends string, D extends string>(er: ExchangeRate<S, D>) => (d: Dense<S>): Dense<D> => ...
 ```
 
+Added in v0.1.2
+
 # getOrd (function)
 
 **Signature**
@@ -66,10 +75,4 @@ export const exchange = <S extends string, D extends string>(er: ExchangeRate<S,
 export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => ...
 ```
 
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export const getSetoid = <S, D>(): Setoid<ExchangeRate<S, D>> => ...
-```
+Added in v0.1.2

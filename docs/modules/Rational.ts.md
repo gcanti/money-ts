@@ -11,7 +11,6 @@ parent: Modules
 - [Rational (type alias)](#rational-type-alias)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
 - [ceil (function)](#ceil-function)
@@ -38,6 +37,8 @@ parent: Modules
 export type Rational = [Integer, Natural]
 ```
 
+Added in v0.1.2
+
 # one (constant)
 
 **Signature**
@@ -45,6 +46,8 @@ export type Rational = [Integer, Natural]
 ```ts
 export const one: Rational = ...
 ```
+
+Added in v0.1.2
 
 # ord (constant)
 
@@ -54,13 +57,7 @@ export const one: Rational = ...
 export const ord: Ord<Rational> = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Rational> = ...
-```
+Added in v0.1.2
 
 # zero (constant)
 
@@ -70,6 +67,8 @@ export const setoid: Setoid<Rational> = ...
 export const zero: Rational = ...
 ```
 
+Added in v0.1.2
+
 # add (function)
 
 **Signature**
@@ -77,6 +76,8 @@ export const zero: Rational = ...
 ```ts
 export function add([nx, dx]: Rational, [ny, dy]: Rational): Rational { ... }
 ```
+
+Added in v0.1.2
 
 # ceil (function)
 
@@ -86,6 +87,8 @@ export function add([nx, dx]: Rational, [ny, dy]: Rational): Rational { ... }
 export function ceil(x: Rational): Integer { ... }
 ```
 
+Added in v0.1.2
+
 # div (function)
 
 **Signature**
@@ -93,6 +96,8 @@ export function ceil(x: Rational): Integer { ... }
 ```ts
 export function div(x: Rational, y: NonZeroRational): Rational { ... }
 ```
+
+Added in v0.1.2
 
 # floor (function)
 
@@ -102,6 +107,8 @@ export function div(x: Rational, y: NonZeroRational): Rational { ... }
 export function floor(x: Rational): Integer { ... }
 ```
 
+Added in v0.1.2
+
 # fromInteger (function)
 
 **Signature**
@@ -109,6 +116,8 @@ export function floor(x: Rational): Integer { ... }
 ```ts
 export function fromInteger(x: Integer): Rational { ... }
 ```
+
+Added in v0.1.2
 
 # isZero (function)
 
@@ -118,6 +127,8 @@ export function fromInteger(x: Integer): Rational { ... }
 export function isZero(x: Rational): boolean { ... }
 ```
 
+Added in v0.1.2
+
 # mul (function)
 
 **Signature**
@@ -125,6 +136,8 @@ export function isZero(x: Rational): boolean { ... }
 ```ts
 export function mul(x: Rational, y: Rational): Rational { ... }
 ```
+
+Added in v0.1.2
 
 # negate (function)
 
@@ -134,6 +147,8 @@ export function mul(x: Rational, y: Rational): Rational { ... }
 export function negate(x: Rational): Rational { ... }
 ```
 
+Added in v0.1.2
+
 # reduce (function)
 
 **Signature**
@@ -141,6 +156,8 @@ export function negate(x: Rational): Rational { ... }
 ```ts
 export function reduce(n: Integer, d: Natural): Rational { ... }
 ```
+
+Added in v0.1.2
 
 # round (function)
 
@@ -150,6 +167,8 @@ export function reduce(n: Integer, d: Natural): Rational { ... }
 export function round(x: Rational): Integer { ... }
 ```
 
+Added in v0.1.2
+
 # show (function)
 
 **Signature**
@@ -157,6 +176,8 @@ export function round(x: Rational): Integer { ... }
 ```ts
 export const show = (x: Rational): string => ...
 ```
+
+Added in v0.1.2
 
 # sign (function)
 
@@ -166,6 +187,8 @@ export const show = (x: Rational): string => ...
 export function sign(x: Rational): -1 | 0 | 1 { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -174,6 +197,8 @@ export function sign(x: Rational): -1 | 0 | 1 { ... }
 export function sub(x: Rational, y: Rational): Rational { ... }
 ```
 
+Added in v0.1.2
+
 # trunc (function)
 
 **Signature**
@@ -181,3 +206,5 @@ export function sub(x: Rational, y: Rational): Rational { ... }
 ```ts
 export function trunc(x: Rational): Integer { ... }
 ```
+
+Added in v0.1.2

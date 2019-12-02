@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const NonZeroRational: Type<NonZeroRationalNewtype, [string, string], mixed> = ...
+export const NonZeroRational: Type<NonZeroRationalNewtype, [string, string], unknown> = ...
 ```
+
+Added in v0.1.2

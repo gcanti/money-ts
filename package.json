@@ -1,6 +1,6 @@
 {
   "name": "money-ts",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "TypeScript library for type-safe and lossless encoding and manipulation of world currencies and precious metals",
   "files": [
     "lib"
@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "lint": "tslint src/**/*.ts test/**/*.ts",
+    "lint": "tslint -p tsconfig.tslint.json",
     "typings-checker": "typings-checker --allow-expect-error --project typings-checker/tsconfig.json typings-checker/index.ts",
     "jest": "jest",
     "prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,test}/**/*.ts\"",
@@ -28,10 +28,10 @@
     "url": "https://github.com/gcanti/money-ts/issues"
   },
   "homepage": "https://github.com/gcanti/money-ts",
-  "dependencies": {
-    "big-integer": "^1.6.26",
-    "fp-ts": "^1.0.1",
-    "io-ts": "^1.1.5",
+  "peerDependencies": {
+    "big-integer": "^1.6.48",
+    "fp-ts": "^2.2.0",
+    "io-ts": "^2.0.1",
     "io-ts-types": "^0.3.1",
     "monocle-ts": "^1.0.0",
     "newtype-ts": "^0.2.0"
@@ -40,17 +40,23 @@
     "@types/benchmark": "^1.0.31",
     "@types/big-integer": "0.0.31",
     "@types/jest": "^22.2.2",
-    "@types/node": "8.0.19",
+    "@types/node": "^12.12.14",
     "benchmark": "^2.1.4",
-    "docs-ts": "0.0.1",
-    "jest": "^22.4.3",
-    "prettier": "^1.13.5",
+    "big-integer": "^1.6.48",
+    "docs-ts": "^0.2.1",
+    "fp-ts": "^2.2.0",
+    "io-ts": "^2.0.1",
+    "io-ts-types": "^0.3.1",
+    "jest": "^24.8.0",
+    "monocle-ts": "^1.0.0",
+    "newtype-ts": "^0.2.0",
+    "prettier": "^1.19.1",
     "testcheck": "^1.0.0-rc.2",
-    "ts-jest": "^22.4.2",
+    "ts-jest": "^24.0.2",
     "ts-node": "3.3.0",
-    "tslint": "4.4.2",
-    "tslint-config-standard": "4.0.0",
-    "typescript": "^2.9.2",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.7.2",
     "typings-checker": "1.1.2"
   },
   "tags": [
@@ -68,24 +74,5 @@
     "newtype",
     "newtype-ts",
     "fp-ts"
-  ],
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "skipBabel": true
-      }
-    },
-    "collectCoverage": true,
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "test",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "testPathIgnorePatterns": [
-      "helpers.ts"
-    ]
-  }
+  ]
 }

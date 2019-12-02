@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const ExchangeRate = <S, D>(): Type<ExchangeRateNewtype<S, D>, [string, string], mixed> => ...
+export const ExchangeRate = <S, D>(): Type<ExchangeRateNewtype<S, D>, [string, string], unknown> => ...
 ```
+
+Added in v0.1.2

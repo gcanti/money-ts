@@ -19,3 +19,5 @@ parent: Modules
 ```ts
 export function unsafePositiveRational([x, y]: [number | string, number | string]): PositiveRational { ... }
 ```
+
+Added in v0.1.2

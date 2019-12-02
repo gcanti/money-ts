@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const NonZeroInteger: Type<NonZeroIntegerNewtype, string, mixed> = ...
+export const NonZeroInteger: Type<NonZeroIntegerNewtype, string, unknown> = ...
 ```
+
+Added in v0.1.2

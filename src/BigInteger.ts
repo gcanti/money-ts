@@ -1,58 +1,82 @@
-import { unsafeCoerce } from 'newtype-ts'
-import { Option, some, none } from 'fp-ts/lib/Option'
-import { BigInteger } from 'big-integer'
-import * as bigInteger from 'big-integer'
+import * as BI from 'big-integer'
+import { Option, tryCatch } from 'fp-ts/lib/Option'
+import { fromCompare, Ord } from 'fp-ts/lib/Ord'
 import { Ring } from 'fp-ts/lib/Ring'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
 
+import BigInteger = BI.BigInteger
+
+/**
+ * @since 0.1.2
+ */
 export function wrap(x: number | string): Option<BigInteger> {
-  try {
-    return some(bigInteger(unsafeCoerce(x)))
-  } catch (e) {
-    return none
-  }
+  return tryCatch(() => BI(x as any))
 }
 
-export const zero = bigInteger.zero
+/**
+ * @since 0.1.2
+ */
+export const zero: BigInteger = BI.zero
 
-export const one = bigInteger.one
+/**
+ * @since 0.1.2
+ */
+export const one: BigInteger = BI.one
 
-export const two = bigInteger['2']
+/**
+ * @since 0.1.2
+ */
+export const two: BigInteger = BI['2']
 
+/**
+ * @since 0.1.2
+ */
 export function add(x: BigInteger, y: BigInteger): BigInteger {
   return x.add(y)
 }
 
+/**
+ * @since 0.1.2
+ */
 export function mul(x: BigInteger, y: BigInteger): BigInteger {
   return x.multiply(y)
 }
 
+/**
+ * @since 0.1.2
+ */
 export function negate(x: BigInteger): BigInteger {
   return x.negate()
 }
 
+/**
+ * @since 0.1.2
+ */
 export function sub(x: BigInteger, y: BigInteger): BigInteger {
   return x.subtract(y)
 }
 
+/**
+ * @since 0.1.2
+ */
 export function gcd(x: BigInteger, y: BigInteger): BigInteger {
-  return bigInteger.gcd(x, y)
+  return BI.gcd(x, y)
 }
 
+/**
+ * @since 0.1.2
+ */
 export function lcm(x: BigInteger, y: BigInteger): BigInteger {
-  return bigInteger.lcm(x, y)
+  return BI.lcm(x, y)
 }
 
-export const setoid: Setoid<BigInteger> = {
-  equals: (x, y) => x.equals(y)
-}
+/**
+ * @since 0.1.2
+ */
+export const ord: Ord<BigInteger> = fromCompare((x, y) => x.compare(y) as any)
 
-export const ord: Ord<BigInteger> = {
-  ...setoid,
-  compare: (x, y) => x.compare(y) as any
-}
-
+/**
+ * @since 0.1.2
+ */
 export const ring: Ring<BigInteger> = {
   add: (x, y) => add(x, y),
   zero: zero,

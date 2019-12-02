@@ -17,5 +17,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export const PositiveRational: Type<PositiveRationalNewtype, [string, string], mixed> = ...
+export const PositiveRational: Type<PositiveRationalNewtype, [string, string], unknown> = ...
 ```
+
+Added in v0.1.2

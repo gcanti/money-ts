@@ -1,8 +1,12 @@
-import { unsafeCoerce } from 'newtype-ts'
-import { Type, mixed, refinement } from 'io-ts'
+import { unsafeCoerce } from 'fp-ts/lib/function'
+import { refinement, Type } from 'io-ts'
 import { Natural as NaturalNewtype } from '../Natural'
 import { BigInteger } from './BigInteger'
 
-export const Natural: Type<NaturalNewtype, string, mixed> = unsafeCoerce(
+/**
+ * @since 0.1.2
+ */
+export const Natural: Type<NaturalNewtype, string, unknown> = unsafeCoerce(
+  // tslint:disable-next-line: deprecation
   refinement(BigInteger, bi => bi.isPositive(), 'Natural')
 )

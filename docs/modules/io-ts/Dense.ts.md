@@ -17,10 +17,16 @@ parent: Modules
 **Signature**
 
 ```ts
-export const getDense = <D extends string>(dimension: D): Type<Dense<D>, [string, string], mixed> =>
+export const getDense = <D extends string>(dimension: D): Type<Dense<D>, [string, string], unknown> =>
   new Type(
     'Dense',
     (m): m is Dense<D> => m instanceof Dense && m.dimension === dimension,
-    (m, c) => Rational.validate(m, c).map(r => new Dense(dimension, r)),
+    (m, c) =>
+      pipe(
+        Rational.validate(m, c),
+        E.map(r => new Dense(dimension, r))
+      ),
     a => ...
 ```
+
+Added in v0.1.2

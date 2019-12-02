@@ -16,7 +16,6 @@ parent: Modules
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
 - [sub (function)](#sub-function)
@@ -31,6 +30,8 @@ parent: Modules
 export type PositiveRational = [Natural, Natural]
 ```
 
+Added in v0.1.2
+
 # add (constant)
 
 **Signature**
@@ -38,6 +39,8 @@ export type PositiveRational = [Natural, Natural]
 ```ts
 export const add: (x: PositiveRational, y: PositiveRational) => PositiveRational = ...
 ```
+
+Added in v0.1.2
 
 # div (constant)
 
@@ -47,6 +50,8 @@ export const add: (x: PositiveRational, y: PositiveRational) => PositiveRational
 export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational = ...
 ```
 
+Added in v0.1.2
+
 # inverse (constant)
 
 **Signature**
@@ -54,6 +59,8 @@ export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational
 ```ts
 export const inverse: (x: PositiveRational) => PositiveRational = ...
 ```
+
+Added in v0.1.2
 
 # mul (constant)
 
@@ -63,6 +70,8 @@ export const inverse: (x: PositiveRational) => PositiveRational = ...
 export const mul: (x: PositiveRational, y: PositiveRational) => PositiveRational = ...
 ```
 
+Added in v0.1.2
+
 # one (constant)
 
 **Signature**
@@ -70,6 +79,8 @@ export const mul: (x: PositiveRational, y: PositiveRational) => PositiveRational
 ```ts
 export const one: PositiveRational = ...
 ```
+
+Added in v0.1.2
 
 # ord (constant)
 
@@ -79,6 +90,8 @@ export const one: PositiveRational = ...
 export const ord: Ord<PositiveRational> = ...
 ```
 
+Added in v0.1.2
+
 # reduce (constant)
 
 **Signature**
@@ -87,13 +100,7 @@ export const ord: Ord<PositiveRational> = ...
 export const reduce: (n: Natural, d: Natural) => PositiveRational = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<PositiveRational> = ...
-```
+Added in v0.1.2
 
 # show (constant)
 
@@ -103,6 +110,8 @@ export const setoid: Setoid<PositiveRational> = ...
 export const show: (x: PositiveRational) => string = ...
 ```
 
+Added in v0.1.2
+
 # fromRational (function)
 
 **Signature**
@@ -111,6 +120,8 @@ export const show: (x: PositiveRational) => string = ...
 export function fromRational(r: Rational): Option<PositiveRational> { ... }
 ```
 
+Added in v0.1.2
+
 # sub (function)
 
 **Signature**
@@ -118,3 +129,5 @@ export function fromRational(r: Rational): Option<PositiveRational> { ... }
 ```ts
 export function sub(x: PositiveRational, y: PositiveRational): Option<PositiveRational> { ... }
 ```
+
+Added in v0.1.2
