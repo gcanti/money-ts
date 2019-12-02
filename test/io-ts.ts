@@ -1,24 +1,25 @@
 import * as assert from 'assert'
-import { some, none, fromEither } from 'fp-ts/lib/Option'
+import * as BI from 'big-integer'
+import { fromEither, none, some } from 'fp-ts/lib/Option'
+import * as D from '../src/Dense'
+import * as DI from '../src/Discrete'
+import * as I from '../src/Integer'
 import { BigInteger } from '../src/io-ts/BigInteger'
-import { Natural } from '../src/io-ts/Natural'
+import { getDense } from '../src/io-ts/Dense'
+import { getDiscrete } from '../src/io-ts/Discrete'
 import { Integer } from '../src/io-ts/Integer'
+import { Natural } from '../src/io-ts/Natural'
 import { NonZeroInteger } from '../src/io-ts/NonZeroInteger'
-import { Rational } from '../src/io-ts/Rational'
 import { NonZeroRational } from '../src/io-ts/NonZeroRational'
 import { PositiveRational } from '../src/io-ts/PositiveRational'
-import { getDiscrete } from '../src/io-ts/Discrete'
-import * as I from '../src/Integer'
-import * as DI from '../src/Discrete'
-import * as D from '../src/Dense'
-import * as BI from 'big-integer'
+import { ExchangeRate } from '../src/io-ts/ExchangeRate'
+import { Rational } from '../src/io-ts/Rational'
+import * as N from '../src/Natural'
+import * as NZI from '../src/NonZeroInteger'
+import * as NZR from '../src/NonZeroRational'
+import * as PR from '../src/PositiveRational'
+import * as R from '../src/Rational'
 import { unsafeRational } from './helpers'
-import * as natural from '../src/Natural'
-import * as nonZeroInteger from '../src/NonZeroInteger'
-import * as rational from '../src/Rational'
-import * as nonZeroRational from '../src/NonZeroRational'
-import * as positiveRational from '../src/PositiveRational'
-import { getDense } from '../src/io-ts/Dense'
 
 describe('io-ts types', () => {
   describe('BigInteger', () => {
@@ -57,7 +58,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.strictEqual(Natural.encode(natural.one), '1')
+      assert.strictEqual(Natural.encode(N.one), '1')
     })
   })
 
@@ -95,7 +96,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.strictEqual(NonZeroInteger.encode(nonZeroInteger.one), '1')
+      assert.strictEqual(NonZeroInteger.encode(NZI.one), '1')
     })
   })
 
@@ -120,7 +121,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(Rational.encode(rational.one), ['1', '1'])
+      assert.deepEqual(Rational.encode(R.one), ['1', '1'])
     })
   })
 
@@ -145,7 +146,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(NonZeroRational.encode(nonZeroRational.one), ['1', '1'])
+      assert.deepEqual(NonZeroRational.encode(NZR.one), ['1', '1'])
     })
   })
 
@@ -170,7 +171,32 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(PositiveRational.encode(positiveRational.one), ['1', '1'])
+      assert.deepEqual(PositiveRational.encode(PR.one), ['1', '1'])
+    })
+  })
+
+  describe('ExchangeRate', () => {
+    it('decode', () => {
+      assert.deepEqual(fromEither(ExchangeRate().decode(null)), none)
+      assert.deepEqual(fromEither(ExchangeRate().decode([1, 0])), none)
+      assert.deepEqual(fromEither(ExchangeRate().decode([1, 1])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(ExchangeRate().decode([0, 1])), none)
+      assert.deepEqual(fromEither(ExchangeRate().decode([2, 2])), some([BI(1), BI(1)]))
+      assert.deepEqual(fromEither(ExchangeRate().decode([-1, 1])), none)
+      assert.deepEqual(fromEither(ExchangeRate().decode([1, -1])), none)
+      assert.deepEqual(fromEither(ExchangeRate().decode([1.1, 1])), none)
+    })
+
+    it('is', () => {
+      assert.strictEqual(ExchangeRate().is([BI(1), BI(2)]), true)
+      assert.strictEqual(ExchangeRate().is([BI(0), BI(1)]), false)
+      assert.strictEqual(ExchangeRate().is([BI(-1), BI(2)]), false)
+      assert.strictEqual(ExchangeRate().is([BI(1), BI(-2)]), false)
+      assert.strictEqual(ExchangeRate().is([BI(2), BI(2)]), true)
+    })
+
+    it('encode', () => {
+      assert.deepEqual(ExchangeRate().encode(PR.one as any), ['1', '1'])
     })
   })
 

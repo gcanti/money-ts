@@ -2,6 +2,7 @@ import * as assert from 'assert'
 import * as M from '../src'
 import * as D from '../src/Dense'
 import { Discrete } from '../src/Discrete'
+import * as R from '../src/Rational'
 import '../src/scale/EUR'
 import '../src/scale/XAU'
 import * as BigInteger from 'big-integer'
@@ -89,5 +90,17 @@ describe('Dense', () => {
         return D.getOrd<'EUR'>().equals(D.fromDiscrete(cent).add(rest), euro)
       })
     )
+  })
+
+  it('isZero', () => {
+    assert.strictEqual(new D.Dense('EUR', R.zero).isZero(), true)
+  })
+
+  it('negate', () => {
+    assertEqualDense(new D.Dense('EUR', R.one).negate())(new D.Dense('EUR', R.negate(R.one)))
+  })
+
+  it('sub', () => {
+    assertEqualDense(new D.Dense('EUR', R.one).sub(new D.Dense('EUR', R.one)))(new D.Dense('EUR', R.zero))
   })
 })
