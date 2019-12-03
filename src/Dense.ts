@@ -109,8 +109,6 @@ export function fromDiscrete<D extends Dimensions, U extends Units<D>>(d: Discre
 
 /**
  * Internal. Used to implement `round`, `ceil`, `floor` and `trunc`
- *
- * @since 0.1.2
  */
 function roundf<D extends Dimensions, U extends Units<D>>(
   f: (n: Rational) => Integer,
