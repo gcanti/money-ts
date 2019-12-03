@@ -39,7 +39,7 @@ export interface NonZeroInteger
       Integer: true
       NonZero: true
     },
-    BigInteger
+    bigint
   > {}
 ```
 
@@ -140,7 +140,7 @@ Added in v0.1.2
 **Signature**
 
 ```ts
-export const unwrap: (x: NonZeroInteger) => BigInteger = ...
+export const unwrap: (x: NonZeroInteger) => bigint = ...
 ```
 
 Added in v0.1.2
@@ -200,7 +200,7 @@ Added in v0.1.2
 **Signature**
 
 ```ts
-export function wrap(x: BigInteger): Option<NonZeroInteger> { ... }
+export function wrap(x: bigint): Option<NonZeroInteger> { ... }
 ```
 
 Added in v0.1.2

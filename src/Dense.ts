@@ -21,34 +21,40 @@ export class Dense<D extends string> {
     return R.isZero(this.value)
   }
   /**
+   * @since 0.2.0
+   */
+  modify(f: (r: Rational) => Rational): Dense<D> {
+    return new Dense(this.dimension, f(this.value))
+  }
+  /**
    * @since 0.1.2
    */
   add(y: Dense<D>): Dense<D> {
-    return new Dense(this.dimension, R.add(this.value, y.value))
+    return this.modify(value => R.add(value, y.value))
   }
   /**
    * @since 0.1.2
    */
   mul(y: Rational): Dense<D> {
-    return new Dense(this.dimension, R.mul(this.value, y))
+    return this.modify(value => R.mul(value, y))
   }
   /**
    * @since 0.1.2
    */
   negate(): Dense<D> {
-    return new Dense(this.dimension, R.negate(this.value))
+    return this.modify(R.negate)
   }
   /**
    * @since 0.1.2
    */
   sub(y: Dense<D>): Dense<D> {
-    return new Dense(this.dimension, R.sub(this.value, y.value))
+    return this.modify(value => R.sub(value, y.value))
   }
   /**
    * @since 0.1.2
    */
   div(y: NonZeroRational): Dense<D> {
-    return new Dense(this.dimension, R.div(this.value, y))
+    return this.modify(value => R.div(value, y))
   }
   /**
    * @since 0.1.2

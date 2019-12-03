@@ -10,12 +10,13 @@ parent: Modules
 
 - [Format (interface)](#format-interface)
 - [Discrete (class)](#discrete-class)
+  - [isZero (method)](#iszero-method)
+  - [modify (method)](#modify-method)
   - [add (method)](#add-method)
   - [mul (method)](#mul-method)
   - [negate (method)](#negate-method)
   - [sub (method)](#sub-method)
   - [div (method)](#div-method)
-  - [isZero (method)](#iszero-method)
   - [toString (method)](#tostring-method)
 - [getOne (function)](#getone-function)
 - [getOrd (function)](#getord-function)
@@ -48,6 +49,26 @@ export class Discrete<D, U> {
 ```
 
 Added in v0.1.2
+
+## isZero (method)
+
+**Signature**
+
+```ts
+isZero(): boolean { ... }
+```
+
+Added in v0.1.2
+
+## modify (method)
+
+**Signature**
+
+```ts
+modify(f: (r: Integer) => Integer): Discrete<D, U> { ... }
+```
+
+Added in v0.2.0
 
 ## add (method)
 
@@ -95,16 +116,6 @@ Added in v0.1.2
 
 ```ts
 div(y: NonZeroInteger): Discrete<D, U> { ... }
-```
-
-Added in v0.1.2
-
-## isZero (method)
-
-**Signature**
-
-```ts
-isZero(): boolean { ... }
 ```
 
 Added in v0.1.2

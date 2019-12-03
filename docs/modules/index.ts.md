@@ -8,7 +8,7 @@ parent: Modules
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [bigInteger (export)](#biginteger-export)
+- [bigInt (export)](#bigint-export)
 - [dense (export)](#dense-export)
 - [discrete (export)](#discrete-export)
 - [exchangeRate (export)](#exchangerate-export)
@@ -22,15 +22,15 @@ parent: Modules
 
 ---
 
-# bigInteger (export)
+# bigInt (export)
 
 **Signature**
 
 ```ts
-typeof bigInteger
+typeof bigInt
 ```
 
-Added in v0.1.2
+Added in v0.2.0
 
 # dense (export)
 

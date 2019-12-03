@@ -20,38 +20,44 @@ export class Discrete<D extends string, U extends string | number | symbol> {
   /**
    * @since 0.1.2
    */
+  isZero(): boolean {
+    return I.isZero(this.value)
+  }
+  /**
+   * @since 0.2.0
+   */
+  modify(f: (r: Integer) => Integer): Discrete<D, U> {
+    return new Discrete(this.format, f(this.value))
+  }
+  /**
+   * @since 0.1.2
+   */
   add(y: Discrete<D, U>): Discrete<D, U> {
-    return new Discrete(this.format, I.add(this.value, y.value))
+    return this.modify(value => I.add(value, y.value))
   }
   /**
    * @since 0.1.2
    */
   mul(y: Integer): Discrete<D, U> {
-    return new Discrete(this.format, I.mul(this.value, y))
+    return this.modify(value => I.mul(value, y))
   }
   /**
    * @since 0.1.2
    */
   negate(): Discrete<D, U> {
-    return new Discrete(this.format, I.negate(this.value))
+    return this.modify(I.negate)
   }
   /**
    * @since 0.1.2
    */
   sub(y: Discrete<D, U>): Discrete<D, U> {
-    return new Discrete(this.format, I.sub(this.value, y.value))
+    return this.modify(value => I.sub(value, y.value))
   }
   /**
    * @since 0.1.2
    */
   div(y: NonZeroInteger): Discrete<D, U> {
-    return new Discrete(this.format, I.div(this.value, y))
-  }
-  /**
-   * @since 0.1.2
-   */
-  isZero(): boolean {
-    return I.isZero(this.value)
+    return this.modify(value => I.div(value, y))
   }
   /**
    * @since 0.1.2

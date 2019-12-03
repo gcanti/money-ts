@@ -10,6 +10,7 @@ parent: Modules
 
 - [Dense (class)](#dense-class)
   - [isZero (method)](#iszero-method)
+  - [modify (method)](#modify-method)
   - [add (method)](#add-method)
   - [mul (method)](#mul-method)
   - [negate (method)](#negate-method)
@@ -51,6 +52,16 @@ isZero(): boolean { ... }
 ```
 
 Added in v0.1.2
+
+## modify (method)
+
+**Signature**
+
+```ts
+modify(f: (r: Rational) => Rational): Dense<D> { ... }
+```
+
+Added in v0.2.0
 
 ## add (method)
 

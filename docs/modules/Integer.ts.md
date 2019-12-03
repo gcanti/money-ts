@@ -9,21 +9,20 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [Integer (interface)](#integer-interface)
-- [add (constant)](#add-constant)
-- [mul (constant)](#mul-constant)
-- [negate (constant)](#negate-constant)
+- [integer (constant)](#integer-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [ring (constant)](#ring-constant)
-- [sub (constant)](#sub-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [wrap (constant)](#wrap-constant)
 - [zero (constant)](#zero-constant)
+- [add (function)](#add-function)
 - [div (function)](#div-function)
 - [isPositive (function)](#ispositive-function)
 - [isZero (function)](#iszero-function)
+- [mul (function)](#mul-function)
+- [negate (function)](#negate-function)
 - [show (function)](#show-function)
 - [sign (function)](#sign-function)
+- [sub (function)](#sub-function)
 
 ---
 
@@ -32,40 +31,20 @@ parent: Modules
 **Signature**
 
 ```ts
-export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
+export interface Integer extends Newtype<{ Integer: true }, bigint> {}
 ```
 
 Added in v0.1.2
 
-# add (constant)
+# integer (constant)
 
 **Signature**
 
 ```ts
-export const add: (x: Integer, y: Integer) => Integer = ...
+export const integer: Ord<Integer> & Ring<Integer> = ...
 ```
 
-Added in v0.1.2
-
-# mul (constant)
-
-**Signature**
-
-```ts
-export const mul: (x: Integer, y: Integer) => Integer = ...
-```
-
-Added in v0.1.2
-
-# negate (constant)
-
-**Signature**
-
-```ts
-export const negate: (x: Integer) => Integer = ...
-```
-
-Added in v0.1.2
+Added in v0.2.0
 
 # one (constant)
 
@@ -77,55 +56,25 @@ export const one: Integer = ...
 
 Added in v0.1.2
 
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<Integer> = ...
-```
-
-Added in v0.1.2
-
-# ring (constant)
-
-**Signature**
-
-```ts
-export const ring: Ring<Integer> = ...
-```
-
-Added in v0.1.2
-
-# sub (constant)
-
-**Signature**
-
-```ts
-export const sub: (x: Integer, y: Integer) => Integer = ...
-```
-
-Added in v0.1.2
-
 # unwrap (constant)
 
 **Signature**
 
 ```ts
-export const unwrap: (x: Integer) => BigInteger = ...
+export const unwrap: (x: Integer) => bigint = ...
 ```
 
-Added in v0.1.2
+Added in v0.2.0
 
 # wrap (constant)
 
 **Signature**
 
 ```ts
-export const wrap: (x: BigInteger) => Integer = ...
+export const wrap: (x: bigint) => Integer = ...
 ```
 
-Added in v0.1.2
+Added in v0.2.0
 
 # zero (constant)
 
@@ -133,6 +82,16 @@ Added in v0.1.2
 
 ```ts
 export const zero: Integer = ...
+```
+
+Added in v0.1.2
+
+# add (function)
+
+**Signature**
+
+```ts
+export function add(x: Integer, y: Integer): Integer { ... }
 ```
 
 Added in v0.1.2
@@ -167,6 +126,26 @@ export const isZero = (x: Integer): boolean => ...
 
 Added in v0.1.2
 
+# mul (function)
+
+**Signature**
+
+```ts
+export function mul(x: Integer, y: Integer): Integer { ... }
+```
+
+Added in v0.1.2
+
+# negate (function)
+
+**Signature**
+
+```ts
+export function negate(x: Integer): Integer { ... }
+```
+
+Added in v0.1.2
+
 # show (function)
 
 **Signature**
@@ -182,7 +161,17 @@ Added in v0.1.2
 **Signature**
 
 ```ts
-export function sign(x: Integer): -1 | 0 | 1 { ... }
+export function sign(x: Integer): Ordering { ... }
+```
+
+Added in v0.1.2
+
+# sub (function)
+
+**Signature**
+
+```ts
+export function sub(x: Integer, y: Integer): Integer { ... }
 ```
 
 Added in v0.1.2

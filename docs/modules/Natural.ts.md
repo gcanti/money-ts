@@ -37,7 +37,7 @@ export interface Natural
       NonZero: true
       Positive: true
     },
-    BigInteger
+    bigint
   > {}
 ```
 
@@ -138,7 +138,7 @@ Added in v0.1.2
 **Signature**
 
 ```ts
-export const unwrap: (x: Natural) => BigInteger = ...
+export const unwrap: (x: Natural) => bigint = ...
 ```
 
 Added in v0.1.2
@@ -168,7 +168,7 @@ Added in v0.1.2
 **Signature**
 
 ```ts
-export function wrap(x: BigInteger): Option<Natural> { ... }
+export function wrap(x: bigint): Option<Natural> { ... }
 ```
 
 Added in v0.1.2
