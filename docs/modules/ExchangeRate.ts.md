@@ -23,7 +23,7 @@ parent: Modules
 **Signature**
 
 ```ts
-export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], PositiveRational> {}
+export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], PR.PositiveRational> {}
 ```
 
 # unwrap (constant)
@@ -31,7 +31,7 @@ export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], Posi
 **Signature**
 
 ```ts
-export const unwrap: <S, D>(er: ExchangeRate<S, D>) => PositiveRational = ...
+export const unwrap: <S, D>(er: ExchangeRate<S, D>) => PR.PositiveRational = ...
 ```
 
 # wrap (constant)
@@ -39,7 +39,7 @@ export const unwrap: <S, D>(er: ExchangeRate<S, D>) => PositiveRational = ...
 **Signature**
 
 ```ts
-export const wrap: <S, D>(r: PositiveRational) => ExchangeRate<S, D> = ...
+export const wrap: <S, D>(r: PR.PositiveRational) => ExchangeRate<S, D> = ...
 ```
 
 # compose (function)

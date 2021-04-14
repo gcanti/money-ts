@@ -147,7 +147,7 @@ export function abs(x: NonZeroInteger): Natural { ... }
 **Signature**
 
 ```ts
-export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
+export function fromInteger(i: I.Integer): Option<NonZeroInteger> { ... }
 ```
 
 # gcd (function)
@@ -155,7 +155,7 @@ export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
 **Signature**
 
 ```ts
-export function gcd(x: Integer, y: NonZeroInteger): Natural { ... }
+export function gcd(x: I.Integer, y: NonZeroInteger): Natural { ... }
 ```
 
 # lcm (function)

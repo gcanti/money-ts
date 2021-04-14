@@ -37,7 +37,7 @@ parent: Modules
 
 ```ts
 export class Dense<D> {
-  constructor(readonly dimension: D, readonly value: Rational) { ... }
+  constructor(readonly dimension: D, readonly value: R.Rational) { ... }
   ...
 }
 ```
@@ -63,7 +63,7 @@ add(y: Dense<D>): Dense<D> { ... }
 **Signature**
 
 ```ts
-mul(y: Rational): Dense<D> { ... }
+mul(y: R.Rational): Dense<D> { ... }
 ```
 
 ## negate (method)

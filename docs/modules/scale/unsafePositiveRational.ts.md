@@ -17,5 +17,5 @@ parent: Modules
 **Signature**
 
 ```ts
-export function unsafePositiveRational([x, y]: [number | string, number | string]): PositiveRational { ... }
+export function unsafePositiveRational([x, y]: [number | string, number | string]): PR.PositiveRational { ... }
 ```

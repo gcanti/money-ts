@@ -8,19 +8,17 @@ import { Rational } from '../src/io-ts/Rational'
 import { NonZeroRational } from '../src/io-ts/NonZeroRational'
 import { PositiveRational } from '../src/io-ts/PositiveRational'
 import { getDiscrete } from '../src/io-ts/Discrete'
-import * as integer from '../src/Integer'
-import * as discrete from '../src/Discrete'
-import * as dense from '../src/Dense'
+import * as I from '../src/Integer'
+import * as DC from '../src/Discrete'
+import * as D from '../src/Dense'
 import { getDense } from '../src/io-ts/Dense'
 import * as BI from 'big-integer'
-import { Discrete, Format } from '../src/Discrete'
-import { Dense } from '../src/Dense'
 import { unsafeRational } from './helpers'
-import * as natural from '../src/Natural'
-import * as nonZeroInteger from '../src/NonZeroInteger'
-import * as rational from '../src/Rational'
-import * as nonZeroRational from '../src/NonZeroRational'
-import * as positiveRational from '../src/PositiveRational'
+import * as N from '../src/Natural'
+import * as NZI from '../src/NonZeroInteger'
+import * as R from '../src/Rational'
+import * as NZR from '../src/NonZeroRational'
+import * as PR from '../src/PositiveRational'
 
 describe('io-ts types', () => {
   describe('BigInteger', () => {
@@ -59,7 +57,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.strictEqual(Natural.encode(natural.one), '1')
+      assert.strictEqual(Natural.encode(N.one), '1')
     })
   })
 
@@ -78,7 +76,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.strictEqual(Integer.encode(integer.one), '1')
+      assert.strictEqual(Integer.encode(I.one), '1')
     })
   })
 
@@ -97,7 +95,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.strictEqual(NonZeroInteger.encode(nonZeroInteger.one), '1')
+      assert.strictEqual(NonZeroInteger.encode(NZI.one), '1')
     })
   })
 
@@ -122,7 +120,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(Rational.encode(rational.one), ['1', '1'])
+      assert.deepEqual(Rational.encode(R.one), ['1', '1'])
     })
   })
 
@@ -147,7 +145,7 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(NonZeroRational.encode(nonZeroRational.one), ['1', '1'])
+      assert.deepEqual(NonZeroRational.encode(NZR.one), ['1', '1'])
     })
   })
 
@@ -172,15 +170,15 @@ describe('io-ts types', () => {
     })
 
     it('encode', () => {
-      assert.deepEqual(PositiveRational.encode(positiveRational.one), ['1', '1'])
+      assert.deepEqual(PositiveRational.encode(PR.one), ['1', '1'])
     })
   })
 
   describe('Discrete', () => {
     it('decode', () => {
-      const format: Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
-      const one = discrete.getOne(format)
-      const zero = discrete.getZero(format)
+      const format: DC.Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
+      const one = DC.getOne(format)
+      const zero = DC.getZero(format)
       const T = getDiscrete('EUR', 'cent')
       assert.deepEqual(fromEither(T.decode(1)), some(one))
       assert.deepEqual(fromEither(T.decode(0)), some(zero))
@@ -190,25 +188,25 @@ describe('io-ts types', () => {
     it('is', () => {
       const format = { dimension: 'EUR', unit: 'cent' }
       const T = getDiscrete('EUR', 'cent')
-      assert.strictEqual(T.is(new Discrete(format, integer.wrap(BI(1)))), true)
-      assert.strictEqual(T.is(new Discrete(format, integer.wrap(BI(0)))), true)
-      assert.strictEqual(T.is(new Discrete(format, integer.wrap(BI(-1)))), true)
-      assert.strictEqual(T.is(new Discrete({ dimension: 'EUR', unit: 'euro' }, integer.wrap(BI(1)))), false)
-      assert.strictEqual(T.is(new Discrete({ dimension: 'USD', unit: 'cent' }, integer.wrap(BI(1)))), false)
+      assert.strictEqual(T.is(new DC.Discrete(format, I.wrap(BI(1)))), true)
+      assert.strictEqual(T.is(new DC.Discrete(format, I.wrap(BI(0)))), true)
+      assert.strictEqual(T.is(new DC.Discrete(format, I.wrap(BI(-1)))), true)
+      assert.strictEqual(T.is(new DC.Discrete({ dimension: 'EUR', unit: 'euro' }, I.wrap(BI(1)))), false)
+      assert.strictEqual(T.is(new DC.Discrete({ dimension: 'USD', unit: 'cent' }, I.wrap(BI(1)))), false)
     })
 
     it('encode', () => {
-      const format: Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
+      const format: DC.Format<'EUR', 'cent'> = { dimension: 'EUR', unit: 'cent' }
       const T = getDiscrete('EUR', 'cent')
-      const d = new Discrete(format, integer.wrap(BI(100)))
+      const d = new DC.Discrete(format, I.wrap(BI(100)))
       assert.strictEqual(T.encode(d), '100')
     })
   })
 
   describe('Dense', () => {
     it('decode', () => {
-      const one = dense.getOne('EUR')
-      const zero = dense.getZero('EUR')
+      const one = D.getOne('EUR')
+      const zero = D.getZero('EUR')
       const T = getDense('EUR')
       assert.deepEqual(fromEither(T.decode(1)), none)
       assert.deepEqual(fromEither(T.decode([1, 0])), none)
@@ -219,15 +217,15 @@ describe('io-ts types', () => {
 
     it('is', () => {
       const T = getDense('EUR')
-      assert.strictEqual(T.is(new Dense('EUR', unsafeRational([0, 1]))), true)
-      assert.strictEqual(T.is(new Dense('EUR', unsafeRational([2, 1]))), true)
-      assert.strictEqual(T.is(new Dense('EUR', unsafeRational([-2, 1]))), true)
-      assert.strictEqual(T.is(new Dense('USD', unsafeRational([2, 1]))), false)
+      assert.strictEqual(T.is(new D.Dense('EUR', unsafeRational([0, 1]))), true)
+      assert.strictEqual(T.is(new D.Dense('EUR', unsafeRational([2, 1]))), true)
+      assert.strictEqual(T.is(new D.Dense('EUR', unsafeRational([-2, 1]))), true)
+      assert.strictEqual(T.is(new D.Dense('USD', unsafeRational([2, 1]))), false)
     })
 
     it('encode', () => {
       const T = getDense('EUR')
-      const d = new Dense('EUR', unsafeRational([2, 1]))
+      const d = new D.Dense('EUR', unsafeRational([2, 1]))
       assert.deepEqual(T.encode(d), ['2', '1'])
     })
   })
