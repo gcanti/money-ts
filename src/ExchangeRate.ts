@@ -1,9 +1,10 @@
-import { Newtype, unsafeCoerce } from 'newtype-ts'
+import { Newtype } from 'newtype-ts'
 import { PositiveRational } from './PositiveRational'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Eq } from 'fp-ts/Eq'
+import { Ord } from 'fp-ts/Ord'
 import { Dense } from './Dense'
 import * as positiveRational from './PositiveRational'
+import { unsafeCoerce } from 'fp-ts/function'
 
 export interface ExchangeRate<S, D> extends Newtype<['ExchangeRate', S, D], PositiveRational> {}
 
@@ -19,6 +20,6 @@ export function compose<A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>)
   return wrap(positiveRational.mul(unwrap(bc), unwrap(ab)))
 }
 
-export const getSetoid = <S, D>(): Setoid<ExchangeRate<S, D>> => unsafeCoerce(positiveRational.setoid)
+export const getEq = <S, D>(): Eq<ExchangeRate<S, D>> => unsafeCoerce(positiveRational.eq)
 
 export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => unsafeCoerce(positiveRational.ord)

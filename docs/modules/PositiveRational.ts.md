@@ -11,12 +11,12 @@ parent: Modules
 - [PositiveRational (type alias)](#positiverational-type-alias)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
+- [eq (constant)](#eq-constant)
 - [inverse (constant)](#inverse-constant)
 - [mul (constant)](#mul-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
 - [sub (function)](#sub-function)
@@ -45,6 +45,14 @@ export const add: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 ```ts
 export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational = ...
+```
+
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<PositiveRational> = ...
 ```
 
 # inverse (constant)
@@ -87,14 +95,6 @@ export const ord: Ord<PositiveRational> = ...
 export const reduce: (n: Natural, d: Natural) => PositiveRational = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<PositiveRational> = ...
-```
-
 # show (constant)
 
 **Signature**
@@ -108,7 +108,7 @@ export const show: (x: PositiveRational) => string = ...
 **Signature**
 
 ```ts
-export function fromRational(r: Rational): Option<PositiveRational> { ... }
+export function fromRational(r: Rational): O.Option<PositiveRational> { ... }
 ```
 
 # sub (function)
@@ -116,5 +116,5 @@ export function fromRational(r: Rational): Option<PositiveRational> { ... }
 **Signature**
 
 ```ts
-export function sub(x: PositiveRational, y: PositiveRational): Option<PositiveRational> { ... }
+export function sub(x: PositiveRational, y: PositiveRational): O.Option<PositiveRational> { ... }
 ```

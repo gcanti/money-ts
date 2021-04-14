@@ -18,9 +18,9 @@ parent: Modules
   - [isZero (method)](#iszero-method)
   - [inspect (method)](#inspect-method)
   - [toString (method)](#tostring-method)
+- [getEq (function)](#geteq-function)
 - [getOne (function)](#getone-function)
 - [getOrd (function)](#getord-function)
-- [getSetoid (function)](#getsetoid-function)
 - [getZero (function)](#getzero-function)
 
 ---
@@ -111,6 +111,14 @@ inspect(): string { ... }
 toString(): string { ... }
 ```
 
+# getEq (function)
+
+**Signature**
+
+```ts
+export function getEq<D extends string, U extends string>(): Eq<Discrete<D, U>> { ... }
+```
+
 # getOne (function)
 
 **Signature**
@@ -125,14 +133,6 @@ export function getOne<D extends string, U extends string>(format: Format<D, U>)
 
 ```ts
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> { ... }
-```
-
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> { ... }
 ```
 
 # getZero (function)

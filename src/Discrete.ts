@@ -1,8 +1,8 @@
 import { Integer } from './Integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import * as integer from './Integer'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Eq } from 'fp-ts/Eq'
+import { Ord } from 'fp-ts/Ord'
 
 export interface Format<D extends string, U extends string | number | symbol> {
   dimension: D
@@ -45,15 +45,15 @@ export function getZero<D extends string, U extends string>(format: Format<D, U>
   return new Discrete(format, integer.zero)
 }
 
-export function getSetoid<D extends string, U extends string>(): Setoid<Discrete<D, U>> {
+export function getEq<D extends string, U extends string>(): Eq<Discrete<D, U>> {
   return {
-    equals: (x, y) => integer.setoid.equals(x.value, y.value)
+    equals: (x, y) => integer.eq.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
   return {
-    ...getSetoid(),
+    ...getEq(),
     compare: (x, y) => integer.ord.compare(x.value, y.value)
   }
 }

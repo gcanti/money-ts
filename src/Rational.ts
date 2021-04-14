@@ -1,13 +1,14 @@
 import { Integer } from './Integer'
 import { Natural } from './Natural'
 import { NonZeroRational } from './NonZeroRational'
-import { Setoid, getProductSetoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import * as Eq from 'fp-ts/Eq'
+import { Ord } from 'fp-ts/Ord'
 import * as bigInteger from './BigInteger'
 import * as integer from './Integer'
 import * as natural from './Natural'
 import * as nonZeroInteger from './NonZeroInteger'
-import { unsafeCoerce } from 'newtype-ts'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 
 export type Rational = [Integer, Natural]
 
@@ -20,12 +21,18 @@ export function isZero(x: Rational): boolean {
 }
 
 export function reduce(n: Integer, d: Natural): Rational {
-  return nonZeroInteger.fromInteger(n).fold<Rational>(zero, n => {
-    const divisor = natural.gcd(nonZeroInteger.abs(n), d)
-    const n2 = integer.div(n, divisor)
-    const d2 = natural.div(d, divisor)
-    return [n2, d2]
-  })
+  return pipe(
+    nonZeroInteger.fromInteger(n),
+    O.fold(
+      () => zero,
+      (n) => {
+        const divisor = natural.gcd(nonZeroInteger.abs(n), d)
+        const n2 = integer.div(n, divisor)
+        const d2 = natural.div(d, divisor)
+        return [n2, d2]
+      }
+    )
+  )
 }
 
 export function add([nx, dx]: Rational, [ny, dy]: Rational): Rational {
@@ -99,12 +106,12 @@ export function trunc(x: Rational): Integer {
   }
 }
 
-export const setoid: Setoid<Rational> = getProductSetoid(integer.setoid, natural.setoid)
+export const eq: Eq.Eq<Rational> = Eq.getTupleEq(integer.eq, natural.eq)
 
 export const ord: Ord<Rational> = {
-  ...setoid,
+  ...eq,
   compare: ([nx, dx], [ny, dy]) => {
-    if (integer.setoid.equals(dx, dy)) {
+    if (integer.eq.equals(dx, dy)) {
       return integer.ord.compare(nx, ny)
     } else {
       return integer.ord.compare(integer.mul(nx, dy), integer.mul(ny, dx))

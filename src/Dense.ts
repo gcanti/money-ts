@@ -1,7 +1,7 @@
 import { Rational } from './Rational'
 import { Integer } from './Integer'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Eq } from 'fp-ts/Eq'
+import { Ord } from 'fp-ts/Ord'
 import { Discrete, Format } from './Discrete'
 import { Dimensions, Units, scale } from './Scale'
 import { NonZeroRational } from './NonZeroRational'
@@ -49,15 +49,15 @@ export function getOne<D extends string>(d: D): Dense<D> {
   return new Dense(d, rational.one)
 }
 
-export function getSetoid<D extends string>(): Setoid<Dense<D>> {
+export function getEq<D extends string>(): Eq<Dense<D>> {
   return {
-    equals: (x, y) => rational.setoid.equals(x.value, y.value)
+    equals: (x, y) => rational.eq.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string>(): Ord<Dense<D>> {
   return {
-    ...getSetoid(),
+    ...getEq(),
     compare: (x, y) => rational.ord.compare(x.value, y.value)
   }
 }

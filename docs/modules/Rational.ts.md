@@ -9,9 +9,9 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [Rational (type alias)](#rational-type-alias)
+- [eq (constant)](#eq-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
 - [ceil (function)](#ceil-function)
@@ -38,6 +38,14 @@ parent: Modules
 export type Rational = [Integer, Natural]
 ```
 
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq.Eq<Rational> = ...
+```
+
 # one (constant)
 
 **Signature**
@@ -52,14 +60,6 @@ export const one: Rational = ...
 
 ```ts
 export const ord: Ord<Rational> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Rational> = ...
 ```
 
 # zero (constant)

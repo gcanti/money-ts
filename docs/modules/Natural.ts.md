@@ -11,13 +11,13 @@ parent: Modules
 - [Natural (interface)](#natural-interface)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
+- [eq (constant)](#eq-constant)
 - [gcd (constant)](#gcd-constant)
 - [lcm (constant)](#lcm-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [fromInteger (function)](#frominteger-function)
@@ -58,6 +58,14 @@ export const add: (x: Natural, y: Natural) => Natural = ...
 
 ```ts
 export const div: (x: Natural, y: Natural) => Natural = ...
+```
+
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<Natural> = ...
 ```
 
 # gcd (constant)
@@ -106,14 +114,6 @@ export const one: Natural = ...
 
 ```ts
 export const ord: Ord<Natural> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Natural> = ...
 ```
 
 # show (constant)

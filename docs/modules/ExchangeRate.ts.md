@@ -13,8 +13,8 @@ parent: Modules
 - [wrap (constant)](#wrap-constant)
 - [compose (function)](#compose-function)
 - [exchange (function)](#exchange-function)
+- [getEq (function)](#geteq-function)
 - [getOrd (function)](#getord-function)
-- [getSetoid (function)](#getsetoid-function)
 
 ---
 
@@ -58,18 +58,18 @@ export function compose<A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>)
 export const exchange = <S extends string, D extends string>(er: ExchangeRate<S, D>) => (d: Dense<S>): Dense<D> => ...
 ```
 
+# getEq (function)
+
+**Signature**
+
+```ts
+export const getEq = <S, D>(): Eq<ExchangeRate<S, D>> => ...
+```
+
 # getOrd (function)
 
 **Signature**
 
 ```ts
 export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => ...
-```
-
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export const getSetoid = <S, D>(): Setoid<ExchangeRate<S, D>> => ...
 ```

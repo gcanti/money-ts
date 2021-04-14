@@ -37,7 +37,7 @@ describe('Integer', () => {
       property(IntegerGenerator, IntegerGenerator, (a, b) => {
         const c = integer.add(a, b)
         const d = integer.sub(c, b)
-        integer.setoid.equals(d, a)
+        integer.eq.equals(d, a)
       })
     )
   })

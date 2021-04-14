@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { some, none, fromEither } from 'fp-ts/lib/Option'
+import { some, none, fromEither } from 'fp-ts/Option'
 import { BigInteger } from '../src/io-ts/BigInteger'
 import { Natural } from '../src/io-ts/Natural'
 import { Integer } from '../src/io-ts/Integer'

@@ -21,10 +21,10 @@ parent: Modules
 - [floor (function)](#floor-function)
 - [fromDiscrete (function)](#fromdiscrete-function)
 - [fromInteger (function)](#frominteger-function)
+- [getEq (function)](#geteq-function)
 - [getOne (function)](#getone-function)
 - [getOrd (function)](#getord-function)
 - [getScale (function)](#getscale-function)
-- [getSetoid (function)](#getsetoid-function)
 - [getZero (function)](#getzero-function)
 - [round (function)](#round-function)
 - [trunc (function)](#trunc-function)
@@ -138,6 +138,14 @@ export function fromDiscrete<D extends Dimensions, U extends Units<D>>(d: Discre
 export function fromInteger<D extends string>(d: D, i: Integer): Dense<D> { ... }
 ```
 
+# getEq (function)
+
+**Signature**
+
+```ts
+export function getEq<D extends string>(): Eq<Dense<D>> { ... }
+```
+
 # getOne (function)
 
 **Signature**
@@ -160,14 +168,6 @@ export function getOrd<D extends string>(): Ord<Dense<D>> { ... }
 
 ```ts
 export function getScale<D extends Dimensions, U extends Units<D>>(format: Format<D, U>): PositiveRational { ... }
-```
-
-# getSetoid (function)
-
-**Signature**
-
-```ts
-export function getSetoid<D extends string>(): Setoid<Dense<D>> { ... }
 ```
 
 # getZero (function)

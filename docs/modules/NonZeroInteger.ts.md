@@ -11,12 +11,12 @@ parent: Modules
 - [NonZeroInteger (interface)](#nonzerointeger-interface)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
+- [eq (constant)](#eq-constant)
 - [isPositive (constant)](#ispositive-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [sign (constant)](#sign-constant)
 - [unwrap (constant)](#unwrap-constant)
@@ -62,6 +62,14 @@ export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 ```
 
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<NonZeroInteger> = ...
+```
+
 # isPositive (constant)
 
 **Signature**
@@ -100,14 +108,6 @@ export const one: NonZeroInteger = ...
 
 ```ts
 export const ord: Ord<NonZeroInteger> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroInteger> = ...
 ```
 
 # show (constant)

@@ -11,11 +11,11 @@ parent: Modules
 - [NonZeroRational (type alias)](#nonzerorational-type-alias)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
+- [eq (constant)](#eq-constant)
 - [mul (constant)](#mul-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
 - [inverse (function)](#inverse-function)
@@ -45,6 +45,14 @@ export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 
 ```ts
 export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = ...
+```
+
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<NonZeroRational> = ...
 ```
 
 # mul (constant)
@@ -79,14 +87,6 @@ export const ord: Ord<NonZeroRational> = ...
 export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = ...
 ```
 
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroRational> = ...
-```
-
 # show (constant)
 
 **Signature**
@@ -100,7 +100,7 @@ export const show: (x: NonZeroRational) => string = ...
 **Signature**
 
 ```ts
-export function fromRational(r: Rational): Option<NonZeroRational> { ... }
+export function fromRational(r: Rational): O.Option<NonZeroRational> { ... }
 ```
 
 # inverse (function)
@@ -116,5 +116,5 @@ export function inverse(x: NonZeroRational): NonZeroRational { ... }
 **Signature**
 
 ```ts
-export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRational> { ... }
+export function sub(x: NonZeroRational, y: NonZeroRational): O.Option<NonZeroRational> { ... }
 ```

@@ -1,10 +1,11 @@
 import * as assert from 'assert'
-import { some, none } from 'fp-ts/lib/Option'
+import * as O from 'fp-ts/Option'
 import * as integer from '../src/Integer'
 import * as natural from '../src/Natural'
 import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './helpers'
 import { property } from 'testcheck'
-import { lessThanOrEq, greaterThanOrEq } from 'fp-ts/lib/Ord'
+import * as Ord from 'fp-ts/Ord'
+import { pipe } from 'fp-ts/function'
 
 const n1 = unsafeNatural(1)
 const n2 = unsafeNatural(2)
@@ -14,18 +15,24 @@ const n5 = unsafeNatural(5)
 const n6 = unsafeNatural(6)
 const n12 = unsafeNatural(12)
 
-const assertEqual = getAssertEqual(natural.setoid)
+const assertEqual = getAssertEqual(natural.eq)
 
-const assertEqualOption = getAssertEqualOption(natural.setoid)
+const assertEqualOption = getAssertEqualOption(natural.eq)
 
 describe('Natural', () => {
   it('fromInteger', () => {
-    const lte = lessThanOrEq(integer.ord)
-    const gte = greaterThanOrEq(natural.ord)
+    const lte = Ord.leq(integer.ord)
+    const gte = Ord.geq(natural.ord)
     assertProperty(
-      property(IntegerGenerator, i => {
-        return natural.fromInteger(i).foldL(() => lte(i, integer.zero), n => gte(n, natural.one))
-      })
+      property(IntegerGenerator, (i) =>
+        pipe(
+          natural.fromInteger(i),
+          O.fold(
+            () => lte(i, integer.zero),
+            (n) => gte(n, natural.one)
+          )
+        )
+      )
     )
   })
 
@@ -39,8 +46,8 @@ describe('Natural', () => {
   })
 
   it('sub', () => {
-    assertEqualOption(natural.sub(n3, n2), some(n1))
-    assertEqualOption(natural.sub(n2, n2), none)
+    assertEqualOption(natural.sub(n3, n2), O.some(n1))
+    assertEqualOption(natural.sub(n2, n2), O.none)
   })
 
   it('div', () => {

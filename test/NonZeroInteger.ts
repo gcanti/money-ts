@@ -1,11 +1,12 @@
 import * as assert from 'assert'
-import { some, none } from 'fp-ts/lib/Option'
+import * as O from 'fp-ts/Option'
 import { NonZeroInteger } from '../src/NonZeroInteger'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
 import * as BigInteger from 'big-integer'
 import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './helpers'
 import { property } from 'testcheck'
+import { pipe } from 'fp-ts/function'
 
 const wrap = (x: number | string): NonZeroInteger => BigInteger(x as any) as any
 
@@ -19,16 +20,22 @@ const nz6 = wrap(6)
 const nz12 = wrap(12)
 const zz1 = wrap(-1)
 
-const assertEqual = getAssertEqual(nonZeroInteger.setoid)
+const assertEqual = getAssertEqual(nonZeroInteger.eq)
 
-const assertEqualOption = getAssertEqualOption(nonZeroInteger.setoid)
+const assertEqualOption = getAssertEqualOption(nonZeroInteger.eq)
 
 describe('NonZeroInteger', () => {
   it('fromInteger', () => {
     assertProperty(
-      property(IntegerGenerator, i => {
-        return nonZeroInteger.fromInteger(i).foldL(() => integer.setoid.equals(i, integer.zero), () => true)
-      })
+      property(IntegerGenerator, (i) =>
+        pipe(
+          nonZeroInteger.fromInteger(i),
+          O.fold(
+            () => integer.eq.equals(i, integer.zero),
+            () => true
+          )
+        )
+      )
     )
   })
 
@@ -49,8 +56,8 @@ describe('NonZeroInteger', () => {
   })
 
   it('sub', () => {
-    assertEqualOption(nonZeroInteger.sub(nz2, nz3), some(zz1))
-    assertEqualOption(nonZeroInteger.sub(nz2, nz2), none)
+    assertEqualOption(nonZeroInteger.sub(nz2, nz3), O.some(zz1))
+    assertEqualOption(nonZeroInteger.sub(nz2, nz2), O.none)
   })
 
   it('div', () => {

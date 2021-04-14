@@ -10,12 +10,12 @@ parent: Modules
 
 - [Integer (interface)](#integer-interface)
 - [add (constant)](#add-constant)
+- [eq (constant)](#eq-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [ring (constant)](#ring-constant)
-- [setoid (constant)](#setoid-constant)
 - [sub (constant)](#sub-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [wrap (constant)](#wrap-constant)
@@ -42,6 +42,14 @@ export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
 
 ```ts
 export const add: (x: Integer, y: Integer) => Integer = ...
+```
+
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<Integer> = ...
 ```
 
 # mul (constant)
@@ -73,7 +81,7 @@ export const one: Integer = ...
 **Signature**
 
 ```ts
-export const ord: Ord<Integer> = ...
+export const ord: Ord.Ord<Integer> = ...
 ```
 
 # ring (constant)
@@ -82,14 +90,6 @@ export const ord: Ord<Integer> = ...
 
 ```ts
 export const ring: Ring<Integer> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Integer> = ...
 ```
 
 # sub (constant)

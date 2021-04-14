@@ -8,10 +8,10 @@ parent: Modules
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [eq (constant)](#eq-constant)
 - [one (constant)](#one-constant)
 - [ord (constant)](#ord-constant)
 - [ring (constant)](#ring-constant)
-- [setoid (constant)](#setoid-constant)
 - [two (constant)](#two-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
@@ -23,6 +23,14 @@ parent: Modules
 - [wrap (function)](#wrap-function)
 
 ---
+
+# eq (constant)
+
+**Signature**
+
+```ts
+export const eq: Eq<BigInteger> = ...
+```
 
 # one (constant)
 
@@ -46,14 +54,6 @@ export const ord: Ord<BigInteger> = ...
 
 ```ts
 export const ring: Ring<BigInteger> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<BigInteger> = ...
 ```
 
 # two (constant)

@@ -1,4 +1,4 @@
-import { unsafeCoerce } from 'newtype-ts'
+import { unsafeCoerce } from 'fp-ts/function'
 import { Type, mixed } from 'io-ts'
 import { ExchangeRate as ExchangeRateNewtype } from '../ExchangeRate'
 import { PositiveRational } from './PositiveRational'

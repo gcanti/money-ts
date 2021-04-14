@@ -5,10 +5,10 @@ import { Integer } from '../src/Integer'
 import { NonZeroInteger } from '../src/NonZeroInteger'
 import { Rational } from '../src/Rational'
 import { NonZeroRational } from '../src/NonZeroRational'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Option, getSetoid } from 'fp-ts/lib/Option'
+import { Eq } from 'fp-ts/Eq'
+import { Option, getEq } from 'fp-ts/Option'
 import { BigInteger } from 'big-integer'
-import { unsafeCoerce } from 'newtype-ts'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as bigInteger from '../src/BigInteger'
 import * as integer from '../src/Integer'
 import * as nonZeroInteger from '../src/NonZeroInteger'
@@ -21,16 +21,20 @@ import { Discrete } from '../src/Discrete'
 import * as discrete from '../src/Discrete'
 import { PositiveRational } from '../src/PositiveRational'
 import * as positiveRational from '../src/PositiveRational'
-import { Semiring } from 'fp-ts/lib/Semiring'
-import { Ring } from 'fp-ts/lib/Ring'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Semiring } from 'fp-ts/Semiring'
+import { Ring } from 'fp-ts/Ring'
+import { Ord } from 'fp-ts/Ord'
+import * as O from 'fp-ts/Option'
 
 const fromSome = <A>(fa: Option<A>): A =>
-  fa.getOrElseL(() => {
-    throw new Error('fromSome called with None')
-  })
+  pipe(
+    fa,
+    O.getOrElse<A>(() => {
+      throw new Error('fromSome called with None')
+    })
+  )
 
-export function getAssertEqual<A>(S: Setoid<A>): (x: A, y: A) => void {
+export function getAssertEqual<A>(S: Eq<A>): (x: A, y: A) => void {
   return function assertEqual(x: A, y: A): void {
     if (!S.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
@@ -38,29 +42,29 @@ export function getAssertEqual<A>(S: Setoid<A>): (x: A, y: A) => void {
   }
 }
 
-export function getAssertEqualOption<A>(S: Setoid<A>): (x: Option<A>, y: Option<A>) => void {
-  return getAssertEqual(getSetoid(S))
+export function getAssertEqualOption<A>(S: Eq<A>): (x: Option<A>, y: Option<A>) => void {
+  return getAssertEqual(getEq(S))
 }
 
-export const assertEqualInteger = getAssertEqual(integer.setoid)
+export const assertEqualInteger = getAssertEqual(integer.eq)
 
-const denseSetoid = dense.getSetoid<any>()
+const denseEq = dense.getEq<any>()
 
 export function assertEqualDense<D extends string>(x: dense.Dense<D>): (y: Dense<D>) => void {
-  return y => {
-    if (!denseSetoid.equals(x, y)) {
+  return (y) => {
+    if (!denseEq.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
 }
 
-const discreteSetoid = discrete.getSetoid<any, any>()
+const discreteEq = discrete.getEq<any, any>()
 
 export function assertEqualDiscrete<D extends string, U extends string>(
   x: Discrete<D, U>
 ): (y: Discrete<D, U>) => void {
-  return y => {
-    if (!discreteSetoid.equals(x, y)) {
+  return (y) => {
+    if (!discreteEq.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
@@ -78,15 +82,15 @@ export function unsafeBigInteger(x: number | string): BigInteger {
 }
 
 export function unsafeInteger(x: number | string): Integer {
-  return fromSome(bigInteger.wrap(x).map(integer.wrap))
+  return pipe(bigInteger.wrap(x), O.map(integer.wrap), fromSome)
 }
 
 export function unsafeNatural(x: number | string): Natural {
-  return fromSome(bigInteger.wrap(x).chain(natural.wrap))
+  return pipe(bigInteger.wrap(x), O.chain(natural.wrap), fromSome)
 }
 
 export function unsafeNonZeroInteger(x: number | string): NonZeroInteger {
-  return fromSome(bigInteger.wrap(x).chain(nonZeroInteger.wrap))
+  return pipe(bigInteger.wrap(x), O.chain(nonZeroInteger.wrap), fromSome)
 }
 
 export function unsafeRational([x, y]: [number | string, number | string]): Rational {
@@ -97,9 +101,9 @@ export function unsafeNonZeroRational([x, y]: [number | string, number | string]
   return nonZeroRational.reduce(unsafeNonZeroInteger(x), unsafeNatural(y))
 }
 
-const BigNaturalStringGenerator: Generator<string> = gen.sPosInt.then(i => i + '9007199254740992')
+const BigNaturalStringGenerator: Generator<string> = gen.sPosInt.then((i) => i + '9007199254740992')
 
-const BigIntegerStringGenerator: Generator<string> = gen.int.then(i => i + '9007199254740992')
+const BigIntegerStringGenerator: Generator<string> = gen.int.then((i) => i + '9007199254740992')
 
 const BigNaturalGenerator: Generator<BigInteger> = gen
   .oneOf<string | number>([gen.sPosInt, BigNaturalStringGenerator])
@@ -113,28 +117,28 @@ export const NaturalGenerator: Generator<Natural> = unsafeCoerce(BigNaturalGener
 
 export const IntegerGenerator: Generator<Integer> = unsafeCoerce(BigIntegerGenerator)
 
-export const NonZeroIntegerGenerator: Generator<NonZeroInteger> = BigIntegerGenerator.suchThat(bi => !bi.isZero()).then(
-  bi => unsafeCoerce(bi)
-)
+export const NonZeroIntegerGenerator: Generator<NonZeroInteger> = BigIntegerGenerator.suchThat(
+  (bi) => !bi.isZero()
+).then((bi) => unsafeCoerce(bi))
 
 export const NonZeroRationalGenerator: Generator<NonZeroRational> = gen
   .array([NonZeroIntegerGenerator, NaturalGenerator])
-  .then(r => nonZeroRational.reduce(r[0], r[1]))
+  .then((r) => nonZeroRational.reduce(r[0], r[1]))
 
 export const PositiveRationalGenerator: Generator<PositiveRational> = gen
   .array([NaturalGenerator, NaturalGenerator])
-  .then(r => positiveRational.reduce(r[0], r[1]))
+  .then((r) => positiveRational.reduce(r[0], r[1]))
 
 const RationalGenerator: Generator<Rational> = gen
   .array([IntegerGenerator, NaturalGenerator])
-  .then(r => rational.reduce(r[0], r[1]))
+  .then((r) => rational.reduce(r[0], r[1]))
 
 export function getDenseGenerator<D extends string>(dimension: D): Generator<Dense<D>> {
-  return RationalGenerator.then(r => new Dense(dimension, r))
+  return RationalGenerator.then((r) => new Dense(dimension, r))
 }
 
-export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>): void {
-  // Compatibility with Setoid
+export function checkOrdLaws<A>(generator: Generator<A>, E: Eq<A>, O: Ord<A>): void {
+  // Compatibility with Eq
   assertProperty(
     property(generator, generator, (a, b) => {
       return O.compare(a, b) === 0 ? E.equals(a, b) : true
@@ -142,7 +146,7 @@ export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>
   )
   // Reflexivity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       return O.compare(a, a) !== 1
     })
   )
@@ -160,7 +164,7 @@ export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>
   )
 }
 
-export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: Semiring<A>): void {
+export function checkSemiringLaws<A>(generator: Generator<A>, E: Eq<A>, S: Semiring<A>): void {
   const zero = S.zero
   // addition Associativity
   assertProperty(
@@ -170,7 +174,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // addition Identity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.add(a, zero)
       const c = S.add(zero, a)
       return E.equals(b, c) && E.equals(b, a)
@@ -191,7 +195,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // multiplication Identity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.mul(a, one)
       const c = S.mul(one, a)
       return E.equals(b, c) && E.equals(b, a)
@@ -211,7 +215,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // Annihilation
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.mul(a, zero)
       const c = S.mul(zero, a)
       return E.equals(b, c) && E.equals(b, zero)
@@ -219,12 +223,12 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
 }
 
-export function checkRingLaws<A>(generator: Generator<A>, E: Setoid<A>, R: Ring<A>): void {
+export function checkRingLaws<A>(generator: Generator<A>, E: Eq<A>, R: Ring<A>): void {
   checkSemiringLaws(generator, E, R)
   const zero = R.zero
   // Additive inverse
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = R.sub(a, a)
       const c = R.add(R.sub(zero, a), a)
       return E.equals(b, c) && E.equals(b, zero)

@@ -1,4 +1,4 @@
-import { unsafeCoerce } from 'newtype-ts'
+import { unsafeCoerce } from 'fp-ts/function'
 
 export interface Scale {}
 

@@ -14,7 +14,7 @@ const i2 = unsafeInteger(2)
 const in1 = unsafeInteger(-1)
 const in2 = unsafeInteger(-2)
 
-const assertEqual = getAssertEqual(rational.setoid)
+const assertEqual = getAssertEqual(rational.eq)
 
 describe('Rational', () => {
   it('fromInteger', () => {
