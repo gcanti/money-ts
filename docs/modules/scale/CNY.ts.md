@@ -1,6 +1,6 @@
 ---
 title: scale/CNY.ts
-nav_order: 26
+nav_order: 17
 parent: Modules
 ---
 

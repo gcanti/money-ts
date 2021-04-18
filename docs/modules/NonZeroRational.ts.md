@@ -1,6 +1,6 @@
 ---
 title: NonZeroRational.ts
-nav_order: 19
+nav_order: 10
 parent: Modules
 ---
 
@@ -9,12 +9,12 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [NonZeroRational (type alias)](#nonzerorational-type-alias)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
-- [eq (constant)](#eq-constant)
 - [mul (constant)](#mul-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
@@ -29,6 +29,22 @@ parent: Modules
 
 ```ts
 export type NonZeroRational = [NonZeroInteger, Natural]
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<NonZeroRational> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<NonZeroRational> = ...
 ```
 
 # add (constant)
@@ -47,14 +63,6 @@ export const add: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 export const div: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = ...
 ```
 
-# eq (constant)
-
-**Signature**
-
-```ts
-export const eq: Eq<NonZeroRational> = ...
-```
-
 # mul (constant)
 
 **Signature**
@@ -69,14 +77,6 @@ export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 
 ```ts
 export const one: NonZeroRational = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<NonZeroRational> = ...
 ```
 
 # reduce (constant)

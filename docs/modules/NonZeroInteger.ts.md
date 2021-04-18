@@ -1,6 +1,6 @@
 ---
 title: NonZeroInteger.ts
-nav_order: 18
+nav_order: 9
 parent: Modules
 ---
 
@@ -9,14 +9,14 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [NonZeroInteger (interface)](#nonzerointeger-interface)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
-- [eq (constant)](#eq-constant)
 - [isPositive (constant)](#ispositive-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
 - [show (constant)](#show-constant)
 - [sign (constant)](#sign-constant)
 - [unwrap (constant)](#unwrap-constant)
@@ -46,6 +46,22 @@ export interface NonZeroInteger
   > {}
 ```
 
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<NonZeroInteger> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<NonZeroInteger> = ...
+```
+
 # add (constant)
 
 **Signature**
@@ -60,14 +76,6 @@ export const add: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
 
 ```ts
 export const div: (x: NonZeroInteger, y: NonZeroInteger) => NonZeroInteger = ...
-```
-
-# eq (constant)
-
-**Signature**
-
-```ts
-export const eq: Eq<NonZeroInteger> = ...
 ```
 
 # isPositive (constant)
@@ -100,14 +108,6 @@ export const negate: (x: NonZeroInteger) => NonZeroInteger = ...
 
 ```ts
 export const one: NonZeroInteger = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<NonZeroInteger> = ...
 ```
 
 # show (constant)

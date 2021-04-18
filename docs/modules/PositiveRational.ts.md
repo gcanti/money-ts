@@ -1,6 +1,6 @@
 ---
 title: PositiveRational.ts
-nav_order: 20
+nav_order: 11
 parent: Modules
 ---
 
@@ -9,13 +9,13 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [PositiveRational (type alias)](#positiverational-type-alias)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
-- [eq (constant)](#eq-constant)
 - [inverse (constant)](#inverse-constant)
 - [mul (constant)](#mul-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
@@ -29,6 +29,22 @@ parent: Modules
 
 ```ts
 export type PositiveRational = [Natural, Natural]
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<PositiveRational> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<PositiveRational> = ...
 ```
 
 # add (constant)
@@ -45,14 +61,6 @@ export const add: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 ```ts
 export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational = ...
-```
-
-# eq (constant)
-
-**Signature**
-
-```ts
-export const eq: Eq<PositiveRational> = ...
 ```
 
 # inverse (constant)
@@ -77,14 +85,6 @@ export const mul: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 ```ts
 export const one: PositiveRational = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<PositiveRational> = ...
 ```
 
 # reduce (constant)

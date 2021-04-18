@@ -1,6 +1,6 @@
 ---
 title: scale/unsafePositiveRational.ts
-nav_order: 33
+nav_order: 24
 parent: Modules
 ---
 

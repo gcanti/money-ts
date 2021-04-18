@@ -1,6 +1,6 @@
 ---
 title: scale/XAG.ts
-nav_order: 35
+nav_order: 26
 parent: Modules
 ---
 
