@@ -1,7 +1,7 @@
 import { Natural } from './Natural'
 import * as O from 'fp-ts/Option'
-import { Eq } from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Rational } from './Rational'
 import * as rational from './Rational'
 import * as nonZeroRational from './NonZeroRational'
@@ -33,8 +33,8 @@ export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 export const inverse: (x: PositiveRational) => PositiveRational = unsafeCoerce(nonZeroRational.inverse)
 
-export const eq: Eq<PositiveRational> = rational.eq
+export const Eq: EQ.Eq<PositiveRational> = rational.Eq
 
-export const ord: Ord<PositiveRational> = rational.ord
+export const Ord: ORD.Ord<PositiveRational> = rational.Ord
 
 export const show: (x: PositiveRational) => string = rational.show

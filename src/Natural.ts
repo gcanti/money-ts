@@ -1,7 +1,7 @@
 import { Newtype } from 'newtype-ts'
 import { Option, none, some } from 'fp-ts/Option'
-import { Eq } from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Integer } from './Integer'
 import { BigInteger } from 'big-integer'
 import { NonZeroInteger } from './NonZeroInteger'
@@ -46,9 +46,9 @@ export const gcd: (x: Natural, y: Natural) => Natural = nonZeroInteger.gcd
 
 export const lcm: (x: Natural, y: Natural) => Natural = nonZeroInteger.lcm
 
-export const eq: Eq<Natural> = integer.eq
+export const Eq: EQ.Eq<Natural> = integer.Eq
 
-export const ord: Ord<Natural> = integer.ord
+export const Ord: ORD.Ord<Natural> = integer.Ord
 
 export const show: (x: Natural) => string = integer.show
 

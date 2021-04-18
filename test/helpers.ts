@@ -38,7 +38,7 @@ export function getAssertEqualOption<A>(S: Eq<A>): (x: O.Option<A>, y: O.Option<
   return getAssertEqual(O.getEq(S))
 }
 
-export const assertEqualInteger = getAssertEqual(I.eq)
+export const assertEqualInteger = getAssertEqual(I.Eq)
 
 const denseEq = D.getEq<any>()
 

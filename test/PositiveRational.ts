@@ -6,7 +6,7 @@ describe('PositiveRational', () => {
   it('inverse', () => {
     assertProperty(
       property(PositiveRationalGenerator, (r) => {
-        return positiveRational.eq.equals(r, positiveRational.inverse(positiveRational.inverse(r)))
+        return positiveRational.Eq.equals(r, positiveRational.inverse(positiveRational.inverse(r)))
       })
     )
   })

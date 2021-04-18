@@ -1,8 +1,8 @@
 import { Integer } from './Integer'
 import { Natural } from './Natural'
 import { NonZeroRational } from './NonZeroRational'
-import * as Eq from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import * as bigInteger from './BigInteger'
 import * as integer from './Integer'
 import * as natural from './Natural'
@@ -106,15 +106,15 @@ export function trunc(x: Rational): Integer {
   }
 }
 
-export const eq: Eq.Eq<Rational> = Eq.getTupleEq(integer.eq, natural.eq)
+export const Eq: EQ.Eq<Rational> = EQ.getTupleEq(integer.Eq, natural.Eq)
 
-export const ord: Ord<Rational> = {
-  ...eq,
+export const Ord: ORD.Ord<Rational> = {
+  ...Eq,
   compare: ([nx, dx], [ny, dy]) => {
-    if (integer.eq.equals(dx, dy)) {
-      return integer.ord.compare(nx, ny)
+    if (integer.Eq.equals(dx, dy)) {
+      return integer.Ord.compare(nx, ny)
     } else {
-      return integer.ord.compare(integer.mul(nx, dy), integer.mul(ny, dx))
+      return integer.Ord.compare(integer.mul(nx, dy), integer.mul(ny, dx))
     }
   }
 }

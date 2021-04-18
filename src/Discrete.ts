@@ -47,13 +47,13 @@ export function getZero<D extends string, U extends string>(format: Format<D, U>
 
 export function getEq<D extends string, U extends string>(): Eq<Discrete<D, U>> {
   return {
-    equals: (x, y) => integer.eq.equals(x.value, y.value)
+    equals: (x, y) => integer.Eq.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string, U extends string>(): Ord<Discrete<D, U>> {
   return {
     ...getEq(),
-    compare: (x, y) => integer.ord.compare(x.value, y.value)
+    compare: (x, y) => integer.Ord.compare(x.value, y.value)
   }
 }

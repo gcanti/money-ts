@@ -19,9 +19,9 @@ const nz6 = wrap(6)
 const nz12 = wrap(12)
 const zz1 = wrap(-1)
 
-const assertEqual = getAssertEqual(NZI.eq)
+const assertEqual = getAssertEqual(NZI.Eq)
 
-const assertEqualOption = getAssertEqualOption(NZI.eq)
+const assertEqualOption = getAssertEqualOption(NZI.Eq)
 
 describe('NonZeroInteger', () => {
   it('fromInteger', () => {
@@ -30,7 +30,7 @@ describe('NonZeroInteger', () => {
         pipe(
           NZI.fromInteger(i),
           O.fold(
-            () => I.eq.equals(i, I.zero),
+            () => I.Eq.equals(i, I.zero),
             () => true
           )
         )
@@ -73,10 +73,10 @@ describe('NonZeroInteger', () => {
     assertEqual(NZI.lcm(nz6, nz4), nz12)
   })
 
-  it('ord', () => {
-    assert.strictEqual(NZI.ord.compare(nz1, nz2), -1)
-    assert.strictEqual(NZI.ord.compare(nz2, nz1), 1)
-    assert.strictEqual(NZI.ord.compare(nz2, nz2), 0)
+  it('Ord', () => {
+    assert.strictEqual(NZI.Ord.compare(nz1, nz2), -1)
+    assert.strictEqual(NZI.Ord.compare(nz2, nz1), 1)
+    assert.strictEqual(NZI.Ord.compare(nz2, nz2), 0)
   })
 
   it('sign', () => {

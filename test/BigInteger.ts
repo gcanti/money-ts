@@ -21,10 +21,10 @@ describe('BigInteger', () => {
   })
 
   it('Ord', () => {
-    checkOrdLaws(BigIntegerGenerator, bigInteger.eq, bigInteger.ord)
+    checkOrdLaws(BigIntegerGenerator, bigInteger.Eq, bigInteger.Ord)
   })
 
   it('Ring', () => {
-    checkRingLaws(BigIntegerGenerator, bigInteger.eq, bigInteger.ring)
+    checkRingLaws(BigIntegerGenerator, bigInteger.Eq, bigInteger.Ring)
   })
 })

@@ -1,7 +1,7 @@
 import { Newtype } from 'newtype-ts'
 import { Option, none, some } from 'fp-ts/Option'
-import { Eq } from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { BigInteger } from 'big-integer'
 import { Natural } from './Natural'
 import * as I from './Integer'
@@ -58,8 +58,8 @@ export function abs(x: NonZeroInteger): Natural {
   return unsafeCoerce(!isPositive(x) ? negate(x) : x)
 }
 
-export const eq: Eq<NonZeroInteger> = I.eq
+export const Eq: EQ.Eq<NonZeroInteger> = I.Eq
 
-export const ord: Ord<NonZeroInteger> = I.ord
+export const Ord: ORD.Ord<NonZeroInteger> = I.Ord
 
 export const show: (x: NonZeroInteger) => string = I.show

@@ -14,7 +14,7 @@ const i2 = unsafeInteger(2)
 const in1 = unsafeInteger(-1)
 const in2 = unsafeInteger(-2)
 
-const assertEqual = getAssertEqual(rational.eq)
+const assertEqual = getAssertEqual(rational.Eq)
 
 describe('Rational', () => {
   it('fromInteger', () => {
@@ -97,17 +97,17 @@ describe('Rational', () => {
     assertEqualInteger(rational.trunc(unsafeRational([-7, 4])), in1)
   })
 
-  it('ord', () => {
-    assert.strictEqual(rational.ord.compare(unsafeRational([1, 1]), unsafeRational([2, 1])), -1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]), unsafeRational([2, 1])), 0)
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 1]), unsafeRational([1, 1])), 1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([2, 3]), unsafeRational([1, 3])), 1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([1, 2]), unsafeRational([1, 3])), 1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 1]), unsafeRational([-2, 1])), 1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]), unsafeRational([-2, 1])), 0)
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 1]), unsafeRational([-1, 1])), -1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([-2, 3]), unsafeRational([-1, 3])), -1)
-    assert.strictEqual(rational.ord.compare(unsafeRational([-1, 2]), unsafeRational([-1, 3])), -1)
+  it('Ord', () => {
+    assert.strictEqual(rational.Ord.compare(unsafeRational([1, 1]), unsafeRational([2, 1])), -1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([2, 1]), unsafeRational([2, 1])), 0)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([2, 1]), unsafeRational([1, 1])), 1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([2, 3]), unsafeRational([1, 3])), 1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([1, 2]), unsafeRational([1, 3])), 1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([-1, 1]), unsafeRational([-2, 1])), 1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([-2, 1]), unsafeRational([-2, 1])), 0)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([-2, 1]), unsafeRational([-1, 1])), -1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([-2, 3]), unsafeRational([-1, 3])), -1)
+    assert.strictEqual(rational.Ord.compare(unsafeRational([-1, 2]), unsafeRational([-1, 3])), -1)
   })
 
   it('show', () => {

@@ -1,9 +1,9 @@
 import { Option, some, none } from 'fp-ts/Option'
 import { BigInteger } from 'big-integer'
 import * as bigInteger from 'big-integer'
-import { Ring } from 'fp-ts/Ring'
-import { Eq } from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as R from 'fp-ts/Ring'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { unsafeCoerce } from 'fp-ts/function'
 
 export function wrap(x: number | string): Option<BigInteger> {
@@ -44,16 +44,16 @@ export function lcm(x: BigInteger, y: BigInteger): BigInteger {
   return bigInteger.lcm(x, y)
 }
 
-export const eq: Eq<BigInteger> = {
+export const Eq: EQ.Eq<BigInteger> = {
   equals: (x, y) => x.equals(y)
 }
 
-export const ord: Ord<BigInteger> = {
-  ...eq,
+export const Ord: ORD.Ord<BigInteger> = {
+  ...Eq,
   compare: (x, y) => x.compare(y) as any
 }
 
-export const ring: Ring<BigInteger> = {
+export const Ring: R.Ring<BigInteger> = {
   add: (x, y) => add(x, y),
   zero: zero,
   mul: (x, y) => mul(x, y),

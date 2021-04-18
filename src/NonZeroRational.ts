@@ -1,8 +1,8 @@
 import { NonZeroInteger } from './NonZeroInteger'
 import { Natural } from './Natural'
 import * as O from 'fp-ts/Option'
-import { Eq } from 'fp-ts/Eq'
-import { Ord } from 'fp-ts/Ord'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Rational } from './Rational'
 import * as natural from './Natural'
 import * as rational from './Rational'
@@ -38,8 +38,8 @@ export function inverse(x: NonZeroRational): NonZeroRational {
   return nonZeroInteger.isPositive(x[0]) ? [d, n] : [natural.negate(d), n]
 }
 
-export const eq: Eq<NonZeroRational> = rational.eq
+export const Eq: EQ.Eq<NonZeroRational> = rational.Eq
 
-export const ord: Ord<NonZeroRational> = rational.ord
+export const Ord: ORD.Ord<NonZeroRational> = rational.Ord
 
 export const show: (x: NonZeroRational) => string = rational.show

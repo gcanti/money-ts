@@ -19,6 +19,6 @@ export function compose<A, B, C>(bc: ExchangeRate<B, C>, ab: ExchangeRate<A, B>)
   return wrap(PR.mul(unwrap(bc), unwrap(ab)))
 }
 
-export const getEq = <S, D>(): Eq<ExchangeRate<S, D>> => unsafeCoerce(PR.eq)
+export const getEq = <S, D>(): Eq<ExchangeRate<S, D>> => unsafeCoerce(PR.Eq)
 
-export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => unsafeCoerce(PR.ord)
+export const getOrd = <S, D>(): Ord<ExchangeRate<S, D>> => unsafeCoerce(PR.Ord)

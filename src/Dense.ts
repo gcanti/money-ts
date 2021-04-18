@@ -50,14 +50,14 @@ export function getOne<D extends string>(d: D): Dense<D> {
 
 export function getEq<D extends string>(): Eq<Dense<D>> {
   return {
-    equals: (x, y) => R.eq.equals(x.value, y.value)
+    equals: (x, y) => R.Eq.equals(x.value, y.value)
   }
 }
 
 export function getOrd<D extends string>(): Ord<Dense<D>> {
   return {
     ...getEq(),
-    compare: (x, y) => R.ord.compare(x.value, y.value)
+    compare: (x, y) => R.Ord.compare(x.value, y.value)
   }
 }
 
