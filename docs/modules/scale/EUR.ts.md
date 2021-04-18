@@ -1,6 +1,6 @@
 ---
 title: scale/EUR.ts
-nav_order: 27
+nav_order: 18
 parent: Modules
 ---
 

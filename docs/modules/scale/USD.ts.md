@@ -1,6 +1,6 @@
 ---
 title: scale/USD.ts
-nav_order: 34
+nav_order: 25
 parent: Modules
 ---
 

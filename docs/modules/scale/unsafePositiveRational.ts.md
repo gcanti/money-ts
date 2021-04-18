@@ -1,6 +1,6 @@
 ---
 title: scale/unsafePositiveRational.ts
-nav_order: 33
+nav_order: 24
 parent: Modules
 ---
 
@@ -17,5 +17,5 @@ parent: Modules
 **Signature**
 
 ```ts
-export function unsafePositiveRational([x, y]: [number | string, number | string]): PositiveRational { ... }
+export function unsafePositiveRational([x, y]: [number | string, number | string]): PR.PositiveRational { ... }
 ```

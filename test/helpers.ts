@@ -1,36 +1,32 @@
 import * as assert from 'assert'
 import { check, Property, gen, Generator, property } from 'testcheck'
-import { Natural } from '../src/Natural'
-import { Integer } from '../src/Integer'
-import { NonZeroInteger } from '../src/NonZeroInteger'
-import { Rational } from '../src/Rational'
-import { NonZeroRational } from '../src/NonZeroRational'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Option, getSetoid } from 'fp-ts/lib/Option'
+import { Eq } from 'fp-ts/Eq'
 import { BigInteger } from 'big-integer'
-import { unsafeCoerce } from 'newtype-ts'
-import * as bigInteger from '../src/BigInteger'
-import * as integer from '../src/Integer'
-import * as nonZeroInteger from '../src/NonZeroInteger'
-import * as natural from '../src/Natural'
-import * as rational from '../src/Rational'
-import * as nonZeroRational from '../src/NonZeroRational'
-import { Dense } from '../src/Dense'
-import * as dense from '../src/Dense'
-import { Discrete } from '../src/Discrete'
-import * as discrete from '../src/Discrete'
-import { PositiveRational } from '../src/PositiveRational'
-import * as positiveRational from '../src/PositiveRational'
-import { Semiring } from 'fp-ts/lib/Semiring'
-import { Ring } from 'fp-ts/lib/Ring'
-import { Ord } from 'fp-ts/lib/Ord'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
+import * as BI from '../src/BigInteger'
+import * as I from '../src/Integer'
+import * as NZI from '../src/NonZeroInteger'
+import * as N from '../src/Natural'
+import * as R from '../src/Rational'
+import * as NZR from '../src/NonZeroRational'
+import * as D from '../src/Dense'
+import * as DC from '../src/Discrete'
+import * as PR from '../src/PositiveRational'
+import { Semiring } from 'fp-ts/Semiring'
+import { Ring } from 'fp-ts/Ring'
+import { Ord } from 'fp-ts/Ord'
+import * as O from 'fp-ts/Option'
 
-const fromSome = <A>(fa: Option<A>): A =>
-  fa.getOrElseL(() => {
-    throw new Error('fromSome called with None')
-  })
+function fromSome<A>(fa: O.Option<A>): A {
+  return pipe(
+    fa,
+    O.getOrElse<A>(() => {
+      throw new Error('fromSome called with None')
+    })
+  )
+}
 
-export function getAssertEqual<A>(S: Setoid<A>): (x: A, y: A) => void {
+export function getAssertEqual<A>(S: Eq<A>): (x: A, y: A) => void {
   return function assertEqual(x: A, y: A): void {
     if (!S.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
@@ -38,29 +34,29 @@ export function getAssertEqual<A>(S: Setoid<A>): (x: A, y: A) => void {
   }
 }
 
-export function getAssertEqualOption<A>(S: Setoid<A>): (x: Option<A>, y: Option<A>) => void {
-  return getAssertEqual(getSetoid(S))
+export function getAssertEqualOption<A>(S: Eq<A>): (x: O.Option<A>, y: O.Option<A>) => void {
+  return getAssertEqual(O.getEq(S))
 }
 
-export const assertEqualInteger = getAssertEqual(integer.setoid)
+export const assertEqualInteger = getAssertEqual(I.Eq)
 
-const denseSetoid = dense.getSetoid<any>()
+const denseEq = D.getEq<any>()
 
-export function assertEqualDense<D extends string>(x: dense.Dense<D>): (y: Dense<D>) => void {
-  return y => {
-    if (!denseSetoid.equals(x, y)) {
+export function assertEqualDense<D extends string>(x: D.Dense<D>): (y: D.Dense<D>) => void {
+  return (y) => {
+    if (!denseEq.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
 }
 
-const discreteSetoid = discrete.getSetoid<any, any>()
+const discreteEq = DC.getEq<any, any>()
 
 export function assertEqualDiscrete<D extends string, U extends string>(
-  x: Discrete<D, U>
-): (y: Discrete<D, U>) => void {
-  return y => {
-    if (!discreteSetoid.equals(x, y)) {
+  x: DC.Discrete<D, U>
+): (y: DC.Discrete<D, U>) => void {
+  return (y) => {
+    if (!discreteEq.equals(x, y)) {
       assert.fail(`${x} !== ${y}`)
     }
   }
@@ -74,32 +70,32 @@ export function assertProperty<A>(p: Property<A>): void {
 }
 
 export function unsafeBigInteger(x: number | string): BigInteger {
-  return fromSome(bigInteger.wrap(x))
+  return fromSome(BI.wrap(x))
 }
 
-export function unsafeInteger(x: number | string): Integer {
-  return fromSome(bigInteger.wrap(x).map(integer.wrap))
+export function unsafeInteger(x: number | string): I.Integer {
+  return pipe(BI.wrap(x), O.map(I.wrap), fromSome)
 }
 
-export function unsafeNatural(x: number | string): Natural {
-  return fromSome(bigInteger.wrap(x).chain(natural.wrap))
+export function unsafeNatural(x: number | string): N.Natural {
+  return pipe(BI.wrap(x), O.chain(N.wrap), fromSome)
 }
 
-export function unsafeNonZeroInteger(x: number | string): NonZeroInteger {
-  return fromSome(bigInteger.wrap(x).chain(nonZeroInteger.wrap))
+export function unsafeNonZeroInteger(x: number | string): NZI.NonZeroInteger {
+  return pipe(BI.wrap(x), O.chain(NZI.wrap), fromSome)
 }
 
-export function unsafeRational([x, y]: [number | string, number | string]): Rational {
-  return rational.reduce(unsafeInteger(x), unsafeNatural(y))
+export function unsafeRational([x, y]: [number | string, number | string]): R.Rational {
+  return R.reduce(unsafeInteger(x), unsafeNatural(y))
 }
 
-export function unsafeNonZeroRational([x, y]: [number | string, number | string]): NonZeroRational {
-  return nonZeroRational.reduce(unsafeNonZeroInteger(x), unsafeNatural(y))
+export function unsafeNonZeroRational([x, y]: [number | string, number | string]): NZR.NonZeroRational {
+  return NZR.reduce(unsafeNonZeroInteger(x), unsafeNatural(y))
 }
 
-const BigNaturalStringGenerator: Generator<string> = gen.sPosInt.then(i => i + '9007199254740992')
+const BigNaturalStringGenerator: Generator<string> = gen.sPosInt.then((i) => i + '9007199254740992')
 
-const BigIntegerStringGenerator: Generator<string> = gen.int.then(i => i + '9007199254740992')
+const BigIntegerStringGenerator: Generator<string> = gen.int.then((i) => i + '9007199254740992')
 
 const BigNaturalGenerator: Generator<BigInteger> = gen
   .oneOf<string | number>([gen.sPosInt, BigNaturalStringGenerator])
@@ -109,32 +105,32 @@ export const BigIntegerGenerator: Generator<BigInteger> = gen
   .oneOf<string | number>([gen.int, BigIntegerStringGenerator])
   .then(unsafeBigInteger)
 
-export const NaturalGenerator: Generator<Natural> = unsafeCoerce(BigNaturalGenerator)
+export const NaturalGenerator: Generator<N.Natural> = unsafeCoerce(BigNaturalGenerator)
 
-export const IntegerGenerator: Generator<Integer> = unsafeCoerce(BigIntegerGenerator)
+export const IntegerGenerator: Generator<I.Integer> = unsafeCoerce(BigIntegerGenerator)
 
-export const NonZeroIntegerGenerator: Generator<NonZeroInteger> = BigIntegerGenerator.suchThat(bi => !bi.isZero()).then(
-  bi => unsafeCoerce(bi)
-)
+export const NonZeroIntegerGenerator: Generator<NZI.NonZeroInteger> = BigIntegerGenerator.suchThat(
+  (bi) => !bi.isZero()
+).then((bi) => unsafeCoerce(bi))
 
-export const NonZeroRationalGenerator: Generator<NonZeroRational> = gen
+export const NonZeroRationalGenerator: Generator<NZR.NonZeroRational> = gen
   .array([NonZeroIntegerGenerator, NaturalGenerator])
-  .then(r => nonZeroRational.reduce(r[0], r[1]))
+  .then((r) => NZR.reduce(r[0], r[1]))
 
-export const PositiveRationalGenerator: Generator<PositiveRational> = gen
+export const PositiveRationalGenerator: Generator<PR.PositiveRational> = gen
   .array([NaturalGenerator, NaturalGenerator])
-  .then(r => positiveRational.reduce(r[0], r[1]))
+  .then((r) => PR.reduce(r[0], r[1]))
 
-const RationalGenerator: Generator<Rational> = gen
+const RationalGenerator: Generator<R.Rational> = gen
   .array([IntegerGenerator, NaturalGenerator])
-  .then(r => rational.reduce(r[0], r[1]))
+  .then((r) => R.reduce(r[0], r[1]))
 
-export function getDenseGenerator<D extends string>(dimension: D): Generator<Dense<D>> {
-  return RationalGenerator.then(r => new Dense(dimension, r))
+export function getDenseGenerator<D extends string>(dimension: D): Generator<D.Dense<D>> {
+  return RationalGenerator.then((r) => new D.Dense(dimension, r))
 }
 
-export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>): void {
-  // Compatibility with Setoid
+export function checkOrdLaws<A>(generator: Generator<A>, E: Eq<A>, O: Ord<A>): void {
+  // Compatibility with Eq
   assertProperty(
     property(generator, generator, (a, b) => {
       return O.compare(a, b) === 0 ? E.equals(a, b) : true
@@ -142,7 +138,7 @@ export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>
   )
   // Reflexivity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       return O.compare(a, a) !== 1
     })
   )
@@ -160,7 +156,7 @@ export function checkOrdLaws<A>(generator: Generator<A>, E: Setoid<A>, O: Ord<A>
   )
 }
 
-export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: Semiring<A>): void {
+export function checkSemiringLaws<A>(generator: Generator<A>, E: Eq<A>, S: Semiring<A>): void {
   const zero = S.zero
   // addition Associativity
   assertProperty(
@@ -170,7 +166,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // addition Identity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.add(a, zero)
       const c = S.add(zero, a)
       return E.equals(b, c) && E.equals(b, a)
@@ -191,7 +187,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // multiplication Identity
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.mul(a, one)
       const c = S.mul(one, a)
       return E.equals(b, c) && E.equals(b, a)
@@ -211,7 +207,7 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
   // Annihilation
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = S.mul(a, zero)
       const c = S.mul(zero, a)
       return E.equals(b, c) && E.equals(b, zero)
@@ -219,12 +215,12 @@ export function checkSemiringLaws<A>(generator: Generator<A>, E: Setoid<A>, S: S
   )
 }
 
-export function checkRingLaws<A>(generator: Generator<A>, E: Setoid<A>, R: Ring<A>): void {
+export function checkRingLaws<A>(generator: Generator<A>, E: Eq<A>, R: Ring<A>): void {
   checkSemiringLaws(generator, E, R)
   const zero = R.zero
   // Additive inverse
   assertProperty(
-    property(generator, a => {
+    property(generator, (a) => {
       const b = R.sub(a, a)
       const c = R.add(R.sub(zero, a), a)
       return E.equals(b, c) && E.equals(b, zero)

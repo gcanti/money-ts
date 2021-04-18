@@ -1,6 +1,6 @@
 ---
 title: Natural.ts
-nav_order: 17
+nav_order: 8
 parent: Modules
 ---
 
@@ -9,6 +9,8 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [Natural (interface)](#natural-interface)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
 - [gcd (constant)](#gcd-constant)
@@ -16,8 +18,6 @@ parent: Modules
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [fromInteger (function)](#frominteger-function)
@@ -42,6 +42,22 @@ export interface Natural
     },
     BigInteger
   > {}
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<Natural> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<Natural> = ...
 ```
 
 # add (constant)
@@ -98,22 +114,6 @@ export const negate: (x: Natural) => NonZeroInteger = ...
 
 ```ts
 export const one: Natural = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<Natural> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Natural> = ...
 ```
 
 # show (constant)

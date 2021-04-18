@@ -1,6 +1,6 @@
 ---
 title: NonZeroInteger.ts
-nav_order: 18
+nav_order: 9
 parent: Modules
 ---
 
@@ -9,14 +9,14 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [NonZeroInteger (interface)](#nonzerointeger-interface)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
 - [isPositive (constant)](#ispositive-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [sign (constant)](#sign-constant)
 - [unwrap (constant)](#unwrap-constant)
@@ -44,6 +44,22 @@ export interface NonZeroInteger
     },
     BigInteger
   > {}
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<NonZeroInteger> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<NonZeroInteger> = ...
 ```
 
 # add (constant)
@@ -94,22 +110,6 @@ export const negate: (x: NonZeroInteger) => NonZeroInteger = ...
 export const one: NonZeroInteger = ...
 ```
 
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<NonZeroInteger> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroInteger> = ...
-```
-
 # show (constant)
 
 **Signature**
@@ -147,7 +147,7 @@ export function abs(x: NonZeroInteger): Natural { ... }
 **Signature**
 
 ```ts
-export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
+export function fromInteger(i: I.Integer): Option<NonZeroInteger> { ... }
 ```
 
 # gcd (function)
@@ -155,7 +155,7 @@ export function fromInteger(i: Integer): Option<NonZeroInteger> { ... }
 **Signature**
 
 ```ts
-export function gcd(x: Integer, y: NonZeroInteger): Natural { ... }
+export function gcd(x: I.Integer, y: NonZeroInteger): Natural { ... }
 ```
 
 # lcm (function)

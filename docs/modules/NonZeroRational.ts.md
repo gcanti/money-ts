@@ -1,6 +1,6 @@
 ---
 title: NonZeroRational.ts
-nav_order: 19
+nav_order: 10
 parent: Modules
 ---
 
@@ -9,13 +9,13 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [NonZeroRational (type alias)](#nonzerorational-type-alias)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [add (constant)](#add-constant)
 - [div (constant)](#div-constant)
 - [mul (constant)](#mul-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
 - [reduce (constant)](#reduce-constant)
-- [setoid (constant)](#setoid-constant)
 - [show (constant)](#show-constant)
 - [fromRational (function)](#fromrational-function)
 - [inverse (function)](#inverse-function)
@@ -29,6 +29,22 @@ parent: Modules
 
 ```ts
 export type NonZeroRational = [NonZeroInteger, Natural]
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<NonZeroRational> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<NonZeroRational> = ...
 ```
 
 # add (constant)
@@ -63,28 +79,12 @@ export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 export const one: NonZeroRational = ...
 ```
 
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<NonZeroRational> = ...
-```
-
 # reduce (constant)
 
 **Signature**
 
 ```ts
 export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<NonZeroRational> = ...
 ```
 
 # show (constant)
@@ -100,7 +100,7 @@ export const show: (x: NonZeroRational) => string = ...
 **Signature**
 
 ```ts
-export function fromRational(r: Rational): Option<NonZeroRational> { ... }
+export function fromRational(r: Rational): O.Option<NonZeroRational> { ... }
 ```
 
 # inverse (function)
@@ -116,5 +116,5 @@ export function inverse(x: NonZeroRational): NonZeroRational { ... }
 **Signature**
 
 ```ts
-export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRational> { ... }
+export function sub(x: NonZeroRational, y: NonZeroRational): O.Option<NonZeroRational> { ... }
 ```

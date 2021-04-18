@@ -1,10 +1,11 @@
 import * as assert from 'assert'
-import { some, none } from 'fp-ts/lib/Option'
+import * as O from 'fp-ts/Option'
 import * as integer from '../src/Integer'
 import * as natural from '../src/Natural'
 import { getAssertEqual, getAssertEqualOption, assertProperty, IntegerGenerator, unsafeNatural } from './helpers'
 import { property } from 'testcheck'
-import { lessThanOrEq, greaterThanOrEq } from 'fp-ts/lib/Ord'
+import * as Ord from 'fp-ts/Ord'
+import { pipe } from 'fp-ts/function'
 
 const n1 = unsafeNatural(1)
 const n2 = unsafeNatural(2)
@@ -14,18 +15,24 @@ const n5 = unsafeNatural(5)
 const n6 = unsafeNatural(6)
 const n12 = unsafeNatural(12)
 
-const assertEqual = getAssertEqual(natural.setoid)
+const assertEqual = getAssertEqual(natural.Eq)
 
-const assertEqualOption = getAssertEqualOption(natural.setoid)
+const assertEqualOption = getAssertEqualOption(natural.Eq)
 
 describe('Natural', () => {
   it('fromInteger', () => {
-    const lte = lessThanOrEq(integer.ord)
-    const gte = greaterThanOrEq(natural.ord)
+    const lte = Ord.leq(integer.Ord)
+    const gte = Ord.geq(natural.Ord)
     assertProperty(
-      property(IntegerGenerator, i => {
-        return natural.fromInteger(i).foldL(() => lte(i, integer.zero), n => gte(n, natural.one))
-      })
+      property(IntegerGenerator, (i) =>
+        pipe(
+          natural.fromInteger(i),
+          O.fold(
+            () => lte(i, integer.zero),
+            (n) => gte(n, natural.one)
+          )
+        )
+      )
     )
   })
 
@@ -39,8 +46,8 @@ describe('Natural', () => {
   })
 
   it('sub', () => {
-    assertEqualOption(natural.sub(n3, n2), some(n1))
-    assertEqualOption(natural.sub(n2, n2), none)
+    assertEqualOption(natural.sub(n3, n2), O.some(n1))
+    assertEqualOption(natural.sub(n2, n2), O.none)
   })
 
   it('div', () => {
@@ -56,10 +63,10 @@ describe('Natural', () => {
     assertEqual(natural.lcm(n6, n4), n12)
   })
 
-  it('ord', () => {
-    assert.strictEqual(natural.ord.compare(n1, n2), -1)
-    assert.strictEqual(natural.ord.compare(n2, n1), 1)
-    assert.strictEqual(natural.ord.compare(n2, n2), 0)
+  it('Ord', () => {
+    assert.strictEqual(natural.Ord.compare(n1, n2), -1)
+    assert.strictEqual(natural.Ord.compare(n2, n1), 1)
+    assert.strictEqual(natural.Ord.compare(n2, n2), 0)
   })
 
   it('show', () => {

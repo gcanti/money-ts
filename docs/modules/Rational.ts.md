@@ -1,6 +1,6 @@
 ---
 title: Rational.ts
-nav_order: 21
+nav_order: 12
 parent: Modules
 ---
 
@@ -9,9 +9,9 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [Rational (type alias)](#rational-type-alias)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [setoid (constant)](#setoid-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
 - [ceil (function)](#ceil-function)
@@ -38,28 +38,28 @@ parent: Modules
 export type Rational = [Integer, Natural]
 ```
 
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<Rational> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<Rational> = ...
+```
+
 # one (constant)
 
 **Signature**
 
 ```ts
 export const one: Rational = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<Rational> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Rational> = ...
 ```
 
 # zero (constant)

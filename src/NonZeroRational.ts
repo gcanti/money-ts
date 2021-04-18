@@ -1,18 +1,21 @@
 import { NonZeroInteger } from './NonZeroInteger'
 import { Natural } from './Natural'
-import { Option } from 'fp-ts/lib/Option'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import * as O from 'fp-ts/Option'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Rational } from './Rational'
 import * as natural from './Natural'
 import * as rational from './Rational'
 import * as nonZeroInteger from './NonZeroInteger'
-import { unsafeCoerce } from 'newtype-ts'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 export type NonZeroRational = [NonZeroInteger, Natural]
 
-export function fromRational(r: Rational): Option<NonZeroRational> {
-  return nonZeroInteger.fromInteger(r[0]).map((n): NonZeroRational => [n, r[1]])
+export function fromRational(r: Rational): O.Option<NonZeroRational> {
+  return pipe(
+    nonZeroInteger.fromInteger(r[0]),
+    O.map((n): NonZeroRational => [n, r[1]])
+  )
 }
 
 export const reduce: (n: NonZeroInteger, d: Natural) => NonZeroRational = unsafeCoerce(rational.reduce)
@@ -23,7 +26,7 @@ export const mul: (x: NonZeroRational, y: NonZeroRational) => NonZeroRational = 
 
 export const one: NonZeroRational = unsafeCoerce(rational.one)
 
-export function sub(x: NonZeroRational, y: NonZeroRational): Option<NonZeroRational> {
+export function sub(x: NonZeroRational, y: NonZeroRational): O.Option<NonZeroRational> {
   return fromRational(rational.sub(x, y))
 }
 
@@ -35,8 +38,8 @@ export function inverse(x: NonZeroRational): NonZeroRational {
   return nonZeroInteger.isPositive(x[0]) ? [d, n] : [natural.negate(d), n]
 }
 
-export const setoid: Setoid<NonZeroRational> = rational.setoid
+export const Eq: EQ.Eq<NonZeroRational> = rational.Eq
 
-export const ord: Ord<NonZeroRational> = rational.ord
+export const Ord: ORD.Ord<NonZeroRational> = rational.Ord
 
 export const show: (x: NonZeroRational) => string = rational.show

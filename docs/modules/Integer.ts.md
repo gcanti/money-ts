@@ -9,13 +9,13 @@ parent: Modules
 <h2 class="text-delta">Table of contents</h2>
 
 - [Integer (interface)](#integer-interface)
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
+- [Ring (constant)](#ring-constant)
 - [add (constant)](#add-constant)
 - [mul (constant)](#mul-constant)
 - [negate (constant)](#negate-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [ring (constant)](#ring-constant)
-- [setoid (constant)](#setoid-constant)
 - [sub (constant)](#sub-constant)
 - [unwrap (constant)](#unwrap-constant)
 - [wrap (constant)](#wrap-constant)
@@ -34,6 +34,30 @@ parent: Modules
 
 ```ts
 export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
+```
+
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<Integer> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<Integer> = ...
+```
+
+# Ring (constant)
+
+**Signature**
+
+```ts
+export const Ring: R.Ring<Integer> = ...
 ```
 
 # add (constant)
@@ -66,30 +90,6 @@ export const negate: (x: Integer) => Integer = ...
 
 ```ts
 export const one: Integer = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<Integer> = ...
-```
-
-# ring (constant)
-
-**Signature**
-
-```ts
-export const ring: Ring<Integer> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<Integer> = ...
 ```
 
 # sub (constant)

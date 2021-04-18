@@ -1,6 +1,6 @@
 ---
 title: scale/JPY.ts
-nav_order: 30
+nav_order: 21
 parent: Modules
 ---
 

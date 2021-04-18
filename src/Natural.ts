@@ -1,23 +1,24 @@
-import { Newtype, unsafeCoerce } from 'newtype-ts'
-import { Option, none, some } from 'fp-ts/lib/Option'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import { Newtype } from 'newtype-ts'
+import { Option, none, some } from 'fp-ts/Option'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Integer } from './Integer'
 import { BigInteger } from 'big-integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import * as integer from './Integer'
 import * as nonZeroInteger from './NonZeroInteger'
+import { unsafeCoerce } from 'fp-ts/function'
 
 /** A PositiveInteger is also an Integer */
 export interface Natural
   extends Newtype<
-      {
-        Integer: true
-        NonZero: true
-        Positive: true
-      },
-      BigInteger
-    > {}
+    {
+      Integer: true
+      NonZero: true
+      Positive: true
+    },
+    BigInteger
+  > {}
 
 export function wrap(x: BigInteger): Option<Natural> {
   return fromInteger(integer.wrap(x))
@@ -45,9 +46,9 @@ export const gcd: (x: Natural, y: Natural) => Natural = nonZeroInteger.gcd
 
 export const lcm: (x: Natural, y: Natural) => Natural = nonZeroInteger.lcm
 
-export const setoid: Setoid<Natural> = integer.setoid
+export const Eq: EQ.Eq<Natural> = integer.Eq
 
-export const ord: Ord<Natural> = integer.ord
+export const Ord: ORD.Ord<Natural> = integer.Ord
 
 export const show: (x: Natural) => string = integer.show
 

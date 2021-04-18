@@ -1,17 +1,20 @@
 import { Natural } from './Natural'
-import { Option } from 'fp-ts/lib/Option'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord } from 'fp-ts/lib/Ord'
+import * as O from 'fp-ts/Option'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { Rational } from './Rational'
 import * as rational from './Rational'
 import * as nonZeroRational from './NonZeroRational'
 import * as natural from './Natural'
-import { unsafeCoerce } from 'newtype-ts'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 export type PositiveRational = [Natural, Natural]
 
-export function fromRational(r: Rational): Option<PositiveRational> {
-  return natural.fromInteger(r[0]).map((n): PositiveRational => [n, r[1]])
+export function fromRational(r: Rational): O.Option<PositiveRational> {
+  return pipe(
+    natural.fromInteger(r[0]),
+    O.map((n): PositiveRational => [n, r[1]])
+  )
 }
 
 export const reduce: (n: Natural, d: Natural) => PositiveRational = unsafeCoerce(rational.reduce)
@@ -22,7 +25,7 @@ export const mul: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 export const one: PositiveRational = unsafeCoerce(rational.one)
 
-export function sub(x: PositiveRational, y: PositiveRational): Option<PositiveRational> {
+export function sub(x: PositiveRational, y: PositiveRational): O.Option<PositiveRational> {
   return fromRational(rational.sub(x, y))
 }
 
@@ -30,8 +33,8 @@ export const div: (x: PositiveRational, y: PositiveRational) => PositiveRational
 
 export const inverse: (x: PositiveRational) => PositiveRational = unsafeCoerce(nonZeroRational.inverse)
 
-export const setoid: Setoid<PositiveRational> = rational.setoid
+export const Eq: EQ.Eq<PositiveRational> = rational.Eq
 
-export const ord: Ord<PositiveRational> = rational.ord
+export const Ord: ORD.Ord<PositiveRational> = rational.Ord
 
 export const show: (x: PositiveRational) => string = rational.show

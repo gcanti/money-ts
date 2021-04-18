@@ -1,6 +1,6 @@
 ---
 title: scale/RUB.ts
-nav_order: 32
+nav_order: 23
 parent: Modules
 ---
 

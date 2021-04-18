@@ -5,8 +5,8 @@ import * as positiveRational from '../src/PositiveRational'
 describe('PositiveRational', () => {
   it('inverse', () => {
     assertProperty(
-      property(PositiveRationalGenerator, r => {
-        return positiveRational.setoid.equals(r, positiveRational.inverse(positiveRational.inverse(r)))
+      property(PositiveRationalGenerator, (r) => {
+        return positiveRational.Eq.equals(r, positiveRational.inverse(positiveRational.inverse(r)))
       })
     )
   })

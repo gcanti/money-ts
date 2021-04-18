@@ -8,10 +8,10 @@ parent: Modules
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Eq (constant)](#eq-constant)
+- [Ord (constant)](#ord-constant)
+- [Ring (constant)](#ring-constant)
 - [one (constant)](#one-constant)
-- [ord (constant)](#ord-constant)
-- [ring (constant)](#ring-constant)
-- [setoid (constant)](#setoid-constant)
 - [two (constant)](#two-constant)
 - [zero (constant)](#zero-constant)
 - [add (function)](#add-function)
@@ -24,36 +24,36 @@ parent: Modules
 
 ---
 
+# Eq (constant)
+
+**Signature**
+
+```ts
+export const Eq: EQ.Eq<BigInteger> = ...
+```
+
+# Ord (constant)
+
+**Signature**
+
+```ts
+export const Ord: ORD.Ord<BigInteger> = ...
+```
+
+# Ring (constant)
+
+**Signature**
+
+```ts
+export const Ring: R.Ring<BigInteger> = ...
+```
+
 # one (constant)
 
 **Signature**
 
 ```ts
 export const one = ...
-```
-
-# ord (constant)
-
-**Signature**
-
-```ts
-export const ord: Ord<BigInteger> = ...
-```
-
-# ring (constant)
-
-**Signature**
-
-```ts
-export const ring: Ring<BigInteger> = ...
-```
-
-# setoid (constant)
-
-**Signature**
-
-```ts
-export const setoid: Setoid<BigInteger> = ...
 ```
 
 # two (constant)

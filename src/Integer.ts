@@ -1,10 +1,11 @@
-import { Newtype, unsafeCoerce } from 'newtype-ts'
-import { Setoid } from 'fp-ts/lib/Setoid'
-import { Ord, lessThan } from 'fp-ts/lib/Ord'
+import { Newtype } from 'newtype-ts'
+import * as EQ from 'fp-ts/Eq'
+import * as ORD from 'fp-ts/Ord'
 import { BigInteger } from 'big-integer'
 import { NonZeroInteger } from './NonZeroInteger'
 import * as bigInteger from './BigInteger'
-import { Ring } from 'fp-ts/lib/Ring'
+import * as R from 'fp-ts/Ring'
+import { unsafeCoerce } from 'fp-ts/function'
 
 export interface Integer extends Newtype<{ Integer: true }, BigInteger> {}
 
@@ -28,17 +29,17 @@ export function div(x: Integer, y: NonZeroInteger): Integer {
   return wrap(unwrap(x).divide(unwrap(y)))
 }
 
-export const setoid: Setoid<Integer> = unsafeCoerce(bigInteger.setoid)
+export const Eq: EQ.Eq<Integer> = unsafeCoerce(bigInteger.Eq)
 
-export const isZero = (x: Integer): boolean => setoid.equals(zero, x)
+export const isZero = (x: Integer): boolean => Eq.equals(zero, x)
 
 export function sign(x: Integer): -1 | 0 | 1 {
   return unsafeCoerce(unwrap(x).compare(bigInteger.zero))
 }
 
-export const ord: Ord<Integer> = unsafeCoerce(bigInteger.ord)
+export const Ord: ORD.Ord<Integer> = unsafeCoerce(bigInteger.Ord)
 
-const lessThanO = lessThan(ord)
+const lessThanO = ORD.lt(Ord)
 
 export const isPositive = (x: Integer): boolean => lessThanO(zero, x)
 
@@ -46,4 +47,4 @@ export function show(x: Integer): string {
   return unwrap(x).toString()
 }
 
-export const ring: Ring<Integer> = unsafeCoerce(bigInteger.ring)
+export const Ring: R.Ring<Integer> = unsafeCoerce(bigInteger.Ring)
